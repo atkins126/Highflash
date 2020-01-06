@@ -30,7 +30,7 @@ client.on('ready', () => {
 	var timerId = setInterval(function() {
 	process.stdout.write('\x1Bc');	
 	  let randoman = client.guilds.random();
-    console.log("\n ██████    ████   ████   ██   ████████\n      ██   ██ ██ ██ ██           ██\n       ██  ██ ██ ██ ██   ██      ██\n       ██  ██  ███  ██   ██      ██\n      ██   ██       ██   ██      ██\n ██████    ██       ██   ██      ██\n\nXStep Bot " + botconfig.version + " \(" + botconfig.date + "\)\n\(C\)opyright 2019 DMIT Development. All rights reserved.\n\nThis script started successfully.")
+    console.log("\n ██████    ████   ████   ██   ████████\n      ██   ██ ██ ██ ██           ██\n       ██  ██ ██ ██ ██   ██      ██\n       ██  ██  ███  ██   ██      ██\n      ██   ██       ██   ██      ██\n ██████    ██       ██   ██      ██\n\nXStep Bot " + botconfig.version + " \(" + botconfig.date + "\)\n\(C\)opyright 2019-2020 DMIT Development. All rights reserved.\n\nThis script started successfully.")
 	console.log("\nPing: " + client.ping.toFixed(2) + " ms | Memory usage: " + Math.round(process.memoryUsage().heapUsed / 1024) + " kB\nServers: " + client.guilds.size + " | Users: " + client.users.size)
     }, 2000);
 	if(client.ping > 2000) {
@@ -38,7 +38,7 @@ client.on('ready', () => {
   .then(console.log)
   .catch(console.error);
 }} catch(e) {
-		console.log("\n ██████    ████   ████   ██   ████████\n      ██   ██ ██ ██ ██           ██\n       ██  ██ ██ ██ ██   ██      ██\n       ██  ██  ███  ██   ██      ██\n      ██   ██       ██   ██      ██\n ██████    ██       ██   ██      ██\n\nXStep Bot " + botconfig.version + " \(" + botconfig.date + "\)\n\(C\)opyright 2019 DMIT Development. All rights reserved.\n\nThis script started successfully.")
+		console.log("\n ██████    ████   ████   ██   ████████\n      ██   ██ ██ ██ ██           ██\n       ██  ██ ██ ██ ██   ██      ██\n       ██  ██  ███  ██   ██      ██\n      ██   ██       ██   ██      ██\n ██████    ██       ██   ██      ██\n\nXStep Bot " + botconfig.version + " \(" + botconfig.date + "\)\n\(C\)opyright 2019-2020 DMIT Development. All rights reserved.\n\nThis script started successfully.")
 	console.log("No servers");
 	}  
 });
@@ -135,6 +135,7 @@ client.on("ready", () => {
 	client.user.setGame("Starting XStep Bot...");
 
 });
+
 
 
 client.on("message", message => {
@@ -258,7 +259,7 @@ author: {
     },
        {
            name: "Автор/Разработчик",
-           value: "`ржущая микроволновка#7004`"
+           value: "`DMIT Computers#7004`"
        },
 	{
         name: "Исходные коды",
@@ -266,7 +267,7 @@ author: {
     },
     {
         name: "Авторские права",
-        value: "Copyright © DMIT Computers, 2019. Все права защищены."
+        value: "Copyright © DMIT Computers, 2019-2020. Все права защищены."
     },
       ]
    }
@@ -1017,23 +1018,23 @@ author: {
             fields: [
                 {
                     name: "❓ Справка",
-                    value: "about - о боте XStep\r\nsupport - служба поддержки бота\r\ndonate - помочь проекту\r\nlinks - ссылки на наши ресурсы"
+                    value: "`about` - о боте XStep\r\n`support` - служба поддержки бота\r\n`donate` - помочь проекту\r\n`links` - ссылки на наши ресурсы"
                 },
                 {
                     name: ":tools: Опции",
-                    value: "test - проверить состояние бота"
+                    value: "`test` - проверить состояние бота\r\n`srvlist` - список входящий серверов бота"
                 },
                 {
                     name: ":hammer: Модератор",
-                    value: "prune <кол-во> - удалить сообщения\r\nban - забанить кого-то\r\nkick - выгнать кого-то\r\nwarn - выдать кому-то предупреждение\r\navatar - мой аватар\r\nuser - о пользователе\r\nserver - о сервере"
+                    value: "`prune <кол-во>` - удалить сообщения\r\n`ban` - забанить кого-то\r\n`kick` - выгнать кого-то\r\n`warn` - выдать кому-то предупреждение\r\n`avatar` - мой аватар\r\n`user` - о пользователе\r\n`server` - о сервере"
                 },
                 {
                     name: "👬 Развлечения",
-                    value: "8ball <вопрос> - игра \"Шар судьбы\"\nyearprogress - годовая протяженность\nemoji-ind - Индикатор эмоций\r\nsay - сказать что-нибудь от имени бота"
+                    value: "`8ball <вопрос>` - игра \"Шар судьбы\"\n`yearprogress` - годовая протяженность\n`emoji-ind` - Индикатор эмоций\r\n`say` - сказать что-нибудь от имени бота"
                 },
                 {
                     name: "🎵 Аудиоплеер",
-                    value: "audio play <ссылка> - воспроизведение трека\r\naudio stop - остановка трека и выход из голосового канала"
+                    value: "`audio play <ссылка>` - воспроизведение трека\r\n`audio stop` - остановка трека и выход из голосового канала"
              }
             ],
 				footer: {
@@ -1054,23 +1055,23 @@ author: {
             fields: [
                 {
                     name: "❓ Справка",
-                    value: "about - о боте XStep\r\nsupport - служба поддержки бота\r\ndonate - помочь проекту\r\nlinks - ссылки на ресурсы"
+                    value: "`about` - о боте XStep\r\n`support` - служба поддержки бота\r\n`donate` - помочь проекту\r\n`links` - ссылки на наши ресурсы"
                 },
                 {
                     name: ":tools: Опции",
-                    value: "test - проверить состояние бота"
+                    value: "`test` - проверить состояние бота\r\n`srvlist` - список входящий серверов бота"
                 },
                 {
                     name: ":hammer: Модератор",
-                    value: "prune <кол-во> - удалить сообщения\r\nban - забанить кого-то\r\nkick - выгнать кого-то\r\nwarn - выдать кому-то предупреждение\r\navatar - мой аватар\r\nuser - о пользователе\r\nserver - о сервере"
+                    value: "`prune <кол-во>` - удалить сообщения\r\n`ban` - забанить кого-то\r\n`kick` - выгнать кого-то\r\n`warn` - выдать кому-то предупреждение\r\n`avatar` - мой аватар\r\n`user` - о пользователе\r\n`server` - о сервере"
                 },
                 {
                     name: "👬 Развлечения",
-                    value: "8ball <вопрос> - игра \"Шар судьбы\"\nyearprogress - годовая протяженность\nemoji-ind - Индикатор эмоций\r\nsay - сказать что-нибудь от имени бота"
+                    value: "`8ball <вопрос>` - игра \"Шар судьбы\"\n`yearprogress` - годовая протяженность\n`emoji-ind` - Индикатор эмоций\r\n`say` - сказать что-нибудь от имени бота"
                 },
                 {
                     name: "🎵 Аудиоплеер",
-                    value: "audio play <ссылка> - воспроизведение трека\r\naudio stop - остановка трека и выход из г. канала"
+                    value: "`audio play <ссылка>` - воспроизведение трека\r\n`audio stop` - остановка трека и выход из голосового канала"
              }
             ],
 		        footer: {
@@ -1995,6 +1996,35 @@ client.fetchUser(id)
   }
 }});
 
+client.on("message", message => {
+  if(message.author === client.user) return;
+  if(message.content.startsWith(prefix + "srvlist") || message.content.startsWith(prefix_a + "srvlist") || message.content.startsWith(prefix_b + "srvlist") || message.content.startsWith(prefix_c + "srvlist")) {
+	  var str = "";
+	  var membc = '0';
+	  var onlinecount = '0';
+	  var ar = client.guilds.array();
+	  for (let i = 0; i < ar.length; i++){
+		  if  (ar[i].memberCount > 100) membc = ar[i].memberCount;
+		  if  (ar[i].memberCount < 100 && ar[i].memberCount > 10) membc = ' ' + ar[i].memberCount;
+		  if  (ar[i].memberCount < 10) membc = '  ' + ar[i].memberCount;
+		  if  (ar[i].memberCount > 100) onlinecount = ar[i].presences.size;
+		  if  (ar[i].presences.size < 100 && ar[i].presences.size > 10) onlinecount = ' ' + ar[i].presences.size;
+		  if  (ar[i].presences.size < 10) onlinecount = '  ' + ar[i].presences.size;
+		  str+=(i + 1) + '. ' + ar[i]+'\n    Участников: '+ membc + ' | Онлайн: ' + onlinecount + ' | Регион: ' + ar[i].region[0].toUpperCase() + message.guild.region.slice(1) + '\r\n';
+	  }
+	  var srvlist_embed = {
+		  embed: {
+		color: 0x4422ff,
+        author: {
+			name: 'Список входящих серверов \(' + client.guilds.size + '\)',
+			icon_url: message.author.avatarURL,
+		},	
+	  description: '```' + str + '```',		
+	  },
+	  }
+	 message.channel.send(srvlist_embed);
+}});
+
 client.on('message', message => {
   if(message.author === client.user) return;
   if(message.channel.type === 'dm') return;
@@ -2033,7 +2063,7 @@ author: {
      name: "Пожертвование",
      icon_url: client.user.avatarURL,
 },
-description: "💵 За донат вы получите:\n1. Команду `dm~ads +` для рекламы Вашего сервера!\n2. `dm~ping` без задержки\n\nhttps://donationalerts.com/r/dmitryevpc\n\nМин. - 15 RUB \(р.\)/6 UAH \(укр. гр.\)/0.15 USD \(долл. США\)"
+description: "💵 За донат вы получите:\n1. Команду `xs.ads +` для рекламы Вашего сервера!\n\nhttps://donationalerts.com/r/dmitryevpc\n\nМин. - 15 RUB \(р.\)/6 UAH \(укр. гр.\)/0.15 USD \(долл. США\)"
    }
 };
       message.channel.sendMessage(donate_embed)
