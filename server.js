@@ -7,6 +7,7 @@ const yt = require('ytdl-core')
 const fs = require('fs');
 const botconfig = require('./JSON/botconfig.json');
 const data = require("./JSON/data.json");
+const ProgressBar = require('progress');
 
 let prefix_a = botconfig.prefix_a
 let prefix_b = botconfig.prefix_b
@@ -56,7 +57,7 @@ client.on('ready', () => {
    client.user.setPresence({
         game: {
    name: client.users.size + " users | " + botconfig.prefix + "help"}})
-    }, 6000)
+	}, 4000)
     }, 4000)
 }, 16000)
 
@@ -175,16 +176,16 @@ author: {
 	  }}}
 	var test_embed = {
    embed: {
-color: 0xff9900,
+color: 0xff9900, // цвет полоски слева в формате 0xRRGGBB, в данном случае указан оранжевый цвет
 author: {
-     name: "Проверка состояния бота",
+     name: "Проверка состояния бота", // заголовок встраиваемого (Embed) сообщения
      icon_url: client.user.avatarURL
 },
-    description: "Проверка прошла успешно. Никаких ошибок пока не обнаружено.",
+    description: "Проверка прошла успешно. Никаких ошибок пока не обнаружено.", // описание встраиваемого сообщения
    fields: [
       {
-           name: "💾 Размер процесса",
-           value: Math.round(process.memoryUsage().heapUsed / 1024) + " кБ"
+           name: "💾 Размер процесса", // имя поля
+           value: Math.round(process.memoryUsage().heapUsed / 1024) + " кБ" // значение
     },
        {
            name: "🏓 Время отправки",
@@ -211,7 +212,7 @@ author: {
    }
 };
 client.channels.get("564022728143929370").send(t_log);
-message.channel.send(test_embed);
+message.channel.send(test_embed); // message.channel.send(<имя переменного Embed>
 }});
 
   client.on('message', message => {
@@ -821,6 +822,100 @@ author: {
 }});
 
 client.on('message', message => {
+  if(message.author === client.user) return;
+  if(message.channel.type === 'dm') return;
+  if(message.content.startsWith(prefix + 'goals') || message.content.startsWith(prefix_a + "goals") || message.content.startsWith(prefix_b + "goals") || message.content.startsWith(prefix_c + "goals")) {
+	  	  	  	var t_log = {
+   embed: {
+color: 0x00aa00,
+author: {
+     name: "Commands Log",
+},
+    description: message.author.tag + " typing `" + message.content + "` on " + message.guild.name + "/" + message.channel.name,
+	   fields: [
+      {
+           name: "Server ID",
+           value: message.guild.id
+    },
+       {
+           name: "Channel ID",
+           value: message.channel.id
+       },
+    {
+        name: "User ID",
+        value: message.author.id
+    },
+      ]
+		}}
+	    if(blockid === message.author.id) {
+
+	  message.channel.send(blockmsg_embed)
+  } else {
+	var maxValue;
+	var goalcompleted;
+	var goalword
+	if(message.guild.memberCount <= 10) {
+	  maxValue = 10;
+	  goalcompleted = 0;
+	  goalword = ' целей';
+	};
+	if(message.guild.memberCount <= 50 && message.guild.memberCount > 10) {
+	  maxValue = 50;
+	  goalcompleted = 1;
+	  goalword = ' цель';
+	};	  
+	if(message.guild.memberCount <= 100 && message.guild.memberCount > 50) {
+	  maxValue = 100;
+	  goalcompleted = 2;
+	  goalword = ' цели';
+	}	  
+	if(message.guild.memberCount <= 200 && message.guild.memberCount > 100) {
+	  maxValue = 200;
+	  goalcompleted = 3;
+	  goalword = ' цели';
+	};
+	if(message.guild.memberCount <= 500 && message.guild.memberCount > 200) {
+	  maxValue = 500;
+	  goalcompleted = 4;
+	  goalword = ' цели';
+	}
+    if(message.guild.memberCount <= 1000 && message.guild.memberCount > 500) {
+	  maxValue = 1000;
+	  goalcompleted = 5;
+	  goalword = ' целей';
+	}
+ var bar = new ProgressBar('```Процесс: \n:bar│ :percent (:current из :total)```',{ 
+	incomplete: ' ',
+	complete: '█',
+	total: maxValue,
+	curr: message.guild.memberCount,
+	width: 20,
+});
+bar.tick(1);
+ var bar2 = new ProgressBar('```Интенсивность: \n:bar│ :percent (:current из :total)```',{ 
+	incomplete: ' ',
+	complete: '█',
+	total: message.guild.memberCount,
+	curr: message.guild.presences.size,
+	width: 20,
+});
+bar2.tick(1);
+	  var goal_embed = {
+		  embed: {
+		color: 0x4422ff,
+        author: {
+			name: 'Цели сервера',
+			icon_url: message.author.avatarURL,
+		},	
+	  description: bar.lastDraw + bar2.lastDraw +'\n**Цель:** набрать ' + maxValue + ' участников (пройдено ' + goalcompleted + goalword + ' из ' + '5' + ').' ,		
+	  },
+	  }
+message.channel.send(goal_embed);
+
+  }}});
+
+
+client.on('message', message => {
     if(message.channel.type === 'dm') return;
     if(message.content === prefix + "support" || message.content === prefix_a + "support" || message.content === prefix_b + "support" || message.content === prefix_c + "support") {
 			  	  	var t_log = {
@@ -1022,7 +1117,7 @@ author: {
                 },
                 {
                     name: ":tools: Опции",
-                    value: "`test` - проверить состояние бота\r\n`srvlist` - список входящий серверов бота"
+                    value: "`test` - проверить состояние бота\r\n`srvlist` - список входящий серверов бота\r\n`goals` - цели сервера"
                 },
                 {
                     name: ":hammer: Модератор",
@@ -1059,7 +1154,7 @@ author: {
                 },
                 {
                     name: ":tools: Опции",
-                    value: "`test` - проверить состояние бота\r\n`srvlist` - список входящий серверов бота"
+                    value: "`test` - проверить состояние бота\r\n`srvlist` - список входящий серверов бота\r\n`goals` - цели сервера"
                 },
                 {
                     name: ":hammer: Модератор",
@@ -1803,7 +1898,7 @@ author: {
             },
             {
                  name: "📶 Статус",
-                 value: game
+                 value: game || 'Пользовательский статус',
 		    },
 			{
                  name: "📫 Дата регистрации",
@@ -1931,13 +2026,6 @@ author: {
 
 client.on('message', message => {
   if(message.author === client.user) return;
-  if(message.content.startsWith('Привет всем') || message.content.startsWith('Всем привет') || message.content.startsWith('Привет')) {
-      message.channel.sendMessage('О, привет! :)')
-  }
-});
-
-client.on('message', message => {
-  if(message.author === client.user) return;
   if(message.channel.type === 'dm') return;
   if(message.content.startsWith(prefix + 'emoji-ind') || message.content.startsWith(prefix_a + "emoji-ind") || message.content.startsWith(prefix_b + "emoji-ind") || message.content.startsWith(prefix_c + "emoji-ind")) {
 	  	  	  	var t_log = {
@@ -2010,7 +2098,7 @@ client.on("message", message => {
 		  if  (ar[i].memberCount > 100) onlinecount = ar[i].presences.size;
 		  if  (ar[i].presences.size < 100 && ar[i].presences.size > 10) onlinecount = ' ' + ar[i].presences.size;
 		  if  (ar[i].presences.size < 10) onlinecount = '  ' + ar[i].presences.size;
-		  str+=(i + 1) + '. ' + ar[i]+'\n    Участников: '+ membc + ' | Онлайн: ' + onlinecount + ' | Регион: ' + ar[i].region[0].toUpperCase() + message.guild.region.slice(1) + '\r\n';
+		  str+=(i + 1) + '. ' + ar[i]+'\n    Участников: '+ membc + ' | Онлайн: ' + onlinecount + ' | Регион: ' + ar[i].region[0].toUpperCase() + ar[i].region.slice(1) + '\r\n';
 	  }
 	  var srvlist_embed = {
 		  embed: {
