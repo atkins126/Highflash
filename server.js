@@ -166,13 +166,13 @@ author: {
 		}}
       const plaform = os.platform()
       if(os.platform() === 'win32') {
-          platform = "<:OS_Windows8_10:629876943461810206> Windows" }
+          platform = "<:windows:670835960254169118> Windows" }
       else {
 	         if(os.platform() === 'android') {
-	         platform = "<:OS_Android:629884680673427476> Android с Termux"
+	         platform = "<:android:670837143467458560> Android с Termux"
              } else {
 				      if(os.platform() === 'linux') {
-						  platform = "<:OS_Linux:629885198820966420> Linux"
+						  platform = "<:linux:670836734447190016> Linux"
 	  }}}
 	var test_embed = {
    embed: {
@@ -853,42 +853,64 @@ author: {
   } else {
 	var maxValue;
 	var goalcompleted;
-	var goalword
+	var goalword;
+	var goalcompletetedIcon
+	var goaluncompletetedIcon
+	var goalIcon
+	var goalIcon2
 	if(message.guild.memberCount <= 10) {
 	  maxValue = 10;
 	  goalcompleted = 0;
 	  goalword = ' целей';
+	  goalcompletetedIcon = "**:hourglass_flowing_sand: 10 участников**\n"
+	  goaluncompletetedIcon = ":negative_squared_cross_mark: 50 участников\n:negative_squared_cross_mark: 100 участников\n:negative_squared_cross_mark: 200 участников\n:negative_squared_cross_mark: 500 участников\n:negative_squared_cross_mark: 1000 участников"
+	  goalIcon = goaluncompletetedIcon	  
 	};
 	if(message.guild.memberCount <= 50 && message.guild.memberCount > 10) {
 	  maxValue = 50;
 	  goalcompleted = 1;
 	  goalword = ' цель';
+	  goalcompletetedIcon = ":white_check_mark: 10 участников\n**:hourglass_flowing_sand: 50 участников**\n"
+	  goaluncompletetedIcon = ":negative_squared_cross_mark: 100 участников\n:negative_squared_cross_mark: 200 участников\n:negative_squared_cross_mark: 500 участников\n:negative_squared_cross_mark: 1000 участников"
+	  goalIcon = goalcompletetedIcon 
 	};	  
 	if(message.guild.memberCount <= 100 && message.guild.memberCount > 50) {
 	  maxValue = 100;
 	  goalcompleted = 2;
 	  goalword = ' цели';
+	  goalcompletetedIcon = ":white_check_mark: 10 участников\n:white_check_mark: 50 участников\n**:hourglass_flowing_sand: 100 участников**"
+	  goaluncompletetedIcon = "\n:negative_squared_cross_mark: 200 участников\n:negative_squared_cross_mark: 500 участников\n:negative_squared_cross_mark: 1000 участников"
+	  goalIcon = goalcompletetedIcon 
 	}	  
 	if(message.guild.memberCount <= 200 && message.guild.memberCount > 100) {
 	  maxValue = 200;
 	  goalcompleted = 3;
 	  goalword = ' цели';
+	  goalcompletetedIcon = ":white_check_mark: 10 участников\n:white_check_mark: 50 участников\n:white_check_mark: 100 участников\n**:hourglass_flowing_sand: 200 участников**"
+	  goaluncompletetedIcon = "\n:negative_squared_cross_mark: 500 участников\n:negative_squared_cross_mark: 1000 участников"
+	  goalIcon = goalcompletetedIcon 
 	};
 	if(message.guild.memberCount <= 500 && message.guild.memberCount > 200) {
 	  maxValue = 500;
 	  goalcompleted = 4;
 	  goalword = ' цели';
+	  goalcompletetedIcon = ":white_check_mark: 10 участников\n:white_check_mark: 50 участников\n:white_check_mark: 100 участников\n**:hourglass_flowing_sand: 500 участников**"
+	  goaluncompletetedIcon = "\n:negative_squared_cross_mark: 1000 участников"
+	  goalIcon = goalcompletetedIcon 
 	}
     if(message.guild.memberCount <= 1000 && message.guild.memberCount > 500) {
 	  maxValue = 1000;
 	  goalcompleted = 5;
 	  goalword = ' целей';
+	  goalcompletetedIcon = ":white_check_mark: 10 участников\n:white_check_mark: 50 участников\n:white_check_mark: 100 участников\n**:hourglass_flowing_sand: 500 участников**"
+	  goaluncompletetedIcon = "\n:negative_squared_cross_mark: 1000 участников"
+	  goalIcon = goalcompletetedIcon 
 	}
  var bar = new ProgressBar('```Процесс: \n:bar│ :percent (:current из :total)```',{ 
 	incomplete: ' ',
 	complete: '█',
 	total: maxValue,
-	curr: message.guild.memberCount,
+	curr: message.guild.memberCount - 1,
 	width: 20,
 });
 bar.tick(1);
@@ -907,7 +929,13 @@ bar2.tick(1);
 			name: 'Цели сервера',
 			icon_url: message.author.avatarURL,
 		},	
-	  description: bar.lastDraw + bar2.lastDraw +'\n**Цель:** набрать ' + maxValue + ' участников (пройдено ' + goalcompleted + goalword + ' из ' + '5' + ').' ,		
+	  description: bar.lastDraw + bar2.lastDraw +'\n**Текущая цель:** набрать ' + maxValue + ' участников (пройдено ' + goalcompleted + goalword + ' из ' + '5' + ').' ,		
+	   fields: [
+      {
+           name: "Цели",
+           value: goalcompletetedIcon + goaluncompletetedIcon		   
+    },
+      ],
 	  },
 	  }
 message.channel.send(goal_embed);
@@ -1938,7 +1966,7 @@ author: {
             },
             {
                  name: "📶 Статус",
-                 value: game
+                 value: game || 'Пользовательский статус',
             },
             {
                  name: "📫 Дата регистрации",
