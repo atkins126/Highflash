@@ -30,11 +30,11 @@ client.on('ready', () => {
 	console.log("Loading other components...")
 	var timerId = setInterval(function() {
 	process.stdout.write('\x1Bc');	
-    console.log(`\n ██████    ████   ████   ██   ████████\n      ██   ██ ██ ██ ██           ██\n       ██  ██ ██ ██ ██   ██      ██\n       ██  ██  ███  ██   ██      ██\n      ██   ██       ██   ██      ██\n ██████    ██       ██   ██      ██\n\nXStep Bot ${botconfig.version} \(${botconfig.date}\)\n\(C\)opyright 2019-2020 DMIT Development. All rights reserved.\n\nThis script started successfully.`)
+    console.log(`\n          ███████████   ██ ██████\n               ██   ██  ██   ██\n  ██████▓ ██   ██   ██  ██   ██\n ██       ██   ██   ██  ██   ██\n ██       ██   ██   ██  █    ██\n ██       ██ \n  █████████             computers\n\nXStep Bot ${botconfig.version} \(${botconfig.date}\)\n\(C\)opyright 2019-2020 DMIT Development. All rights reserved.\n\nThis script started successfully.`)
 	console.log(`\nPing: ${client.ws.ping.toFixed(2)} ms | Memory usage: ${Math.round(process.memoryUsage().heapUsed / 1024)} kB\nServers: ${client.guilds.cache.size} | Users: ${client.users.cache.size}`)
     }, 2000);
 } catch(e) {
-     console.log(`\n ██████    ████   ████   ██   ████████\n      ██   ██ ██ ██ ██           ██\n       ██  ██ ██ ██ ██   ██      ██\n       ██  ██  ███  ██   ██      ██\n      ██   ██       ██   ██      ██\n ██████    ██       ██   ██      ██\n\nXStep Bot ${botconfig.version} \(${botconfig.date}\)\n\(C\)opyright 2019-2020 DMIT Development. All rights reserved.\n\nThis script started successfully.`)
+     console.log(`\n          ███████████   ██ ██████\n               ██   ██  ██   ██\n  ██████▓ ██   ██   ██  ██   ██\n ██       ██   ██   ██  ██   ██\n ██       ██   ██   ██  █    ██\n ██       ██ \n  █████████             computers\n\nXStep Bot ${botconfig.version} \(${botconfig.date}\)\n\(C\)opyright 2019-2020 DMIT Development. All rights reserved.\n\nThis script started successfully.`)
 	console.log("\nNo servers.")
 	}  
 });
@@ -129,7 +129,7 @@ client.on("ready", () => {
 
 client.on("message", message => {
   if(message.author === client.user) return;
-  if(message.content.startsWith(prefix + "test") || message.content.startsWith(prefix_a + "test") || message.content.startsWith(prefix_b + "test") || message.content.startsWith(prefix_c + "test")) {
+  if(message.content.startsWith(prefix + "health") || message.content.startsWith(prefix_a + "health") || message.content.startsWith(prefix_b + "health") || message.content.startsWith(prefix_c + "health")) {
 	  	  	var t_log = {
    embed: {
 color: 0xff8800,
@@ -162,6 +162,11 @@ author: {
 				      if(os.platform() === 'linux') {
 						  platform = "<:linux:670836734447190016> Linux"
 	  }}}
+
+var bothealth = "";	  
+	  if (client.ws.ping > 1500) {
+		  bothealth = "Бот работает в онлайне, но ответит с большой задержкой."
+	  } else { bothealth = "Бот работает в онлайне, оптимальная задержка." };
 	var test_embed = {
    embed: {
 color: 0xff9900, // цвет полоски слева в формате 0xRRGGBB, в данном случае указан оранжевый цвет
@@ -169,7 +174,7 @@ author: {
      name: "Проверка состояния бота", // заголовок встраиваемого (Embed) сообщения
      icon_url: client.user.avatarURL()
 },
-    description: "Проверка прошла успешно. Никаких ошибок пока не обнаружено.", // описание встраиваемого сообщения
+    description: bothealth, // описание встраиваемого сообщения
    fields: [
       {
            name: "💾 Размер процесса", // имя поля
@@ -906,7 +911,7 @@ bar.tick(1);
 	incomplete: ' ',
 	complete: '█',
 	total: message.guild.memberCount,
-	curr: message.guild.presences.size,
+	curr: message.guild.presences.cache.size,
 	width: 20,
 });
 bar2.tick(1);
@@ -931,55 +936,35 @@ message.channel.send(goal_embed);
   }}});
 
 
-client.on('message', message => {
-    if(message.channel.type === 'dm') return;
-    if(message.content === prefix + "support" || message.content === prefix_a + "support" || message.content === prefix_b + "support" || message.content === prefix_c + "support") {
-			  	  	var t_log = {
-   embed: {
-color: 0xff8800,
-author: {
-     name: "Commands Log",
-},
-    description: message.author.tag + " typing `" + message.content + "` on " + message.guild.name + "/" + message.channel.name,
-	   fields: [
-      {
-           name: "Server ID",
-           value: message.guild.id
-    },
-       {
-           name: "Channel ID",
-           value: message.channel.id
-       },
-    {
-        name: "User ID",
-        value: message.author.id
-    },
-      ]
-		}}
-		  if(blockid === message.author.id) {
-
-	  message.channel.send(blockmsg_embed)
-  } else {
-		let chid = message.channel.id
-	var support_embed = {
+   client.on("message", message => {
+    if(message.author === client.user) return;
+		  	   	  if(message.channel.type === 'dm') return;
+    if(message.content.startsWith(prefix + "report") || message.content.startsWith(prefix_a + "report") || message.content.startsWith(prefix_b + "report") || message.content.startsWith(prefix_c + "report")) {
+			var reportmsg_embed = {
         embed: {
             color: 0xff0055,
 
             author: {
-                name: "Служба поддержки бота Dmit",
+                name: "Служба безопасности XStep",
                 icon_url: client.user.avatarURL()
             },
-  description: "❓ xs.support bugreport <баг> - сообщить о баге\n  xs.support note <отзыв> - отзыв"
-		}
-					};
-						  client.channels.cache.get("564022728143929370").send(t_log);
-    message.channel.send(support_embed);
-}}});
+  description: message.author.tag + " отправил жалобу: \"" + message.content.split(" ").slice(1) + "\"",
+  	   fields: [
+      {
+           name: "Имя и ID сервера",
+           value: message.guild.name + " | " + message.guild.id,
+    },
+       {
+           name: "Имя и ID канала",
+           value: message.channel.name + " | " + message.channel.id
+       },
+    {
+        name: "ID пользователя",
+        value: message.author.id
+    },
+      ]
+		}};
 
-   client.on("message", message => {
-    if(message.author === client.user) return;
-		  	   	  if(message.channel.type === 'dm') return;
-    if(message.content.startsWith(prefix + "support bug") || message.content.startsWith(prefix_a + "support bug") || message.content.startsWith(prefix_b + "support bug") || message.content.startsWith(prefix_c + "support bug")) {
 			  	  	var t_log = {
    embed: {
 color: 0x2255ff,
@@ -1011,7 +996,7 @@ author: {
             color: 0xff0055,
 
             author: {
-                name: "Служба поддержки бота Dmit",
+                name: "Служба безопасности XStep",
                 icon_url: client.user.avatarURL()
             },
   description: "❓ Автор бота ответит через некоторое время, дождитесь ответа."
@@ -1027,63 +1012,8 @@ author: {
 let id = str.replace(/[<@!>]/g, ''); 
 
 client.users.fetch(id) 
-    .then(user => {user.send(message.author.tag + " \(" + message.author.id + "\) написал: " + message.content + " на " + message.channel.id)})
+    .then(user => {user.send(reportmsg_embed)})
    }}});
-   
-      client.on("message", message => {
-    if(message.author === client.user) return;
-		  	   	  if(message.channel.type === 'dm') return;
-    if(message.content.startsWith(prefix + "support note") || message.content.startsWith(prefix_a + "support note") || message.content.startsWith(prefix_b + "support note") || message.content.startsWith(prefix_c + "support note")) {
-			  	  	var t_log = {
-   embed: {
-color: 0x2255ff,
-author: {
-     name: "Commands Log",
-},
-    description: message.author.tag + " typing `" + message.content + "` on " + message.guild.name + "/" + message.channel.name,
-	   fields: [
-      {
-           name: "Server ID",
-           value: message.guild.id
-    },
-       {
-           name: "Channel ID",
-           value: message.channel.id
-       },
-    {
-        name: "User ID",
-        value: message.author.id
-    },
-      ]
-		}}
-		  if(blockid === message.author.id) {
-
-	  message.channel.send(blockmsg_embed)
-  } else {
-			var supportbug_embed = {
-        embed: {
-            color: 0xff0055,
-
-            author: {
-                name: "Служба поддержки бота Dmit",
-                icon_url: client.user.avatarURL()
-            },
-  description: "❓ Автор бота ответит через некоторое время, дождитесь ответа."
-		}
-					};
-											  client.channels.cache.get("564022728143929370").send(t_log);
-    message.channel.send(supportbug_embed);
-
-						      let str = "<@484921597015359488>"; //Just assuming some random tag. 
-
-//removing any sign of < @ ! >... 
-//the exclamation symbol comes if the user has a nickname on the server. 
-let id = str.replace(/[<@!>]/g, ''); 
-
-client.users.fetch(id) 
-    .then(user => {user.send(message.author.tag + " \(" + message.author.id + "\) написал: " + message.content + " на " + message.channel.id)})
-	  }}});
-
 
 
    client.on("message", message => {
@@ -1129,11 +1059,11 @@ author: {
             fields: [
                 {
                     name: "❓ Справка",
-                    value: "`about` - о боте XStep\r\n`support` - служба поддержки бота\r\n`donate` - помочь проекту\r\n`links` - ссылки на наши ресурсы"
+                    value: "`about` - о боте XStep\r\n`report <описание жалобы>` - пожаловаться\r\n`donate` - помочь проекту\r\n`links` - ссылки на наши ресурсы"
                 },
                 {
                     name: ":tools: Опции",
-                    value: "`test` - проверить состояние бота\r\n`srvlist` - список входящий серверов бота\r\n`goals` - цели сервера"
+                    value: "`health` - проверить состояние бота\r\n`srvlist` - список входящий серверов бота\r\n`goals` - цели сервера"
                 },
                 {
                     name: ":hammer: Модератор",
@@ -1166,11 +1096,11 @@ author: {
             fields: [
                 {
                     name: "❓ Справка",
-                    value: "`about` - о боте XStep\r\n`support` - служба поддержки бота\r\n`donate` - помочь проекту\r\n`links` - ссылки на наши ресурсы"
+                    value: "`about` - о боте XStep\r\n`report <описание жалобы>` - пожаловаться\r\n`donate` - помочь проекту\r\n`links` - ссылки на наши ресурсы"
                 },
                 {
                     name: ":tools: Опции",
-                    value: "`test` - проверить состояние бота\r\n`srvlist` - список входящий серверов бота\r\n`goals` - цели сервера"
+                    value: "`health` - проверить состояние бота\r\n`srvlist` - список входящий серверов бота\r\n`goals` - цели сервера"
                 },
                 {
                     name: ":hammer: Модератор",
@@ -1543,10 +1473,56 @@ client.on('message', message => {
 
       if (typeof evaled !== "string")
         evaled = require("util").inspect(evaled);
+	
+			     var evalresult_embed = {
+   embed: {
+color: 0xaa88ff,
+author: {
+     name: "Отладчик",
+     icon_url: client.user.avatarURL()
+},
+   fields: [
+         {
+		   name: "Листинг",
+           value: "```" + message.content.split(" ").slice(1) + "```",
+      },
+      {
+		   name: "Результат",
+           value: "```js\n" + clean(evaled) + "```"
+      },
+           ],
+   		   footer: {
+                text: "Команда \"eval\" не доступна обычным пользователям и используется исключительно для разработчиков.",
+			},
+   }
+}
 
-      message.channel.sendCode("xl", clean(evaled));
+      message.channel.send(evalresult_embed);
     } catch(err) {
-      message.channel.send(`**Ошибка выполнения кода** \`\`\`xl\n${clean(err)}\n\`\`\``);
+					     var evalerr_embed = {
+   embed: {
+color: 0xaa88ff,
+author: {
+     name: "Отладчик",
+     icon_url: client.user.avatarURL()
+},
+   fields: [
+         {
+		   name: "Листинг",
+           value: "```" + message.content.split(" ").slice(1) + "```",
+      },
+      {
+		   name: "Описание ошибки",
+           value: "```js\n" + clean(err) + "```"
+      },
+           ],
+		footer: {
+          text: "Команда \"eval\" не доступна обычным пользователям и используется исключительно для разработчиков.",
+    },
+   }
+   
+}
+      message.channel.send(evalerr_embed);
     }
 	}
 
