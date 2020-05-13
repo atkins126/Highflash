@@ -30,8 +30,16 @@ client.on('ready', () => {
 	console.log("Loading other components...")
 	var timerId = setInterval(function() {
 	process.stdout.write('\x1Bc');	
+	  	  var str = 0;
+	  var membc = '0';
+	  var onlinecount = 0;
+	  var ar = client.guilds.cache.array();
+	  for (let i = 0; i < ar.length; i++){
+
+		  str+=ar[i].presences.cache.size;
+	  }
     console.log(`\n          ███████████   ██ ██████\n               ██   ██  ██   ██\n  ██████▓ ██   ██   ██  ██   ██\n ██       ██   ██   ██  ██   ██\n ██       ██   ██   ██  █    ██\n ██       ██ \n  █████████             computers\n\nXStep Bot ${botconfig.version} \(${botconfig.date}\)\n\(C\)opyright 2019-2020 DMIT Development. All rights reserved.\n\nThis script started successfully.`)
-	console.log(`\nPing: ${client.ws.ping.toFixed(2)} ms | Memory usage: ${Math.round(process.memoryUsage().heapUsed / 1024)} kB\nServers: ${client.guilds.cache.size} | Users: ${client.users.cache.size}`)
+	console.log(`\nPing: ${client.ws.ping.toFixed(2)} ms | Memory usage: ${Math.round(process.memoryUsage().heapUsed / 1024)} kB\nServers: ${client.guilds.cache.size} | Users: ${client.users.cache.size} | Online: ${str}`)
     }, 2000);
 } catch(e) {
      console.log(`\n          ███████████   ██ ██████\n               ██   ██  ██   ██\n  ██████▓ ██   ██   ██  ██   ██\n ██       ██   ██   ██  ██   ██\n ██       ██   ██   ██  █    ██\n ██       ██ \n  █████████             computers\n\nXStep Bot ${botconfig.version} \(${botconfig.date}\)\n\(C\)opyright 2019-2020 DMIT Development. All rights reserved.\n\nThis script started successfully.`)
@@ -40,15 +48,26 @@ client.on('ready', () => {
 });
 
   var timerId = setInterval(function users() {
+	  	  var str = 0;
+	  var membc = '0';
+	  var onlinecount = 0;
+	  var ar = client.guilds.cache.array();
+	  for (let i = 0; i < ar.length; i++){
+
+		  str+=ar[i].presences.cache.size;
+	  }
 	  	var moscow = new Date().toLocaleString("en-US", { timeZone: "Europe/Moscow"})
 		client.user.setActivity(`${strftime("%H:%M", new Date(moscow))} (UTC+3)`, {type: 'LISTENING'})
    timerId = setTimeout(function servers() {
    client.user.setActivity(`${client.guilds.cache.size} servers | ${botconfig.prefix}help`, {type: 'LISTENING'})
     timerId = setTimeout(function clock() {
 	client.user.setActivity(`${client.users.cache.size} users | ${botconfig.prefix}help`, {type: 'LISTENING'})
+	    timerId = setTimeout(function clock() {
+	client.user.setActivity(`${str} online | ${botconfig.prefix}help`, {type: 'LISTENING'})
+	}, 4000)
 	}, 4000)
     }, 4000)
-}, 16000)
+}, 32000)
 
 function emoji (id) {
 	return client.emojis.get(id).toString();
@@ -442,7 +461,7 @@ author: {
                 name: "Аудиоплеер",
                 icon_url: client.user.avatarURL()
             },
-  description: ":no_entry_sign: " + message.author + ", прежде чем прослушать трек, обязательно войдите в любой голосовой канал!"
+  description: ":no_entry_sign: <@" + message.author + ">, прежде чем прослушать трек, обязательно войдите в любой голосовой канал!"
 					}
 	}
 		var auderr2_embed = {
@@ -481,7 +500,7 @@ author: {
 	}
 						  const streamOptions = { bitrate: 80000 };
 						  client.channels.cache.get("564022728143929370").send(t_log);
-   	 const voiceChannel = message.member.voiceChannel;
+   	 const voiceChannel = message.member.voice.channel;
     if (!voiceChannel) {
       return message.channel.send(auderr1_embed);
     }
@@ -504,7 +523,7 @@ author: {
 	  audioonly: true
         })
 		server.queue.shift();
-        const dispatcher = connnection.playStream(stream, streamOptions);
+        const dispatcher = connnection.play(stream, streamOptions);
        dispatcher.on('end', () => {
 			if(server.queue[0]) {
 			server.dispatcher 
@@ -775,7 +794,7 @@ console.error(e)};
 
 client.on('message', message => {
 	if(message.channel.type === 'dm') return;
-    if (message.content.startsWith(prefix + 'audio pause') || message.content.startsWith(prefix_a + "audio pause") || message.content.startsWith(prefix_b + "audio pause") || message.content.startsWith(prefix_c + "audio pause")) {
+    if (message.content.startsWith(prefix + 'audio leave') || message.content.startsWith(prefix_a + "audio leave") || message.content.startsWith(prefix_b + "audio leave") || message.content.startsWith(prefix_c + "audio leave")) {
 					  	  	var t_log = {
    embed: {
 color: 0xff8800,
@@ -798,7 +817,7 @@ author: {
     },
       ]
 		}}
-	var audleave_embed = {
+	var audpause_embed = {
         embed: {
             color: 0x4400ff,
 
@@ -806,12 +825,12 @@ author: {
                 name: "Аудиоплеер",
                 icon_url: client.user.avatarURL()
             },
-  description: "⏸ Прослушивание трека приостановлено.\nДля воспроизведения трека введите `xs.audio play"
+  description: "⏹️ Прослушивание трека остановлено.\nДля воспроизведения трека введите `xs.audio play`"
 		}
 					};
     message.channel.send(audpause_embed);	
 	var server = servers[message.guild.id]
-	if (message.guild.voiceConnection) message.guild.voiceConnection.dispatcher.pause();		
+	if(message.guild.voice) message.guild.voice.channel.leave();		
 }});
 
 client.on('message', message => {
@@ -1071,7 +1090,7 @@ author: {
                 },
                 {
                     name: "👬 Развлечения",
-                    value: "`8ball <вопрос>` - игра \"Шар судьбы\"\n`yearprogress` - годовая протяженность\n`emoji-ind` - Индикатор эмоций\r\n`say` - сказать что-нибудь от имени бота"
+                    value: "`8ball <вопрос>` - игра \"Шар судьбы\"\n`yearprogress` - годовая протяженность\n`randemoji` - рандомные эмоджи\r\n`say` - сказать что-нибудь от имени бота"
                 },
                 {
                     name: "🎵 Аудиоплеер",
@@ -1108,7 +1127,7 @@ author: {
                 },
                 {
                     name: "👬 Развлечения",
-                    value: "`8ball <вопрос>` - игра \"Шар судьбы\"\n`yearprogress` - годовая протяженность\n`emoji-ind` - Индикатор эмоций\r\n`say` - сказать что-нибудь от имени бота"
+                    value: "`8ball <вопрос>` - игра \"Шар судьбы\"\n`yearprogress` - годовая протяженность\n`randemoji` - рандомные эмоджи\r\n`say` - сказать что-нибудь от имени бота"
                 },
                 {
                     name: "🎵 Аудиоплеер",
@@ -1247,7 +1266,7 @@ author: {
                 icon_url: client.user.avatarURL()
             },
   image: {
-	       url: message.author.avatarURL
+	       url: message.author.avatarURL()
          },
 		}
 					};
@@ -1613,7 +1632,7 @@ author: {
 	  message.channel.send(blockmsg_embed)
   } else {
 	  	  	  						  client.channels.cache.get("564022728143929370").send(t_log);
- let answers = ["Да.", "Нет.", "Естественно.", "Возможно.", "Конечно.", "Не могу ответить на этот вопрос", "Похоже\, Вы задаете слишком много вопросов. Пожалуйста, повторите попытку позже.", "Cомневаюсь.", "Это маловероятно.", "Не знаю, как вы, но я отвечаю отрицательно.", "Да или нет? То, что вы задаете, это сложный вопрос."]; //массив ответов
+ let answers = ["Да.", "Нет.", "Естественно.", "Безусловно.", "Согласен.", "Возможно.", "Конечно.", "Не могу ответить на этот вопрос", "Похоже\, Вы задаете слишком много вопросов. Пожалуйста, повторите попытку позже.", "Cомневаюсь.", "Это маловероятно.", "Не знаю, как вы, но я скажу, что нет.", "Да или нет? То, что вы задаете, это сложный вопрос."]; //массив ответов
       let rand = Math.floor(Math.random()*answers.length);
       var eightball_embed = {
          embed: {
@@ -1969,6 +1988,39 @@ client.on('message', message => {
     message.delete().catch(console.log("\n\nError! I can not manage messages.\n\nReason\n" + message.author.tag + ": " + message.content)); 
     // And we get the bot to say the thing: 
     message.channel.send(sayMessage);
+}});
+								  
+								  
+client.on('message', message => {
+  if(message.author === client.user) return;
+  if(message.channel.type === 'dm') return;
+  if(message.content.startsWith(prefix + "rules")) {
+	if(message.author.id !== "484921597015359488") return;
+	var rules_embed = {
+   embed: {
+color: 0xff0066,
+author: {
+     name: "Правила сервера DMIT Computers State"
+	 },
+    description: "**ВНИМАНИЕ! Незнание правил не освобождает Вас от ответственности. Поэтому, чтобы избежать предупреждений (варнов) или банов, изучите правила.**\n\n1. Материться можно, но лучше этим не злоупотреблять.\n2. Оскорблять, унижать, флудить, троллить, публично хейтить кого-либо запрещается.\n3. Попрошайничество роли со-овнера, администратора или хэлпера и выпрашивание разбана также запрещено\n4. Строго запрещается публиковать NSFW-контент (к таким относит порнуха, треш-реклама)\n5. Сервер не является рекламной площадкой. Соответственно, самопиар или пиар других ресурсов (инвайт Discord-серверов, ссылки на YouTube-каналы, паблики ВКонтакте, Telegram-чаты и пр.) запрещается. Исключения из 5-го правила: реклама в кастомном статусе.\n6. Компьютерные игры и игры на смартфонах или планшетах лучше обсуждать в #games, т. к. часть сервера незаинтересована играми (хотя кого я обманываю, интересует)\n7. Срачи устрайвате в #offtop, но учтите, что администрация сервера DMIT Computers не будет банить/кикать, дабы не участвовать в подобных срачах.\n8. Чтобы ботами основной и альтернативный чат не засорять, используйте, пожалуйста, только на канале #bots!\n9. Конфиденциальную информацию (всякие сливки) обсуждать строго запрещается.\n10. Если хоть раз попытаетесь слить не только мою личную информацию, но личную инфу моих друзей, типа Joyousmicor'а, Даймутера, за это я имею право вас хакбанить.\n11. Нельзя использовать селфбота (даже с альтов)\n\nПравила сервера исключены в #offtop, кроме правила №4 и №10. С вопросами насчет правил нашего сервера свяжитесь в личку Дискорда (<@484921597015359488>).",
+					footer: {
+                          text: "Последние изменения: 8 мая 2020 г., 19:15 МСК",
+				},
+	}};
+		var rules2_embed = {
+   embed: {
+color: 0xff0066,
+author: {
+     name: "Правила сервера DMIT Computers State для администраторов, хелперов, со-овнеров"
+	 },
+    description: "1. Прежде чем изменять или создавать что-либо на моем сервере (например, создать роль или удалять неугодные каналы с сервера), Вы должны спросить у меня разрешение. иначе Вы будете предупреждены.",
+					footer: {
+                          text: "Последние изменения: 8 мая 2020 г., 19:11 МСК",
+				},
+	}};
+	
+    message.channel.send(rules_embed);
+	    message.channel.send(rules2_embed);
                                   }
 });
 
@@ -2019,7 +2071,7 @@ author: {
 client.on('message', message => {
   if(message.author === client.user) return;
   if(message.channel.type === 'dm') return;
-  if(message.content.startsWith(prefix + 'emoji-ind') || message.content.startsWith(prefix_a + "emoji-ind") || message.content.startsWith(prefix_b + "emoji-ind") || message.content.startsWith(prefix_c + "emoji-ind")) {
+  if(message.content.startsWith(prefix + 'randemoji') || message.content.startsWith(prefix_a + "randemoji") || message.content.startsWith(prefix_b + "randemoji") || message.content.startsWith(prefix_c + "randemoji")) {
 	  	  	  	var t_log = {
    embed: {
 color: 0x558800,
@@ -2053,15 +2105,10 @@ author: {
          embed: {
             color: 0x0088ff,
             author: {
-                      name: "Индикатор эмоций",
+                      name: "Рандомные эмоджи",
                       icon_url: client.user.avatarURL()
                     },
-            fields: [
-                       {
-                         name: "🔣 Эмоция",
-                         value: emoji[rand]
-                       },
-                    ]
+				description: emoji[rand],
                 }
                         };
 message.channel.send(emoji_embed);
@@ -2087,17 +2134,17 @@ client.on("message", message => {
 		  if  (ar[i].memberCount > 100) membc = ar[i].memberCount;
 		  if  (ar[i].memberCount < 100 && ar[i].memberCount > 10) membc = ' ' + ar[i].memberCount;
 		  if  (ar[i].memberCount < 10) membc = '  ' + ar[i].memberCount;
-		  if  (ar[i].memberCount > 100) onlinecount = ar[i].presences.cache.size;
-		  if  (ar[i].presences.size < 100 && ar[i].presences.size > 10) onlinecount = ' ' + ar[i].presences.cache.size;
-		  if  (ar[i].presences.size < 10) onlinecount = '  ' + ar[i].presences.cache.size;
-		  str+=(i + 1) + '. ' + ar[i]+'\n    Участников: '+ membc + ' | Онлайн: ' + onlinecount + ' | Регион: ' + ar[i].region[0].toUpperCase() + ar[i].region.slice(1) + '\r\n';
+		  if  (ar[i].memberCount > 100) onlinecount = ' ' + ar[i].presences.cache.size;
+		  if  (ar[i].presences.cache.size < 100 && ar[i].presences.size > 10) onlinecount = ' ' + ar[i].presences.cache.size;
+		  if  (ar[i].presences.cache.size < 10) onlinecount = '  ' + ar[i].presences.cache.size;
+		  str+=(i + 1) + '. ' + ar[i].name+'\n    Участников: '+ membc + ' | Онлайн: ' + onlinecount + ' | Регион: ' + ar[i].region[0].toUpperCase() + ar[i].region.slice(1) + '\r\n';
 	  }
 	  var srvlist_embed = {
 		  embed: {
 		color: 0x4422ff,
         author: {
-			name: 'Список входящих серверов \(' + client.guilds.cache.size + '\)',
-			icon_url: message.author.avatarURL,
+			name: 'Список входящих серверов \(всего ' + client.guilds.cache.size + '\)',
+			icon_url: message.author.avatarURL(),
 		},	
 	  description: '```' + str + '```',		
 	  },
