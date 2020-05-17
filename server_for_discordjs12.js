@@ -8,6 +8,10 @@ const fs = require('fs');
 const botconfig = require('./JSON/botconfig.json');
 const data = require("./JSON/data.json");
 const ProgressBar = require('progress');
+const {promptMessage} = require('./functions.js');
+const randomPuppy = require("random-puppy");
+
+const chooseArr = ["🗻", "📰", "✂"];
 
 let prefix_a = botconfig.prefix_a
 let prefix_b = botconfig.prefix_b
@@ -1090,7 +1094,7 @@ author: {
                 },
                 {
                     name: "👬 Развлечения",
-                    value: "`8ball <вопрос>` - игра \"Шар судьбы\"\n`yearprogress` - годовая протяженность\n`randemoji` - рандомные эмоджи\r\n`say` - сказать что-нибудь от имени бота"
+                    value: "`8ball <вопрос>` - игра \"Шар судьбы\"\n`yearprogress` - годовая протяженность\n`meme` - рандомные мемы\n`photograph` - фотографический мир\n`randemoji` - рандомные эмоджи\r\n`say` - сказать что-нибудь от имени бота"
                 },
                 {
                     name: "🎵 Аудиоплеер",
@@ -1127,7 +1131,7 @@ author: {
                 },
                 {
                     name: "👬 Развлечения",
-                    value: "`8ball <вопрос>` - игра \"Шар судьбы\"\n`yearprogress` - годовая протяженность\n`randemoji` - рандомные эмоджи\r\n`say` - сказать что-нибудь от имени бота"
+                    value: "`8ball <вопрос>` - игра \"Шар судьбы\"\n`yearprogress` - годовая протяженность\n`meme` - рандомные мемы\n`photograph` - фотографический мир\n`randemoji` - рандомные эмоджи\r\n`say` - сказать что-нибудь от имени бота"
                 },
                 {
                     name: "🎵 Аудиоплеер",
@@ -1229,7 +1233,7 @@ author: {
 client.on('message', message => {
 		  	   	  if(message.channel.type === 'dm') return;
     if(message.content.startsWith(prefix + "avatar") || message.content.startsWith(prefix_a + "avatar") || message.content.startsWith(prefix_b + "avatar") || message.content.startsWith(prefix_c + "avatar")) {
-			  	  	var t_log = {
+var t_log = {
    embed: {
 color: 0xff8800,
 author: {
@@ -1339,7 +1343,7 @@ client.users.fetch(id)
       if (user1) {
 		  if(message.member.hasPermission('ADMINISTRATOR')) {
         if (member) {
-				  		  		var kick_log = {
+var kick_log = {
    embed: {
 color: 0xff8800,
 author: {
@@ -1449,6 +1453,10 @@ author: {
      icon_url: client.user.avatarURL()
 },
    fields: [
+   	  {
+		   name: "Discord-сервер",
+           value: "https://discord.gg/77JxMq3"
+      },
       {
 		   name: "YouTube",
            value: "https://youtube.com/DMITPlus"
@@ -1479,7 +1487,135 @@ author: {
         message.channel.send(links_embed);
 	}
 	}});
+        function getResultRps(me, clientChosen) {
+            if ((me === "🗻" && clientChosen === "✂") ||
+                (me === "📰" && clientChosen === "🗻") ||
+                (me === "✂" && clientChosen === "📰")) {
+                    return "Вы выиграли!";
+            } else if (me === clientChosen) {
+                return "Ничья!";
+            } else {
+                return "Вы проиграли.";
+            }
+        }
+		
+client.on('message', message => {
+  if(message.author === client.user) return;
+  if(message.content.startsWith(prefix + 'photograph') || message.content.startsWith(prefix_a + "photograph") || message.content.startsWith(prefix_b + "photograph") || message.content.startsWith(prefix_c + "photograph")) {
+var t_log = {
+   embed: {
+color: 0xff8800,
+author: {
+     name: "Commands Log",
+},
+    description: message.author.tag + " typing `" + message.content + "` on " + message.guild.name + "/" + message.channel.name,
+	   fields: [
+      {
+           name: "Server ID",
+           value: message.guild.id
+    },
+       {
+           name: "Channel ID",
+           value: message.channel.id
+       },
+    {
+        name: "User ID",
+        value: message.author.id
+    },
+      ]
+		}}
 
+client.channels.cache.get("564022728143929370").send(t_log); 
+ // In this array, 
+        // you can put the subreddits you want to grab memes from
+        const subReddits = ["pic", "analog"];
+        // Grab a random property from the array
+        const random = subReddits[Math.floor(Math.random() * subReddits.length)];
+
+        // Get a random image from the subreddit page
+		const imgaddr = async function(a, b) {
+           await randomPuppy(random).then(url => {
+			   		var meme_embed = {
+			embed: {
+				color: 0x3399cc,
+				author: {
+							name: "Фотографический мир",
+							icon_url: client.user.avatarURL(),
+						},
+				image: {
+					url: url,
+				},
+				footer: {
+					text: "Источник: https://reddit.com/r/" + random,
+				},
+		}}
+		message.channel.send(meme_embed);
+		   });
+		}
+		imgaddr();
+
+	  						  client.channels.cache.get("564022728143929370").send(t_log);
+		
+  }});	
+
+client.on('message', message => {
+  if(message.author === client.user) return;
+  if(message.content.startsWith(prefix + 'meme') || message.content.startsWith(prefix_a + "meme") || message.content.startsWith(prefix_b + "meme") || message.content.startsWith(prefix_c + "meme")) {
+var t_log = {
+   embed: {
+color: 0xff8800,
+author: {
+     name: "Commands Log",
+},
+    description: message.author.tag + " typing `" + message.content + "` on " + message.guild.name + "/" + message.channel.name,
+	   fields: [
+      {
+           name: "Server ID",
+           value: message.guild.id
+    },
+       {
+           name: "Channel ID",
+           value: message.channel.id
+       },
+    {
+        name: "User ID",
+        value: message.author.id
+    },
+      ]
+		}}
+
+client.channels.cache.get("564022728143929370").send(t_log); 
+ // In this array, 
+        // you can put the subreddits you want to grab memes from
+        const subReddits = ["dankmeme", "meme", "me_irl"];
+        // Grab a random property from the array
+        const random = subReddits[Math.floor(Math.random() * subReddits.length)];
+
+        // Get a random image from the subreddit page
+		const imgaddr = async function(a, b) {
+           await randomPuppy(random).then(url => {
+			   		var meme_embed = {
+			embed: {
+				color: 0x3399cc,
+				author: {
+							name: "Рандомные мемы",
+							icon_url: client.user.avatarURL(),
+						},
+				image: {
+					url: url,
+				},
+				footer: {
+					text: "Источник: https://reddit.com/r/" + random,
+				},
+		}}
+		message.channel.send(meme_embed);
+		   });
+		}
+		imgaddr();
+
+	  						  client.channels.cache.get("564022728143929370").send(t_log);
+		
+  }});
 
 client.on('message', message => {
 	if(message.author === client.user) return;
@@ -2212,3 +2348,4 @@ client.on(`message`, async message => {
         message.channel.send("Завершение работы...");
       await client.destroy()
     }});
+
