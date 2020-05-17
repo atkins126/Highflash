@@ -12,7 +12,7 @@ random-puppy | util | opusscript (modifed version)</code>
 <p>VK: https://vk.com/dmitcompvk
 <p>Discord: dmitcomp#7004
 <p>Twitter: https://twitter.com/dmitcomputers
-
+<p><p>
 RUS: <b>DMIT Computers XStep - бот, разработанный DMIT Computers.</b> Базируется на исходном коде DMITBot версии 3.1.1.
 <p>Прошу прощения, там присутствует только русская локализация. Хотя никто не мешает изменить локализацию, усовершенствовать код.
 <p><p><h2>Используются библиотеки (обязательно)</h2>
