@@ -10,7 +10,8 @@ const data = require("./JSON/data.json");
 const ProgressBar = require('progress');
 const {promptMessage} = require('./functions.js');
 const randomPuppy = require("random-puppy");
-
+const snekfetch = require('snekfetch');
+const requester = require('request');
 const chooseArr = ["🗻", "📰", "✂"];
 
 let prefix_a = botconfig.prefix_a
@@ -22,8 +23,25 @@ var prefix = botconfig.prefix
 var blockid = "396331064710135809"
 client.login(botconfig.token)
 
+function getHTTPResponce (url) {
+	return new Promise((resolve, reject) => {
+	var options = {
+	method: "GET",
+	url: url,
+	headers: {
+	'User-Agent': 'nodejs request',
+	'X-Key': "9qpRc8M55pFb8qDN94jH"
+	}
+}
 
-client.on('ready', () => {
+requester(options, (error, responce, body) => {
+		resolve(body);
+});		
+	
+});
+};
+
+client.on('ready', () => {	
 			  try {
 	process.stdout.write('\x1Bc');
     console.log(`Starting ${client.user.tag}...`);
@@ -48,8 +66,18 @@ client.on('ready', () => {
 } catch(e) {
      console.log(`\n          ███████████   ██ ██████\n               ██   ██  ██   ██\n  ██████▓ ██   ██   ██  ██   ██\n ██       ██   ██   ██  ██   ██\n ██       ██   ██   ██  █    ██\n ██       ██ \n  █████████             computers\n\nXStep Bot ${botconfig.version} \(${botconfig.date}\)\n\(C\)opyright 2019-2020 DMIT Development. All rights reserved.\n\nThis script started successfully.`)
 	console.log("\nNo servers.")
-	}  
+	} 
 });
+function checkTime() {
+	client.setTimeout(checkTime, (59 - new Date().getUTCMinutes) * 1000 * 60)	
+	getHTTPResponce('https://google.com?any_else_api').then((body) => {
+	var result = JSON.parse(body);
+	var temp = 0;
+	})
+	.catch((error) => {
+
+	})
+}
 
   var timerId = setInterval(function users() {
 	  	  var str = 0;
@@ -200,30 +228,38 @@ author: {
     description: bothealth, // описание встраиваемого сообщения
    fields: [
       {
-           name: "💾 Размер процесса", // имя поля
+           name: "💾 Используемая память в ОЗУ", // имя поля
            value: Math.round(process.memoryUsage().heapUsed / 1024) + " кБ" // значение
-    },
+	  },
        {
            name: "🏓 Время отправки",
            value: client.ws.ping.toFixed(2) + " мсек"
+       },
+       {
+         name: "🏘 Кол-во серверов | пользователей",
+         value: client.guilds.cache.size + " | " + client.users.cache.size
        },
        {
            name: "⏱ Время работы",
            value: strftime('%H ч. %M мин. %S сек.', new Date(client.uptime - 25200000))
        },
 
-    {
-        name: "🛠 Платформа",
-        value: platform
-    },
+		{
+			name: "🛠 Платформа",
+			value: platform
+		},
          {
             name: "💡 Процессор",
             value: os.cpus()[0].model
          },
-       {
-         name: "🏘 Кол-во серверов / пользователей",
-         value: client.guilds.cache.size + " / " + client.users.cache.size
-       }
+		 {
+            name: "🗃️ Версия Node.js",
+            value: process.version
+         },
+		 {
+            name: "🗃️ Версия Discord.js",
+            value: Discord.version
+         },
       ]
    }
 };
@@ -1094,7 +1130,7 @@ author: {
                 },
                 {
                     name: "👬 Развлечения",
-                    value: "`8ball <вопрос>` - игра \"Шар судьбы\"\n`yearprogress` - годовая протяженность\n`meme` - рандомные мемы\n`photograph` - фотографический мир\n`randemoji` - рандомные эмоджи\r\n`say` - сказать что-нибудь от имени бота"
+                    value: "`8ball <вопрос>` - игра \"Шар судьбы\"\n`rps` - камень, ножницы, бумага\n`goldenfh` - золотой фонд юмора\n`yearprogress` - годовая протяженность\n`meme` - рандомные мемы\n`photograph` - фотографический мир\n`randemoji` - рандомные эмоджи\r\n`say` - сказать что-нибудь от имени бота"
                 },
                 {
                     name: "🎵 Аудиоплеер",
@@ -1131,7 +1167,7 @@ author: {
                 },
                 {
                     name: "👬 Развлечения",
-                    value: "`8ball <вопрос>` - игра \"Шар судьбы\"\n`yearprogress` - годовая протяженность\n`meme` - рандомные мемы\n`photograph` - фотографический мир\n`randemoji` - рандомные эмоджи\r\n`say` - сказать что-нибудь от имени бота"
+                    value: "`8ball <вопрос>` - игра \"Шар судьбы\"\n`goldenfh` - золотой фонд юмора\n`yearprogress` - годовая протяженность\n`meme` - рандомные мемы\n`photograph` - фотографический мир\n`randemoji` - рандомные эмоджи\r\n`say` - сказать что-нибудь от имени бота"
                 },
                 {
                     name: "🎵 Аудиоплеер",
@@ -1873,6 +1909,86 @@ var yearPercents = String((Math.round(Math.round((d1.getTime() - d0.getTime() ) 
                         };
 message.channel.send(yearprogress_embed);
   }}});
+  
+client.on('message', message => {
+  if(message.author === client.user) return;
+  if(message.channel.type === 'dm') return;
+  if(message.content.startsWith(prefix + 'channel') || message.content.startsWith(prefix_a + "channel") || message.content.startsWith(prefix_b + "channel") || message.content.startsWith(prefix_c + "channel")) {
+	  	  	  	var t_log = {
+   embed: {
+color: 0x2200ff,
+author: {
+     name: "Commands Log",
+},
+    description: message.author.tag + " typing `" + message.content + "` on " + message.guild.name + "/" + message.channel.name,
+	   fields: [
+      {
+           name: "Server ID",
+           value: message.guild.id
+    },
+       {
+           name: "Channel ID",
+           value: message.channel.id
+       },
+    {
+        name: "User ID",
+        value: message.author.id
+    },
+      ]
+		}}
+	    if(blockid === message.author.id) {
+
+	  message.channel.send(blockmsg_embed)
+  } else {
+	  client.channels.cache.get("564022728143929370").send(t_log);
+var parentes = "";	
+var topic = "";	  
+var nsfwwarn = "";	
+	  if(!message.channel.topic) {
+		 topic = "Отсутствует"
+	  } else {
+		 topic = message.channel.topic
+	  };  
+	  if(!message.channel.parent) {
+		 parentes = "Без категории"
+	  } else {
+		 parentes = message.channel.parent
+	  };
+	  if(message.channel.nsfw ==! true) {
+		 nsfwwarn = ""
+	  } else {
+		 nsfwwarn = "🔞 **На этом канале содержится контент 18+.**"
+	  };	  
+	  
+      var ci_info = {
+    embed: {
+        color: 0x8800ff,
+        author: {
+              name: "О текстовом канале \"" + message.channel.name + "\"",
+              icon_url: client.user.avatarURL()
+                   },
+			  description: nsfwwarn,
+          fields: [
+		    {
+                 name: "ID",
+                 value: message.channel.id
+            },
+            {
+                 name: "📄 Описание",
+                 value: topic
+            },
+            {
+                 name: "🌳 Категория",
+                 value: parentes
+            },
+           ],
+		   	   	footer: {
+                          text: "Текстовой канал создан " + strftime('%d.%m.%Y в %H:%M МСК', new Date(new Date(message.channel.createdTimestamp).toLocaleString("en-US", { timeZone: "Europe/Moscow"}))),
+				},
+       }
+   };
+   message.channel.send(ci_info);
+  }}});
 
 client.on('message', message => {
   if(message.author === client.user) return;
@@ -1930,7 +2046,7 @@ author: {
             },
             {
                  name: "👑 Владелец",
-                 value: message.guild.owner.user.tag
+                 value: message.guild.owner.user.tag + " (" + message.guild.owner.id + ")"
             },
             {
                  name: "🏡 Кол-во элементов сервера",
@@ -1950,7 +2066,7 @@ author: {
             },
            ],
 		   	   	footer: {
-                          text: "Сервер создан " + strftime('%d.%m.%Y', new Date(message.guild.createdTimestamp)),
+                          text: "Сервер создан " + strftime('%d.%m.%Y в %H:%M МСК', new Date(new Date(message.guild.createdTimestamp).toLocaleString("en-US", { timeZone: "Europe/Moscow"}))),
 				},
        }
    };
@@ -2020,6 +2136,11 @@ author: {
 	  else if (argsUser.presence.activities.type == 1) game = `Ведет стрим **${argsUser.presence.activities.name}**\n${argsUser.presence.activities.url}`
       else if (argsUser.presence.activities.type == 2) game = `Слушает в Spotify ${argsUser.presence.activities.name}`
       else if (argsUser.presence.activities.type == 3) game = `Смотрит **${argsUser.presence.activities.name}**`
+        if (!argsUser.nickname) {
+            var nickname = 'Отсутствует'
+        } else {
+            var nickname = argsUser.nickname
+        }
       let day = 1000 * 60 * 60 * 24
 	  let month = 30
 	  let date1 = new Date()
@@ -2040,23 +2161,15 @@ author: {
 	          },
           fields: [
 		    {
-                 name: "ID",
-                 value: argsUser.id
-            },
-            {
-                 name: "📶 Статус",
-                 value: game || 'Пользовательский статус',
-		    },
-			{
-                 name: "📫 Дата регистрации",
-                 value: strftime('%d.%m.%Y в %H:%M', new Date(argsUser.createdTimestamp)) + " \(~" + diff1.toFixed(1) + " мес. назад\)"
+                 name: "О себе",
+                 value: "ID: " + argsUser.id + "\nНикнейм: " + nickname + "\nСтатус:" + (game || 'Пользовательский статус') + "\nДата регистрации: " + strftime('%d.%m.%Y в %H:%M МСК', new Date(new Date(argsUser.createdTimestamp).toLocaleString("en-US", { timeZone: "Europe/Moscow"}))) + " \(~" + diff1.toFixed(1) + " мес. назад\)"
             },
             {
                  name: "🔑 Дата входа в сервер",
                  value: strftime('%d.%m.%Y в %H:%M', new Date(message.guild.member(argsUser).joinedTimestamp)) + " \(~" + diff2.toFixed(1) + " мес. назад\)"
             },
             {
-                 name: "🗒 Роли",
+                 name: "🗒 Роли (" + message.guild.member(argsUser).roles.length +")",
                  value: message.guild.member(argsUser).roles.cache.filter(r => r.id != message.guild.id).map(role => role.name).join(', ') || "Отсутствуют"
             },
            ]
@@ -2207,6 +2320,52 @@ author: {
 client.on('message', message => {
   if(message.author === client.user) return;
   if(message.channel.type === 'dm') return;
+  if(message.content.startsWith(prefix + "currency") || message.content.startsWith(prefix_a + "currency") || message.content.startsWith(prefix_b + "currency") || message.content.startsWith(prefix_c + "currency")) {
+	  	  	  	var t_log = {
+   embed: {
+color: 0x008800,
+author: {
+     name: "Commands Log",
+},
+    description: message.author.tag + " typing `" + message.content + "` on " + message.guild.name + "/" + message.channel.name,
+	   fields: [
+      {
+           name: "Server ID",
+           value: message.guild.id
+    },
+       {
+           name: "Channel ID",
+           value: message.channel.id
+       },
+    {
+        name: "User ID",
+        value: message.author.id
+    },
+      ]
+		}}
+	  	client.channels.cache.get("564022728143929370").send(t_log);
+	let args = message.content.split(" ").slice(1);
+
+ }
+});
+
+   const QUERY_STRING_SETTINGS = [
+    'client=chrome',
+    'rls=en',
+    'ie=UTF-8',
+    'oe=UTF-8'
+].join('&');
+
+function getText(children) {
+    if (children.children) return getText(children.children);
+    return children.map(c => {
+        return c.children ? getText(c.children) : c.data;
+    }).join('');
+}
+
+client.on('message', message => {
+  if(message.author === client.user) return;
+  if(message.channel.type === 'dm') return;
   if(message.content.startsWith(prefix + 'randemoji') || message.content.startsWith(prefix_a + "randemoji") || message.content.startsWith(prefix_b + "randemoji") || message.content.startsWith(prefix_c + "randemoji")) {
 	  	  	  	var t_log = {
    embed: {
@@ -2288,6 +2447,47 @@ client.on("message", message => {
 	 message.channel.send(srvlist_embed);
 }});
 
+client.on("message", message => {
+  if(message.author === client.user) return;
+  if(message.content.startsWith(prefix + "goldenfh") || message.content.startsWith(prefix_a + "goldenfh") || message.content.startsWith(prefix_b + "goldenfh") || message.content.startsWith(prefix_c + "goldenfh")) {
+  	let items = ['Падает комп с виндой с 16-го этажа и думает: Вот сейчас бы зависнуть',
+        'Вчера отвёл душу... Сегодня не могу вспомнить куда!?..',
+        'Если училка Вас сильно задрала, попросите ее нажать на Alt+F4\nЯ: _попросил, училка ушла в оффлайн_\n_смех испанца_',
+        'У кошки четыpе ноги: вход, выход, земля и питание',
+        'Что же вы так убиваетесь? Вы же так никогда не убьётесь!',
+        'Я добрый, просто я людей ненавижу',
+        'Сшил дырки — получилась сетка',
+        'Лечу от коронавируса по фотографии вашего компьютера',
+        'Засолим огурцы по самые помидоры!',
+        'Реестр запрещённых сайтов попал в реестр запрещённых сайтов, поскольку содержит информацию о запрещённых сайтах.',
+        '— Вам понятно как работает фрезер или объяснить на пальцах?',
+        'Чтобы выделятся из серой массы необязательно красить волосы в красный цвет и носить кольцо в носу. Достаточно просто не быть говном.',
+        'По мнению Госдепа и ЕС, эти русские совсем обнаглели: плюнешь в морду — драться лезут.',
+        'Когда поёт Тимати замолкают даже соловьи, потому что даже они не могут петь и блевать одновременно.',
+        'Меня мучает один вопрос: в связи с чем эти ледяные штуки называются «сосульки», а карамельные конфетки — «леденцы»? Почему не наоборот?',
+        'Приняли хорошо. Выгнали не сразу, били без злости, да и догоняли лениво.',
+        'Бесит, когда люди идут на[цензура] недостаточно быстро.',
+        '— А ты давно кактус на холодильнике поливала?\n— Это хлеб.',
+        'Медведь проживший с цыганами 10 лет, не впадал в спячу, чтобы у него ничего не с[цензура]или.',
+		'Microsoft Surface — самые лучшие планшеты среди планшетов от Майкрософт!',
+		'Жопа велосипедиста, въехавшего в рекламный щит, 17 минут была лицом компании AVON.',
+		'Санитария! Это санитария, не просто какой-то санитар из дурки!',
+		'Здравствуйте, Вы из компании Орифлэйм?',
+		'**Бизин:** "Давид, сука! Иди сюда!" _в его рекомендашки попал 55x55 - СОЛОВЬ[цензура]_\n**Давид:** "Мент, чего тебе надо, б[цензура]?! Пшел вон отсюдова, иначе я тебя возьму за нос! Встал и вышел. Ты зачем в помет нырнул?! Я тебя мыть не буду!',
+		'> Что у тебя за избыточные сборки?\n\n**YTAdmin (он же Win102018TV)** ответил: \n"Любой ПК мощнее Celeron G4900 + UHD 610."\n"Как повысить быстродействие вашего ПК на 10000%? Главный секрет - оптимальная версия Windows, и это не десятка, а Windows 7"']
+	  var humour_embed = {
+		  embed: {
+		color: 0x4422ff,
+        author: {
+			name: 'Золотой фонд юмора',
+			icon_url: message.author.avatarURL(),
+		},	
+	  description: items[Math.floor(Math.random()*items.length)],		
+	  },
+	  }
+	 message.channel.send(humour_embed);
+}});
+
 client.on('message', message => {
   if(message.author === client.user) return;
   if(message.channel.type === 'dm') return;
@@ -2340,6 +2540,85 @@ client.users.fetch(id)
     .then(user => {user.send(message.author.id + " или " + message.author.tag + " хочет узнать о пожертвовании или просто задонатить. ;\)")}) 
   }
 }});
+
+client.on('message', message => {
+  if(message.author === client.user) return;
+  if(message.channel.type === 'dm') return;
+  if(message.content.startsWith(prefix + 'rps') || message.content.startsWith(prefix_a + "rps") || message.content.startsWith(prefix_b + "rps") || message.content.startsWith(prefix_c + "rps")) {
+	  	  	  	var t_log = {
+				embed: {
+					color: 0x00aa00,
+					author: {
+						name: "Commands Log",
+					},
+					description: message.author.tag + " typing `" + message.content + "` on " + message.guild.name + "/" + message.channel.name,
+					fields: [
+						{
+						name: "Server ID",
+						value: message.guild.id
+						},
+						{
+							name: "Channel ID",
+							value: message.channel.id
+							},
+						{
+						name: "User ID",
+						value: message.author.id
+						},
+						]
+						}};
+var resultg = "";
+					var rpserr_embed = {
+				embed: {
+					color: 0x9933ff,
+					author: {
+							name: "Камень, ножницы, бумага",
+							icon_url: client.user.avatarURL(),
+					},
+					description: 'Допустимые значения - `камень` `ножницы` `бумага`',
+					fields: [
+						{
+						name: "Пример",
+						value: "`xs.rps ножницы`"
+						},
+						]
+					}};
+	let args = message.content.split(" ").slice(1);
+   let choice = args.join(' ').toLowerCase();
+   	if (choice === '' || choice === ' ') message.channel.send(rpserr_embed);
+      const choices = ['камень', 'бумага', 'ножницы', choice, 'камень', 'бумага', 'ножницы'];
+        const response = choices[Math.floor(Math.random() * choices.length)];                                            
+         if (choice === 'rock' || choice === 'камень') {
+            if (response === 'rock' || response ===  'камень') resultg = 'Я выбрал камень, и ты выбрал камень.\nУ нас ничья!';
+            else if (response === 'paper' || response === 'бумага') resultg = 'Я выбрал бумагу, и ты выбрал камень.\nВы проиграли.';
+            else resultg = 'Я выбрал ножницы и ты выбрал камень.\nВы выиграли!';
+        } else if (choice === 'paper' || choice === 'бумага') {
+            if (response === 'rock' || response === 'камень') resultg = 'Я выбрал камень, и ты выбрал бумагу.\nВы выиграли!';
+            else if (response === 'paper' || response === 'бумага') resultg = 'Я выбрал бумагу, и ты выбрал бумагу.\nУ нас ничья!';
+            else resultg = 'Я выбрал ножницы и ты выбрал бумагу.\nВы проиграли.';
+        } else if (choice === 'scissors' || choice === 'ножницы') {
+            if (response === 'rock' || response === 'камень') resultg = 'Я выбрал камень, и ты выбрал ножницы.\nВы проиграли.';
+            else if (response === 'paper' || response === 'бумага') resultg = 'Я выбрал бумагу, и ты выбрал ножницы.\nВы выиграли!';
+            else resultg = 'Я выбрал ножницы, и ты выбрал ножницы.\nУ нас ничья!';
+        } else {  
+			if (choice !== '' || choice !== ' ') {		
+            if (response === 'rock' || response === 'камень') resultg = 'Я выбрал камень, и ты выбрал ' + choice + '\nВы проиграли.';
+            else if (response === 'paper' || response === 'бумага') resultg = 'Я выбрал бумагу, и ты выбрал ' + choice + '\nВы проиграли.';
+            else if (response === 'scissors' || choice === 'ножницы') resultg = 'Я выбрал ножницы, и ты выбрал ' + choice + 'Вы проиграли.';
+            else if (response === choice) resultg = 'Я выбрал ' + choice + ' и ты выбрал ' + choice + '\nУ нас ничья!'
+		}};
+				var rps_embed = {
+				embed: {
+					color: 0x9933ff,
+					author: {
+							name: "Камень, ножницы, бумага",
+							icon_url: client.user.avatarURL(),
+					},
+					description: resultg,
+					}};
+							message.channel.send(rps_embed);
+  
+}});
   
 client.on(`message`, async message => {
 	    if(message.author === client.user) return;
@@ -2348,4 +2627,3 @@ client.on(`message`, async message => {
         message.channel.send("Завершение работы...");
       await client.destroy()
     }});
-
