@@ -41,7 +41,6 @@ requester(options, (error, responce, body) => {
 });
 };
 
-
 client.on('ready', () => {	
 			  try {
 	process.stdout.write('\x1Bc');
@@ -125,7 +124,7 @@ author: {
 	 thumbnail: {
 		url: guild.iconURL(),
 	 },
-    description: "XStep Bot has joined the **" + guild.name + "** server! Now it has **" + client.guilds.size + "** servers. \:clap\: \:clap\:\nThanks!",
+    description: "XStep Bot has joined the **" + guild.name + "** server! Now it has **" + client.guilds.cache.size + "** servers. \:clap\: \:clap\:\nThanks!",
 	   fields: [
       {
            name: "Server ID",
@@ -133,7 +132,7 @@ author: {
     },
        {
            name: "Channels | Members | Roles | Online",
-           value: guild.channels.size + " ch. | " + guild.memberCount + " memb. | " + guild.roles.size + " roles | " + guild.presences.size + " online"
+           value: guild.channels.cache.size + " ch. | " + guild.memberCount + " memb. | " + guild.roles.cache.size + " roles | " + guild.presences.cache.size + " online"
        },
     {
         name: "Onwer",
@@ -168,7 +167,7 @@ author: {
 	 thumbnail: {
 		url: guild.iconURL(),
 	 },
-    description: "XStep Bot left, kicked out, banned from **" + guild.name + "** server! Now it has **" + client.guilds.size + "** servers. \nCan you explain to the bot author what you didn't like? :worried:",
+    description: "XStep Bot left, kicked out, banned from **" + guild.name + "** server! Now it has **" + client.guilds.cache.size + "** servers. \nCan you explain to the bot author what you didn't like? :worried:",
 	}}
 		  client.channels.cache.get("564022728143929370").send(t_log);})
 
@@ -206,13 +205,13 @@ author: {
 		}}
       const plaform = os.platform()
       if(os.platform() === 'win32') {
-          platform = "<:windows:670835960254169118> Windows" }
+          platform = "<:windows:670835960254169118> Windows (" + os.release() + ")" }
       else {
 	         if(os.platform() === 'android') {
-	         platform = "<:android:670837143467458560> Android с Termux"
+	         platform = "<:android:670837143467458560> Android с Termux (" + os.release() + ")"
              } else {
 				      if(os.platform() === 'linux') {
-						  platform = "<:linux:670836734447190016> Linux"
+						  platform = "<:linux:670836734447190016> Linux (" + os.release() + ")"
 	  }}}
 
 var bothealth = "";	  
@@ -1138,8 +1137,11 @@ author: {
                     value: "`audio play <ссылка>` - воспроизведение трека\r\n`audio stop` - остановка трека и выход из голосового канала"
              }
             ],
+		image: {
+	       url: https://cdn.discordapp.com/attachments/634674458770276371/714492674681602068/cover_1.png
+         },
 				footer: {
-                          text: "Версия " + botconfig.version + " (" + botconfig.date + "\). Основан на DMITBot версии 3.1.1",
+                          text: "Версия " + botconfig.version + " (" + botconfig.date + "\)",
 				},
         }
     };
@@ -1175,8 +1177,11 @@ author: {
                     value: "`audio play <ссылка>` - воспроизведение трека\r\n`audio stop` - остановка трека и выход из голосового канала"
              }
             ],
+		 image: {
+	       url: https://cdn.discordapp.com/attachments/634674458770276371/714492674681602068/cover_1.png
+         },
 		        footer: {
-                          text: "Версия " + botconfig.version + " (" + botconfig.date + ", бесплатная версия). Основан на DMITBot версии 3.1.1",
+                          text: "Версия " + botconfig.version + " (" + botconfig.date + ")",
 				},
         }
     };  
