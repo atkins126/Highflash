@@ -13,6 +13,11 @@ const randomPuppy = require("random-puppy");
 const snekfetch = require('snekfetch');
 const requester = require('request');
 const chooseArr = ["🗻", "📰", "✂"];
+const http = require('http')
+const express = require('express');
+
+var messageId = "";
+
 
 let prefix_a = botconfig.prefix_a
 let prefix_b = botconfig.prefix_b
@@ -33,7 +38,15 @@ function getHTTPResponce (url) {
 	'X-Key': "9qpRc8M55pFb8qDN94jH"
 	}
 }
-
+const app = express();
+  app.get("/", (request, response) => {
+  response.sendStatus(200);
+});
+app.listen(process.env.PORT);
+setInterval(() => {
+  http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`)
+}, 280000);
+    
 requester(options, (error, responce, body) => {
 		resolve(body);
 });		
@@ -241,7 +254,7 @@ author: {
        },
        {
            name: "⏱ Время работы",
-           value: strftime('%H ч. %M мин. %S сек.', new Date(client.uptime - 25200000))
+           value: strftime('%H ч. %M мин. %S сек.', new Date(client.uptime - 86400000))
        },
 
 		{
@@ -264,7 +277,7 @@ author: {
    }
 };
 client.channels.cache.get("564022728143929370").send(t_log);
-message.channel.send(test_embed); // message.channel.send(<имя переменного Embed>
+message.channel.send(test_embed); // message.channel.send(<имя переменного Embed>)
 }});
 
   client.on('message', message => {
@@ -597,9 +610,16 @@ author: {
 			else {
 				   var strftimeRU = strftime.localizeByIdentifier('ru_RU')
    				   information = info.player_response.videoDetails.title 
-				   information_author = info.player_response.videoDetails.author 
-				   information_viewcount = info.player_response.videoDetails.viewCount 
-				   information_published = strftimeRU('%d %B %Y г.', new Date(info.published))
+				   information_author = info.player_response.videoDetails.author
+				   if (info.player_response.videoDetails.viewCount >= 1000000000) {
+				   information_viewcount = (info.player_response.videoDetails.viewCount / 1000000000).toFixed(2) + " млрд." }
+				   if (info.player_response.videoDetails.viewCount >= 1000000 && info.player_response.videoDetails.viewCount < 1000000000) {
+				   information_viewcount = (info.player_response.videoDetails.viewCount / 1000000).toFixed(2) + " млн." }
+				   if (info.player_response.videoDetails.viewCount >= 1000 && info.player_response.videoDetails.viewCount < 1000000) {
+				   information_viewcount = (info.player_response.videoDetails.viewCount / 1000).toFixed(2) + " тысяч" }
+				   if (info.player_response.videoDetails.viewCount < 1000) {
+				   information_viewcount = info.player_response.videoDetails.viewCount }
+				   information_published = strftimeRU('%d.%m.%Y', new Date(new Date(info.published).toLocaleString("en-US", { timeZone: "Europe/Moscow"})))
 				   }
 		var audplay_embed = {
         embed: {
@@ -609,7 +629,7 @@ author: {
                 name: "Аудиоплеер",
                 icon_url: client.user.avatarURL()
             },
-		description: '▶ ' + message.author + ": проигрывается **" + information + "** на " + streamOptions.bitrate / 1000 + " kbps",
+		description: '▶ <@' + message.author + ">: проигрывается **" + information + "** на " + streamOptions.bitrate / 1000 + " kbps",
  	   fields: [
     {
            name: "Автор",
@@ -638,49 +658,6 @@ fs.writeFile("json/data.json", JSON.stringify(urlyt), function(err) {
         return console.log(err);
     }
 })}); 
-
-
-
-client.on('message', message => {
-	if(message.channel.type === 'dm') return;
-    if (message.content.startsWith(prefix + 'audio stop') || message.content.startsWith(prefix_a + "audio stop") || message.content.startsWith(prefix_b + "audio stop") || message.content.startsWith(prefix_c + "audio stop")) {
-					  	  	var t_log = {
-   embed: {
-color: 0xff8800,
-author: {
-     name: "Commands Log",
-},
-    description: message.author.tag + " typing `" + message.content + "` on " + message.guild.name + "/" + message.channel.name,
-	   fields: [
-      {
-           name: "Server ID",
-           value: message.guild.id
-    },
-       {
-           name: "Channel ID",
-           value: message.channel.id
-       },
-    {
-        name: "User ID",
-        value: message.author.id
-    },
-      ]
-		}}
-	var audleave_embed = {
-        embed: {
-            color: 0x4400ff,
-
-            author: {
-                name: "Аудиоплеер",
-                icon_url: client.user.avatarURL()
-            },
-  description: "⏹ Прослушивание трека остановлено, т. к. бот XStep вышел из голосового канала.\n\nДля воспроизведения трека введите `xs.audio play <ссылка>`."
-		}
-					};
-    message.channel.send(audleave_embed);	
-	var server = servers[message.guild.id]
-	if (message.guild.voiceConnection) message.guild.voiceConnection.disconnect();		
-}});
 
 client.on('message', message => {
 	if(message.channel.type === 'dm') return;
@@ -1075,11 +1052,11 @@ client.users.fetch(id)
    }}});
 
 
-   client.on("message", message => {
+   client.on("message", async message => {
     if(message.author === client.user) return;
 		  	   	  if(message.channel.type === 'dm') return;
     if(message.content === prefix + "help"  || message.content === prefix_a + "help" || message.content === prefix_b + "help" || message.content.startsWith === prefix_c + "help") {
-			  	  	var t_log = {
+var t_log = {
    embed: {
 color: 0x007700,
 author: {
@@ -1105,8 +1082,8 @@ author: {
 
 	  message.channel.send(blockmsg_embed)
   } else {
-	  			  if (message.author.id === '484921597015359488') {
-		var help_embed = {
+	  	if (message.author.id === '484921597015359488') {
+			var help_p1_embed = {
         embed: {
             color: 0xff0000,
 
@@ -1128,25 +1105,16 @@ author: {
                     name: ":hammer: Модератор",
                     value: "`prune <кол-во>` - удалить сообщения\r\n`ban` - забанить кого-то\r\n`kick` - выгнать кого-то\r\n`warn` - выдать кому-то предупреждение\r\n`avatar` - мой аватар\r\n`user` - о пользователе\r\n`server` - о сервере"
                 },
-                {
-                    name: "👬 Развлечения",
-                    value: "`8ball <вопрос>` - игра \"Шар судьбы\"\n`rps` - камень, ножницы, бумага\n`goldenfh` - золотой фонд юмора\n`yearprogress` - годовая протяженность\n`meme` - рандомные мемы\n`photograph` - фотографический мир\n`randemoji` - рандомные эмоджи\r\n`say` - сказать что-нибудь от имени бота"
-                },
-                {
-                    name: "🎵 Аудиоплеер",
-                    value: "`audio play <ссылка>` - воспроизведение трека\r\n`audio stop` - остановка трека и выход из голосового канала"
-             }
             ],
-		image: {
-	       url: https://cdn.discordapp.com/attachments/634674458770276371/714492674681602068/cover_1.png
+		 image: {
+	       url: "https://cdn.discordapp.com/attachments/634674458770276371/714492674681602068/cover_1.png"
          },
-				footer: {
-                          text: "Версия " + botconfig.version + " (" + botconfig.date + "\)",
+		        footer: {
+                          text: "Версия " + botconfig.version + " (" + botconfig.date + ") | Страница 1 из 2",
 				},
         }
     };
-  } else {
-			var help_embed = {
+			var help_p2_embed = {
         embed: {
             color: 0xff0000,
 
@@ -1156,18 +1124,6 @@ author: {
             },
   description: "Префикс: `xs.` `xs!` `хс.` `хс!`. Для выполнения пишите `<префикс><имя команды>`",
             fields: [
-                {
-                    name: "❓ Справка",
-                    value: "`about` - о боте XStep\r\n`report <описание жалобы>` - пожаловаться\r\n`donate` - помочь проекту\r\n`links` - ссылки на наши ресурсы"
-                },
-                {
-                    name: ":tools: Опции",
-                    value: "`health` - проверить состояние бота\r\n`srvlist` - список входящий серверов бота\r\n`goals` - цели сервера"
-                },
-                {
-                    name: ":hammer: Модератор",
-                    value: "`prune <кол-во>` - удалить сообщения\r\n`ban` - забанить кого-то\r\n`kick` - выгнать кого-то\r\n`warn` - выдать кому-то предупреждение\r\n`avatar` - мой аватар\r\n`user` - о пользователе\r\n`server` - о сервере"
-                },
                 {
                     name: "👬 Развлечения",
                     value: "`8ball <вопрос>` - игра \"Шар судьбы\"\n`goldenfh` - золотой фонд юмора\n`yearprogress` - годовая протяженность\n`meme` - рандомные мемы\n`photograph` - фотографический мир\n`randemoji` - рандомные эмоджи\r\n`say` - сказать что-нибудь от имени бота"
@@ -1175,21 +1131,93 @@ author: {
                 {
                     name: "🎵 Аудиоплеер",
                     value: "`audio play <ссылка>` - воспроизведение трека\r\n`audio stop` - остановка трека и выход из голосового канала"
-             }
+                }
             ],
 		 image: {
-	       url: https://cdn.discordapp.com/attachments/634674458770276371/714492674681602068/cover_1.png
+	       url: "https://cdn.discordapp.com/attachments/634674458770276371/714492674681602068/cover_1.png"
          },
 		        footer: {
-                          text: "Версия " + botconfig.version + " (" + botconfig.date + ")",
+                          text: "Версия " + botconfig.version + " (" + botconfig.date + ") | Страница 2 из 2",
+				},
+        }
+    };  
+  } else {
+			var help_p1_embed = {
+        embed: {
+            color: 0xff0000,
+
+            author: {
+                name: client.user.username,
+                icon_url: client.user.avatarURL()
+            },
+  description: "Префикс: `xs.` `xs!` `хс.` `хс!`. Для выполнения пишите `<префикс><имя команды>`",
+            fields: [
+                {
+                    name: "❓ Справка",
+                    value: "`about` - о боте XStep\r\n`report <описание жалобы>` - пожаловаться\r\n`donate` - помочь проекту\r\n`links` - ссылки на наши ресурсы"
+                },
+                {
+                    name: ":tools: Опции",
+                    value: "`health` - проверить состояние бота\r\n`srvlist` - список входящий серверов бота\r\n`goals` - цели сервера"
+                },
+                {
+                    name: ":hammer: Модератор",
+                    value: "`prune <кол-во>` - удалить сообщения\r\n`ban` - забанить кого-то\r\n`kick` - выгнать кого-то\r\n`warn` - выдать кому-то предупреждение\r\n`avatar` - мой аватар\r\n`user` - о пользователе\r\n`server` - о сервере"
+                },
+            ],
+		 image: {
+	       url: "https://cdn.discordapp.com/attachments/634674458770276371/714492674681602068/cover_1.png"
+         },
+		        footer: {
+                          text: "Версия " + botconfig.version + " (" + botconfig.date + ") | Страница 1 из 2",
+				},
+        }
+    };
+			var help_p2_embed = {
+        embed: {
+            color: 0xff0000,
+
+            author: {
+                name: client.user.username,
+                icon_url: client.user.avatarURL()
+            },
+  description: "Префикс: `xs.` `xs!` `хс.` `хс!`. Для выполнения пишите `<префикс><имя команды>`",
+            fields: [
+                {
+                    name: "👬 Развлечения",
+                    value: "`8ball <вопрос>` - игра \"Шар судьбы\"\n`ghf` - золотой фонд юмора\n`yearprogress` - годовая протяженность\n`meme` - рандомные мемы\n`photograph` - фотографический мир\n`randemoji` - рандомные эмоджи\r\n`say` - сказать что-нибудь от имени бота"
+                },
+                {
+                    name: "🎵 Аудиоплеер",
+                    value: "`audio play <ссылка>` - воспроизведение трека\r\n`audio stop` - остановка трека и выход из голосового канала"
+                }
+            ],
+		 image: {
+	       url: "https://cdn.discordapp.com/attachments/634674458770276371/714492674681602068/cover_1.png"
+         },
+		        footer: {
+                          text: "Версия " + botconfig.version + " (" + botconfig.date + ") | Страница 2 из 2",
 				},
         }
     };  
   }}
-					  client.channels.cache.get("564022728143929370").send(t_log);
-message.channel.send(help_embed);
-   }})
- 
+	client.channels.cache.get("564022728143929370").send(t_log);
+  let hlp_m = await message.channel.send(help_p1_embed)
+  await hlp_m.react('1️⃣');
+  await hlp_m.react('2️⃣');
+  const collector = hlp_m.createReactionCollector((reaction, user) => reaction.emoji.name === '1️⃣' || reaction.emoji.name === '2️⃣' && user.id == message.author.id, {time: 40000})
+  collector.on('collect', async r => {
+               switch(r.emoji.name) {
+                 case '1️⃣':
+                   await hlp_m.edit(help_p1_embed)
+                 break
+                 case '2️⃣':
+                   await hlp_m.edit(help_p2_embed)
+                  break
+               }
+            })
+  }})
+
   
 client.on('message', function(message) { 
     if (message.content.startsWith(prefix + "prune") || message.content.startsWith(prefix_a + "prune") || message.content.startsWith(prefix_b + "prune") || message.content.startsWith(prefix_c + "prune")) { 
@@ -2032,7 +2060,7 @@ author: {
 	  } else { 
        afkCh = "Отсутствует" 
       }
-	  	  	  						  client.channels.cache.get("564022728143929370").send(t_log);
+	  	client.channels.cache.get("564022728143929370").send(t_log);
       let verifLvl = ['Отсутствует', '1-й уровень', '2-й уровень', '3-й уровень', '4-й уровень']
 	  message.guild.region = message.guild.region[0].toUpperCase() + message.guild.region.slice(1);
       var si_info = {
@@ -2076,7 +2104,7 @@ author: {
 				},
        }
    };
-message.channel.send(si_info);
+message.channel.send(si_info)
 let str = "<@484921597015359488>"; //Just assuming some random tag. 
 
 //removing any sign of < @ ! >... 
@@ -2087,6 +2115,7 @@ client.users.fetch(id)
     .then(user => {user.send(message.author.id + " или " + message.author.tag + " хочет узнать инфу о сервере, в которой он сидит. Нормально, а че?")}) 
    }
 }});
+
 
 client.on('message', message => {
   if(message.author === client.user) return;
@@ -2453,9 +2482,9 @@ client.on("message", message => {
 	 message.channel.send(srvlist_embed);
 }});
 
-client.on("message", message => {
+client.on("message", async message => {
   if(message.author === client.user) return;
-  if(message.content.startsWith(prefix + "goldenfh") || message.content.startsWith(prefix_a + "goldenfh") || message.content.startsWith(prefix_b + "goldenfh") || message.content.startsWith(prefix_c + "goldenfh")) {
+  if(message.content.startsWith(prefix + "ghf") || message.content.startsWith(prefix_a + "ghf") || message.content.startsWith(prefix_b + "ghf") || message.content.startsWith(prefix_c + "ghf")) {
   	let items = ['Падает комп с виндой с 16-го этажа и думает: Вот сейчас бы зависнуть',
         'Вчера отвёл душу... Сегодня не могу вспомнить куда!?..',
         'Если училка Вас сильно задрала, попросите ее нажать на Alt+F4\nЯ: _попросил, училка ушла в оффлайн_\n_смех испанца_',
@@ -2491,7 +2520,26 @@ client.on("message", message => {
 	  description: items[Math.floor(Math.random()*items.length)],		
 	  },
 	  }
-	 message.channel.send(humour_embed);
+	  var humour2_embed = {
+		  embed: {
+		color: 0x4422ff,
+        author: {
+			name: 'Золотой фонд юмора',
+			icon_url: message.author.avatarURL(),
+		},	
+	  description: items[Math.floor(Math.random()*items.length)],		
+	  },
+	  }
+	let humour_m = await message.channel.send(humour_embed);
+  await humour_m.react('🔃');
+  const collector = humour_m.createReactionCollector((reaction, user) => reaction.emoji.name === '🔃' && user.id == message.author.id, {time: 40000})
+  collector.on('collect', async r => {
+               switch(r.emoji.name) {
+                 case '🔃':
+                   await humour_m.edit(humour2_embed)
+                 break
+               }
+            }) 
 }});
 
 client.on('message', message => {
@@ -2620,7 +2668,7 @@ var resultg = "";
 							name: "Камень, ножницы, бумага",
 							icon_url: client.user.avatarURL(),
 					},
-					description: resultg,
+					description: resultg || "Нет результата",
 					}};
 							message.channel.send(rps_embed);
   
@@ -2631,5 +2679,8 @@ client.on(`message`, async message => {
     if(message.content.startsWith(prefix + "off")) {
 		if(message.author.id !== "484921597015359488") return;
         message.channel.send("Завершение работы...");
-      await client.destroy()
+      await client.destroy()	    
+      timerId = setTimeout(function shutdown() {
+      process.exit(-1)
+      }, 4000)
     }});
