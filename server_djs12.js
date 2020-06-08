@@ -17,6 +17,8 @@ const http = require("http");
 const express = require("express");
 const app = express();
 const intformat = require("./intformat.js");
+const YouTube = require("simple-youtube-api");
+const ytapi = new YouTube(botconfig.ytapi_key);
 
 app.get("/", (request, response) => {
   response.sendStatus(200);
@@ -24,7 +26,7 @@ app.get("/", (request, response) => {
 app.listen(process.env.PORT);
 setInterval(() => {
   http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
-}, 60000);
+}, 15000);
 
 var messageId = "";
 
@@ -698,8 +700,142 @@ client.on("message", message => {
         .slice(1)
         .join(" ")
     );
+    var authorId = message.author;
     if (!valid) {
-      return message.channel.send(auderr2_embed);
+      return ytapi
+        .searchVideos(
+          message.content
+            .split(" play ")
+            .slice(1)
+            .join(" "),
+          4
+        )
+        .then(results => {
+          let information = "(Нет информации)";
+          let information_author = "(Нет информации)";
+          let information_viewcount = "(Нет информации)";
+          let information_published = "(Нет информации)";
+          voiceChannel.join().then(connnection => {
+            var server = servers[message.guild.id];
+            message.channel
+              .send(audload_embed)
+              .then(function(message) {
+                var timerId = setInterval(function() {
+                  clearInterval(timerId);
+                  message.delete();
+                  yt.getInfo(
+                    "https://youtube.com/watch?v=" + results[0].id,
+                    function(err, info) {
+                      if (err) {
+                        information = "(Нет информации)";
+                        information_author = "(Нет информации)";
+                        information_viewcount = "(Нет информации)";
+                        information_published = "(Нет информации)";
+                      } else {
+                        var strftimeRU = strftime.localizeByIdentifier("ru_RU");
+                        information = info.player_response.videoDetails.title;
+                        information_author =
+                          info.player_response.videoDetails.author;
+                        if (
+                          info.player_response.videoDetails.viewCount >=
+                          1000000000
+                        ) {
+                          information_viewcount =
+                            (
+                              info.player_response.videoDetails.viewCount /
+                              1000000000
+                            ).toFixed(2) + " млрд.";
+                        }
+                        if (
+                          info.player_response.videoDetails.viewCount >=
+                            1000000 &&
+                          info.player_response.videoDetails.viewCount <
+                            1000000000
+                        ) {
+                          information_viewcount =
+                            (
+                              info.player_response.videoDetails.viewCount /
+                              1000000
+                            ).toFixed(2) + " млн.";
+                        }
+                        if (
+                          info.player_response.videoDetails.viewCount >= 1000 &&
+                          info.player_response.videoDetails.viewCount < 1000000
+                        ) {
+                          information_viewcount =
+                            (
+                              info.player_response.videoDetails.viewCount / 1000
+                            ).toFixed(2) + " тысяч";
+                        }
+                        if (
+                          info.player_response.videoDetails.viewCount < 1000
+                        ) {
+                          information_viewcount =
+                            info.player_response.videoDetails.viewCount;
+                        }
+                        information_published = strftimeRU(
+                          "%d.%m.%Y",
+                          new Date(
+                            new Date(info.published).toLocaleString("en-US", {
+                              timeZone: "Europe/Moscow"
+                            })
+                          )
+                        );
+                      }
+                      var audplay_embed = {
+                        embed: {
+                          color: 0x6d39ff,
+                          author: {
+                            name: "Аудиоплеер",
+                            icon_url: client.user.avatarURL()
+                          },
+                          description:
+                            "▶ <@" +
+                            authorId +
+                            ">: проигрывается **" +
+                            results[0].title +
+                            "** на " +
+                            streamOptions.bitrate / 1000 +
+                            " kbps",
+                          fields: [
+                            {
+                              name: "Автор",
+                              value: results[0].channel.title
+                            },
+                            {
+                              name: "Просмотров",
+                              value: information_viewcount
+                            },
+                            {
+                              name: "Опубликовано",
+                              value: information_published
+                            }
+                          ]
+                        }
+                      };
+                      message.channel.send(audplay_embed);
+                    }
+                  );
+                }, 10000);
+              })
+              .catch(function() {
+                //Something
+              });
+            let stream = yt("https://youtube.com/watch?v=" + results[0].id, {
+              format: "mp3",
+              audioonly: true
+            });
+            server.queue.shift();
+            const dispatcher = connnection.play(stream, streamOptions);
+            dispatcher.on("end", () => {
+              if (server.queue[0]) {
+                server.dispatcher;
+                return message.guild.voiceConnection.disconnect();
+              }
+            });
+          });
+        })
+        .catch(console.log);
     }
     voiceChannel.join().then(connnection => {
       var server = servers[message.guild.id];
@@ -804,7 +940,7 @@ client.on("message", message => {
           }
           var audplay_embed = {
             embed: {
-              color: 0x4400ff,
+              color: 0x6d39ff,
 
               author: {
                 name: "Аудиоплеер",
@@ -839,21 +975,22 @@ client.on("message", message => {
       }
     );
     if (!voiceChannel) {
-      return message.channel.send(auderr3_embed);
+      return message.channel.send(auderr1_embed);
     }
-  }
-  var urlyt = {
-    url: message.content
-      .split(" play ")
-      .slice(1)
-      .join(" ")
-  };
 
-  fs.writeFile("json/data.json", JSON.stringify(urlyt), function(err) {
-    if (err) {
-      return console.log(err);
-    }
-  });
+    var urlyt = {
+      url: message.content
+        .split(" play ")
+        .slice(1)
+        .join(" ")
+    };
+
+    fs.writeFile("json/data.json", JSON.stringify(urlyt), function(err) {
+      if (err) {
+        return console.log(err);
+      }
+    });
+  }
 });
 
 client.on("message", message => {
@@ -1091,7 +1228,7 @@ client.on("message", message => {
     };
     var audpause_embed = {
       embed: {
-        color: 0x4400ff,
+        color: 0x6d39ff,
 
         author: {
           name: "Аудиоплеер",
@@ -1101,9 +1238,22 @@ client.on("message", message => {
           "⏹️ Прослушивание трека остановлено.\nДля воспроизведения трека введите `xs.audio play`"
       }
     };
+    var audpause2_embed = {
+      embed: {
+        color: 0x6d39ff,
+
+        author: {
+          name: "Аудиоплеер",
+          icon_url: client.user.avatarURL()
+        },
+        description:
+          "⏹️ Бот уже вышел с голосовых каналов."
+      }
+    };
+    if (!message.guild.voice) return message.channel.send(audpause2_embed);
     message.channel.send(audpause_embed);
     var server = servers[message.guild.id];
-    if (message.guild.voice) message.guild.voice.channel.leave();
+    message.guild.voice.channel.leave();
   }
 });
 
@@ -1358,6 +1508,74 @@ client.on("message", message => {
       message.channel.send(supportbug_embed);
       client.channels.cache.get("564022728143929370").send(t_log);
 
+      let str = "<@484921597015359488>"; //Just assuming some random tag.
+
+      //removing any sign of < @ ! >...
+      //the exclamation symbol comes if the user has a nickname on the server.
+      let id = str.replace(/[<@!>]/g, "");
+
+      client.users.fetch(id).then(user => {
+        user.send(reportmsg_embed);
+      });
+    }
+  }
+});
+
+client.on("message", message => {
+  if (message.author === client.user) return;
+  if (message.channel.type === "dm") return;
+  if (
+    message.content.startsWith(prefix + "reg") ||
+    message.content.startsWith(prefix_a + "reg") ||
+    message.content.startsWith(prefix_b + "reg") ||
+    message.content.startsWith(prefix_c + "reg")
+  ) {
+    if (message.guild.id !== "716943234982740018") return;
+    var reportmsg_embed = {
+      embed: {
+        color: 0xff0055,
+
+        author: {
+          name: "Служба безопасности XStep",
+          icon_url: client.user.avatarURL()
+        },
+        description:
+          message.author.tag + " хочет авторизоваться на Вашем сервере",
+        fields: [
+          {
+            name: "Имя и ID сервера",
+            value: message.guild.name + " | " + message.guild.id
+          },
+          {
+            name: "Имя и ID канала",
+            value: message.channel.name + " | " + message.channel.id
+          },
+          {
+            name: "ID пользователя",
+            value: message.author.id
+          }
+        ]
+      }
+    };
+
+    if (blockid === message.author.id) {
+      message.channel.send(blockmsg_embed);
+    } else {
+      var supportbug_embed = {
+        embed: {
+          color: 0xff0055,
+
+          author: {
+            name: "Служба безопасности XStep",
+            icon_url: client.user.avatarURL()
+          },
+          description:
+            "❓ Пока подождите 5 минут, пока Вас проверят, вдруг ли твинки или рейдеры. Если пять минут уже прошло, роль Newbie выдается автоматически."
+        }
+      };
+      message.channel.send(supportbug_embed);
+
+      var timerId = setInterval(function addAutoRole() {}, 300000);
       let str = "<@484921597015359488>"; //Just assuming some random tag.
 
       //removing any sign of < @ ! >...
@@ -3115,9 +3333,10 @@ client.on("message", message => {
           name: "Справочная информация сервера"
         },
         description:
-          "Owner - владелец сервера\nAdministrative Bots - административные боты\nBots - боты без административных прав\nAdminstrator - (это и так понятно)\nJunior administrator - младший администратор\nHeightened self-esteem - люди с завышенным ЧСВ\nMy longtime subscriber - мой давний подписчик\n**Как получить?** Получить роль можно только если Вы подписались на наш канал более 1 года)\nMy subscriber - мой подписчик\n**Как получить?** Получить можно, отправив в ЛС (<@484921597015359488>) скриншот с кнопкой \"Вы подписаны\". Если личка закрыта, добавляйте меня в друзья.\nMember - Участники\nNewbie - недавно зашедшие в наш сервер, иногда новореги. Роль теперь снимается спустя 5 дней после вступления",
+          'Owner - владелец сервера\nAdministrative Bots - административные боты\nBots - боты без административных прав\nAdminstrator - (это и так понятно)\nJunior administrator - младший администратор\nHeightened self-esteem - люди с завышенным ЧСВ\nMy longtime subscriber - мой давний подписчик\n**Как получить?** Получить роль можно только если Вы подписались на наш канал более 1 года)\nMy subscriber - мой подписчик\n**Как получить?** Получить можно, отправив в ЛС (<@484921597015359488>) скриншот с кнопкой "Вы подписаны". Если личка закрыта, добавляйте меня в друзья.\nMember - Участники\nNewbie - недавно зашедшие в наш сервер, иногда новореги. Роль теперь снимается спустя 5 дней после вступления',
         footer: {
-          text: "Последние изменения: 5 июня 2020 г., 13:49 МСК | Часть 2. Наименования ролей"
+          text:
+            "Последние изменения: 5 июня 2020 г., 13:49 МСК | Часть 2. Наименования ролей"
         }
       }
     };
@@ -3130,7 +3349,8 @@ client.on("message", message => {
         description:
           "**Красный, синий и зеленый цвета** - `juni!red`, `juni!green`, `juni!blue`\n\nТемно-красный, коричневый, темно-оливковый, темно-зеленый, темно-изумрудный, темно-голубой, темно-синий, темно-фиолетовый и темно-розовый - `juni!dark-red`, `juni!brown`, `juni!dark-olive`, `juni!dark-green`, `juni!dark-cyan`, `juni!dark-blue`, `juni!dark-violet`, `juni!dark-rose`\n\nОранжевый, оливковый, желтый, изумрудный, голубой, фиолетовый, розовый - `juni!orange`, `juni!olive`, `juni!yellow`, `juni!cyan`, `juni!sky-blue`, `juni-violet`, `juni!rose`\n\nСеребристый, персиковый и цвет кардинала - `juni!silver`, `juni!apricot`, `juni!cardinal`",
         footer: {
-          text: "Последние изменения: 5 июня 2020 г., 13:50 МСК | Часть 3. Наименования команд для выбора цвета"
+          text:
+            "Последние изменения: 5 июня 2020 г., 13:50 МСК | Часть 3. Наименования команд для выбора цвета"
         }
       }
     };
@@ -3143,7 +3363,8 @@ client.on("message", message => {
         description:
           "**XStep Bot** - `xs.`, `xs!`, `хс.`, `хс!` (для справки - `xs.help`)\nJuniperBot - `juni!` (для справки - `juni!хелп`)\nRythm - `r.` (для справки - `r.help`)\nNotSoBot - `.` (для справки - `.help`)",
         footer: {
-          text: "Последние изменения: 5 июня 2020 г., 13:41 МСК | Часть 4. Префиксы ботов"
+          text:
+            "Последние изменения: 5 июня 2020 г., 13:41 МСК | Часть 4. Префиксы ботов"
         }
       }
     };
