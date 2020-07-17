@@ -14,6 +14,7 @@ const snekfetch = require("snekfetch");
 const requester = require("request");
 const chooseArr = ["🗻", "📰", "✂"];
 const http = require("http");
+var ping = require ("ping");
 const intformat = require("./intformat.js");
 const YouTube = require("simple-youtube-api");
 const ytapi = new YouTube(botconfig.ytapi_key);
@@ -50,7 +51,7 @@ client.on("ready", async () => {
         str += ar[i].presences.cache.size;
       }
       console.log(
-        `\n          ███████████   ██ ██████\n               ██   ██  ██   ██\n  ██████▓ ██   ██   ██  ██   ██\n ██       ██   ██   ██  ██   ██\n ██       ██   ██   ██  █    ██\n ██       ██ \n  █████████             computers\n\nXStep Bot ${botconfig.version} \(${botconfig.date}\)\n\(C\)opyright 2019-2020 DMIT Development. All rights reserved.\n\nThis script started successfully.`
+        `\n░░░░░░░ ░  ░░░░   ▒▒▒▒ ▒     ▒ ▒▒  ██\n   ░    ░ ░    ▒ ▒     ▒     ▒  █  █\n   ░    ░ ▒    ▒ ▒▒▒   ▒     █   ██\n   ░    ▒ ▒    ▒ ▒     █     █  █  █\n   ▒    ▒ ▒    ▒  ▒▒██  ████ █ ██  ██\n\nXStep Bot ${botconfig.version} \(${botconfig.date}\)\n\(C\)opyright 2019-2020 Tinelix Development. All rights reserved.\n\nThis script started successfully.`
       );
       console.log(
         `\nPing: ${client.ws.ping.toFixed(2)} ms | Memory usage: ${Math.round(
@@ -61,9 +62,9 @@ client.on("ready", async () => {
       );
     }, 2000);
   } catch (e) {
-    console.log(
-      `\n          ███████████   ██ ██████\n               ██   ██  ██   ██\n  ██████▓ ██   ██   ██  ██   ██\n ██       ██   ██   ██  ██   ██\n ██       ██   ██   ██  █    ██\n ██       ██ \n  █████████             computers\n\nXStep Bot ${botconfig.version} \(${botconfig.date}\)\n\(C\)opyright 2019-2020 DMIT Development. All rights reserved.\n\nThis script started successfully.`
-    );
+      console.log(
+        `\n░░░░░░░ ░  ░░░░   ▒▒▒▒ ▒     ▒ ▒▒  ██\n   ░    ░ ░    ▒ ▒     ▒     ▒  █  █\n   ░    ░ ▒    ▒ ▒▒▒   ▒     █   ██\n   ░    ▒ ▒    ▒ ▒     █     █  █  █\n   ▒    ▒ ▒    ▒  ▒▒██  ████ █ ██  ██\n\nXStep Bot ${botconfig.version} \(${botconfig.date}\)\n\(C\)opyright 2019-2020 Tinelix Development. All rights reserved.\n\nThis script started successfully.`
+      );
     console.log("\nNo servers.");
   }
 });
@@ -262,40 +263,35 @@ client.on("message", message => {
     } else {
       bothealth = "Бот работает в онлайне, оптимальная задержка.";
     }
+  var str = 0;
+  var membc = "0";
+  var onlinecount = 0;
+  var ar = client.guilds.cache.array();
+  for (let i = 0; i < ar.length; i++) {
+    str += ar[i].presences.cache.size;
+  }
     var test_embed = {
       embed: {
         color: 0xff9900, // цвет полоски слева в формате 0xRRGGBB, в данном случае указан оранжевый цвет
         author: {
-          name: "Проверка состояния бота", // заголовок встраиваемого (Embed) сообщения
+          name: "Состояние бота", // заголовок встраиваемого (Embed) сообщения
           icon_url: client.user.avatarURL()
         },
         description: bothealth, // описание встраиваемого сообщения
         fields: [
           {
-            name: "💾 Используемая память", // имя поля
-            value: Math.round(process.memoryUsage().heapUsed / 1024) + " кБ",
+            name: "💻 Сведения о хосте, на котором запущен бот", // имя поля
+            value: "**Используемая память:** " + Math.round(process.memoryUsage().heapUsed / 1024 / 1024) + " МБ (" + Math.round(process.memoryUsage().heapUsed / 1024) + " кБ)\n**Программная платформа:** " + platform + "\n**Процессор:** " + os.cpus()[0].model,
             inline: true
           },
           {
-            name: "🏓 Время отправки",
-            value: client.ws.ping.toFixed(2) + " мсек",
-            inline: true
-          },
-          {
-            name: "\u200b",
-            value: "\u200b",
-            inline: true
-          },
-          {
-            name: "🏘 Кол-во серверов | пользователей",
-            value: client.guilds.cache.size + " | " + client.users.cache.size,
-            inline: true
-          },
-          {
-            name: "⏱ Время работы",
-            value: strftime(
-              "%H ч. %M мин. %S сек.",
-              new Date(client.uptime - 86400000)
+            name: "🏓 Сетевая статистика",
+            value: "**Местный пинг:** " + client.ws.ping.toFixed(2) + " мсек\n**Время работы:** " + (parseInt(strftime(
+              "%d",
+              new Date(client.uptime)
+            )) - 1) + strftime(
+              " дн. %H ч. %M мин. %S сек.",
+              new Date(client.uptime)
             ),
             inline: true
           },
@@ -305,13 +301,8 @@ client.on("message", message => {
             inline: true
           },
           {
-            name: "🛠 Платформа",
-            value: platform,
-            inline: true
-          },
-          {
-            name: "💡 Процессор",
-            value: os.cpus()[0].model,
+            name: "🏘 Статистика бота",
+            value: client.guilds.cache.size + " сервер(ов)\n" + client.users.cache.size + " пользователей\n" + str + " активных польз.",
             inline: true
           },
           {
@@ -320,16 +311,15 @@ client.on("message", message => {
             inline: true
           },
           {
-            name: "🗃️ Версия Node.js",
-            value: process.version,
+            name: "\u200b",
+            value: "\u200b",
             inline: true
           },
-          {
-            name: "🗃️ Версия Discord.js",
-            value: Discord.version,
-            inline: true
-          },
-        ]
+        ],
+	  footer: {
+            text:
+              "XStep использует Node.js версии " + process.version + " и Discord.js версии " + Discord.version,
+          }
       }
     };
     client.channels.cache.get("564022728143929370").send(t_log);
@@ -394,22 +384,127 @@ client.on("message", message => {
               value: botconfig.version + " (" + botconfig.date + ")"
             },
             {
-              name: "Автор/Разработчик",
+              name: "Разработчик",
               value: botowner.tag
             },
             {
               name: "Исходные коды",
-              value: "https://github.com/dmitryevdev/xstepbot"
+              value: "https://github.com/tinelix/xstepbot"
             },
             {
               name: "Авторские права",
               value:
-                "Copyright © DMIT Computers, 2019-2020. Все права защищены."
+                "Copyright © Tinelix, 2019-2020. Все права защищены."
             }
           ]
         }
       };
       message.channel.send(about_embed);
+    }
+  }
+});
+
+
+client.on("message", message => {
+  if (message.author === client.user) return;
+  if (message.channel.type === "dm") return;
+  if (
+    message.content.startsWith(prefix + "netping") ||
+    message.content.startsWith(prefix_a + "netping") ||
+    message.content.startsWith(prefix_b + "netping") ||
+    message.content.startsWith(prefix_c + "netping")
+  ) {
+    var t_log = {
+      embed: {
+        color: 0x008800,
+        author: {
+          name: "Commands Log"
+        },
+        description:
+          message.author.tag +
+          " pinged `" +
+          message.content +
+          "` on " +
+          message.guild.name +
+          "/" +
+          message.channel.name,
+        fields: [
+          {
+            name: "Server ID",
+            value: message.guild.id
+          },
+          {
+            name: "Channel ID",
+            value: message.channel.id
+          },
+          {
+            name: "User ID",
+            value: message.author.id
+          }
+        ]
+      }
+    };
+    if (blockid === message.author.id) {
+      message.channel.send(blockmsg_embed);
+    } else {    
+	var args = [message.content.split(" ").slice(1).join(" ")];
+	args.forEach(function(args){
+    ping.sys.probe(args, function(isAlive){
+if (isAlive !== false) {
+      var netping_embed = {
+        embed: {
+          color: 0x29c501,
+          author: {
+            name: "Сетевой пинг",
+            icon_url: client.user.avatarURL()
+          },
+          fields: [
+            {
+              name: "Сайт",
+              value: args
+            },
+            {
+              name: "Пакеты",
+              value: packetLoss + "% потерянных пакетов"
+            },
+            {
+              name: "Время",
+              value: time + " мс"
+            },
+            {
+              name: "Размер",
+              value: output.size + " симв."
+            }
+          ]
+        }
+      };
+	    };
+	if (isAlive !== true) {
+	var netping_embed = {
+        embed: {
+          color: 0xff0000,
+          author: {
+            name: "Сетевой пинг",
+            icon_url: client.user.avatarURL()
+          },
+          fields: [
+            {
+              name: "Сайт",
+              value: args
+            },
+	{
+		name: "Состояние",
+		value: "Сервер упал"
+	}
+          ]
+        }
+      };
+	    }
+	          client.channels.cache.get("564022728143929370").send(t_log);
+
+      message.channel.send(netping_embed);
+    });
+	        });
     }
   }
 });
@@ -1664,10 +1759,6 @@ client.on("message", async message => {
                   "`prune <кол-во>` - удалить сообщения\r\n`ban` - забанить кого-то\r\n`kick` - выгнать кого-то\r\n`warn` - выдать кому-то предупреждение\r\n`avatar` - мой аватар\r\n`user` - о пользователе\r\n`server` - о сервере"
               }
             ],
-            image: {
-              url:
-                "https://media.discordapp.net/attachments/634674458770276371/718695013529157664/cover_1.png?width=962&height=163"
-            },
             footer: {
               text:
                 "Версия " +
@@ -1705,10 +1796,6 @@ client.on("message", async message => {
                   "`reverse <текст>` - реверс\r\n`binary <текст>` - конвертация в двоичный код"
               }
             ],
-            image: {
-              url:
-                "https://media.discordapp.net/attachments/634674458770276371/718695013529157664/cover_1.png?width=962&height=163"
-            },
             footer: {
               text:
                 "Версия " +
@@ -1747,10 +1834,6 @@ client.on("message", async message => {
                   "`prune <кол-во>` - удалить сообщения\r\n`ban` - забанить кого-то\r\n`kick` - выгнать кого-то\r\n`warn` - выдать кому-то предупреждение\r\n`avatar` - мой аватар\r\n`user` - о пользователе\r\n`server` - о сервере"
               }
             ],
-            image: {
-              url:
-                "https://media.discordapp.net/attachments/634674458770276371/718695013529157664/cover_1.png?width=962&height=163"
-            },
             footer: {
               text:
                 "Версия " +
@@ -1788,10 +1871,6 @@ client.on("message", async message => {
                   "`reverse <текст>` - реверс\r\n`binary <текст>` - конвертация в двоичный код"
               }
             ],
-            image: {
-              url:
-                "https://media.discordapp.net/attachments/634674458770276371/718695013529157664/cover_1.png?width=962&height=163"
-            },
             footer: {
               text:
                 "Версия " +
@@ -2285,7 +2364,7 @@ client.on("message", message => {
             name: "Ссылки на наши ресурсы",
             icon_url: client.user.avatarURL()
           },
-          description: "[Discord-сервер для общения](https://discord.gg/9husXQy)\n[YouTube-канал](https://youtube.com/DMITPlus)\n[ВКонтакте](https://vk.com/dmitcompgroup)\n[Twitter](https://twitter.com/dmitcomputers)\n[Telegram](https://t.me/dmitcomp)\n[TikTok](https://tiktok.com/@dmitcomputers)\n\n[Исходные коды бота XStep](https://github.com/dmitryevdev/XStepBot)\n[Приглашение бота](https://discordapp.com/oauth2/authorize?client_id=634271325057318943&permissions=8&scope=bot)",
+          description: "[Discord-сервер для общения](https://discord.gg/9husXQy)\n[YouTube-канал](https://www.youtube.com/channel/UCSPjn_Y0pLdPy6Ncb9NAdww)\n[ВКонтакте](https://vk.com/tinelixgroup)\n[Twitter](https://twitter.com/tinelix)\n[Telegram](https://t.me/tinelix)\n\n[Исходные коды бота XStep](https://github.com/tinelix/XStepBot)\n[Приглашение бота](https://discordapp.com/oauth2/authorize?client_id=634271325057318943&permissions=8&scope=bot)",
         }
       };
       message.channel.send(links_embed);
@@ -2456,11 +2535,20 @@ client.on("message", message => {
   if (message.author === client.user) return;
   if (message.content.startsWith(prefix + "eval")) {
     let args = message.content.split(" ").slice(1);
+	var evalforowneronly_errmsg = {
+        embed: {
+          color: 0xff0000,
+          author: {
+            name: "Ошибка",
+            icon_url: client.user.avatarURL()
+          },
+	  description: 'Команда `xs.eval` недоступна обычным пользователям и используется исключительно для разработчиков.',
+        }
+      };
     if (
-      message.author.id !== "484921597015359488" &&
-      message.author.id !== "708682885342691428"
+      message.author.id !== "484921597015359488"
     )
-      return;
+      return message.channel.send(evalforowneronly_errmsg);
     try {
       var code = args.join(" ");
       var evaled = eval(code);
@@ -2477,7 +2565,7 @@ client.on("message", message => {
           fields: [
             {
               name: "Листинг",
-              value: "```" + message.content.split(" ").slice(1) + "```"
+              value: "```" + message.content.split(" ").slice(1).join(" ") + "```"
             },
             {
               name: "Результат",
@@ -2486,10 +2574,11 @@ client.on("message", message => {
           ],
           footer: {
             text:
-              'Команда "eval" не доступна обычным пользователям и используется исключительно для разработчиков.'
+              'Команда "eval" недоступна обычным пользователям и используется исключительно для разработчиков.'
           }
         }
       };
+	    
 
       message.channel.send(evalresult_embed);
     } catch (err) {
@@ -2503,7 +2592,7 @@ client.on("message", message => {
           fields: [
             {
               name: "Листинг",
-              value: "```" + message.content.split(" ").slice(1) + "```"
+              value: "```" + message.content.split(" ").slice(1).join(" ") + "```"
             },
             {
               name: "Описание ошибки",
@@ -2666,21 +2755,6 @@ client.on("message", message => {
         }
       };
       message.channel.send(eightball_embed);
-      let str = "<@461516811855200256>"; //Just assuming some random tag.
-
-      //removing any sign of < @ ! >...
-      //the exclamation symbol comes if the user has a nickname on the server.
-      let id = str.replace(/[<@!>]/g, "");
-
-      client.users.fetch(id).then(user => {
-        user.send(
-          message.author.id +
-            " или " +
-            message.author.tag +
-            ' спрашивает у "Шара судьбы" такой вопрос: ' +
-            message.content
-        );
-      });
     }
   }
 });
@@ -3284,7 +3358,7 @@ client.on("message", message => {
 client.on("message", message => {
   if (message.author === client.user) return;
   if (message.channel.type === "dm") return;
-  if (message.content.startsWith(prefix + "say_private")) {
+  if (message.content.startsWith(prefix + "private_say")) {
     if (message.author.id !== "484921597015359488") return;
     let args = message.content.split(" ").slice(1);
     const sayMessage = args.join(" ");
@@ -3298,8 +3372,15 @@ client.on("message", message => {
             message.content
         )
       );
+	  
+     var say_embed = {
+        embed: {
+          color: 0xffefff,
+	  description: sayMessage,
+        }
+      };
     // And we get the bot to say the thing:
-    message.channel.send(sayMessage);
+    message.channel.send(say_embed);
   }
 });
 
@@ -3312,7 +3393,7 @@ client.on("message", message => {
       embed: {
         color: 0x87ff32,
         author: {
-          name: "Правила сервера DMIT Computers Team"
+          name: "Правила сервера Tinelix Team"
         },
         description:
           "**⚠️ Незнание правил не освобождает Вас от ответственности. Поэтому, чтобы избежать предупреждений (варнов) или банов, изучите правила. Не забывайте также прочитать Условии использования Discord - https://discord.com/terms.**\n\n1. Материться можно, но не использовать его в качестве оскорблений участников\n2. Оскорблять, рейдерить, унижать, флудить, троллить, публично хейтить кого-либо запрещается.\n3. Попрошайничество роли администратора, младшего администратора и выпрашивание разбана также запрещено\n4. Строго запрещается публиковать NSFW-контент (к таким относятся порнография, треш-реклама, оружия, ЛГБТ), кроме <#716944492661571623>\n5. Использовать каналы **только по назначению!**\n6. Наш сервер имеет рекламные площадки, поэтому за пределы четырех каналов в категории Advertisement пиар запрещается. Если Вы получаете автоварн за пиар на каналах этой категории, то попросите администраторов прорекламировать Вас.\n7. Компьютерные игры и игры на смартфонах или планшетах лучше обсуждать в <#716944624610050128>, т. к. часть сервера незаинтересована играми (хотя кого я обманываю, интересует), а для ботов - <#716944560785457183>!\n8. Срачи устрайвате в только <#716944492661571623> и <#732517901306691595>, но учтите, что администрация сервера DMIT Computers не будет банить/кикать, дабы не участвовать в подобных срачах. (Иначе вы получите роль с ограниченныым режимом, там присутствует только мут).\n9. Нельзя использовать селфбота (даже с альтов)\n\nЕдинственная ссылка на сервер: https://discord.gg/9husXQy\n\nПравила сервера исключены в <#716944492661571623>, кроме правил №5, и <#732517901306691595>, кроме правил №4. С вопросами насчет правил нашего сервера свяжитесь в личку Дискорда (<@484921597015359488>). Администрация сервера DMIT Computers может забанить или кикнуть Вас без объяснения причины, так что меня сильно не ругайте.",
@@ -3381,7 +3462,7 @@ client.on("message", message => {
         ],
         footer: {
           text:
-            "Последние изменения: 5 июля 2020 г., 10:28 МСК | Часть 1. Наименования каналов"
+            "Последние изменения: 14 июля 2020 г., 18:24 МСК | Часть 1. Наименования каналов"
         }
       }
     };
@@ -3392,10 +3473,10 @@ client.on("message", message => {
           name: "Справочная информация сервера"
         },
         description:
-          '**Owner** - владелец сервера\n\n**Administrative Bots** - административные боты\n\n**Bots** - боты без административных прав\n\n**Adminstrator** - (это и так понятно)\n\n**Junior administrator** - младший администратор\n\n**Linuxoid** - (понятно, что это за роль)\nКак получить эту роль? Вы должны отправить скриншот, который доказывает Ваше использование Linux на постоянной основе. Неважно, скриншот рабочего стола любимого окружения или скриншот открытых окон. Под скриншотом не забывайте указывать имя дистрибутива Linux. Все это отправляйте в личку (<@484921597015359488>). Но если у меня личка закрыта, добавляйте в друзья.\n\n**Heightened self-esteem** - люди с завышенным ЧСВ\n\n**My longtime subscriber** - мой давний подписчик\nКак получить? Получить роль можно только если Вы подписались на наш канал более 1 года. Если что, сообщите в личку <@484921597015359488>.\n\n**My subscriber** - мой подписчик\nКак получить? Получить можно, отправив в ЛС (<@484921597015359488>) скриншот с кнопкой "Вы подписаны". Если личка закрыта, добавляйте меня в друзья.\n\n**Member** - Участники\n\n**Newbie** - недавно зашедшие в наш сервер, иногда новореги. Роль теперь снимается спустя 5 дней после вступления, иногда с задержкой.',
+          '**Owner** - владелец сервера\n\n**Administrative Bots** - административные боты\n\n**Bots** - боты без административных прав\n\n**Adminstrator** - (это и так понятно)\n\n**Junior administrator** - младший администратор\n\n**Super famous person** - суперизвестная личность.\nКак получить? Роль выдается только тем людям, кого я хорошо знаю на протяжении 2-3 лет.\n\n**Linuxoid** - (понятно, что это за роль)\nКак получить эту роль? Вы должны отправить скриншот, который доказывает Ваше использование Linux на постоянной основе. Неважно, скриншот рабочего стола любимого окружения или скриншот открытых окон. Под скриншотом не забывайте указывать имя дистрибутива Linux. Все это отправляйте в личку (<@484921597015359488>). Но если у меня личка закрыта, добавляйте в друзья.\n\n**Heightened self-esteem** - люди с завышенным ЧСВ\n\n**My longtime subscriber** - мой давний подписчик\nКак получить? Получить роль можно только если Вы подписались на наш канал более 1 года. Если что, сообщите в личку <@484921597015359488>.\n\n**My subscriber** - мой подписчик\nКак получить? Получить можно, отправив в ЛС (<@484921597015359488>) скриншот с кнопкой "Вы подписаны". Если личка закрыта, добавляйте меня в друзья.\n\n**Member** - Участники\n\n**Newbie** - недавно зашедшие в наш сервер, иногда новореги. Роль теперь снимается спустя 5 дней после вступления, иногда с задержкой.',
         footer: {
           text:
-            "Последние изменения: 5 июля 2020 г., 10:37 МСК | Часть 2. Наименования ролей"
+            "Последние изменения: 14 июля 2020 г., 10:37 МСК | Часть 2. Наименования ролей"
         }
       }
     };
@@ -3420,7 +3501,7 @@ client.on("message", message => {
           name: "Справочная информация сервера"
         },
         description:
-          "**XStep Bot** - `xs.`, `xs!`, `хс.`, `хс!` (для справки - `xs.help`)\nJuniperBot - `juni!` (для справки - `juni!help`)\nRythm - `r.` (для справки - `r.help`)\nNotSoBot - `.` (для справки - `.help`)\nShoBlet - `Sho` (для справки - `ShoHelp`)\nm1t3nk0v.b0t - `m!` (для справки `m!help`)\nZarich's Bot - `z/` (для справки - `z/help`)",
+          "**XStep Bot** - `xs.`, `xs!`, `хс.`, `хс!` (для справки - `xs.help`)\nJuniperBot - `juni!` (для справки - `juni!help`)\nRythm - `r.` (для справки - `r.help`)\nNotSoBot - `.` (для справки - `.help`)\nShoBlet - `Sho` (для справки - `ShoHelp`)\nm1t3nk0v.b0t - `m!` (для справки `m!help`)\nZarich's Bot - `z/` (для справки - `z/help`)\nSuperMaxusa Bot - `sm!` (для справки - `sm!help`)\nHaruBot - `x!` (для справки - `x!help`)",
         footer: {
           text:
             "Последние изменения: 18 июня 2020 г., 10:33 МСК | Часть 4. Префиксы ботов"
@@ -3448,10 +3529,10 @@ client.on("message", message => {
   if (message.author === client.user) return;
   if (message.channel.type === "dm") return;
   if (
-    message.content.startsWith(prefix + "say ") ||
-    message.content.startsWith(prefix_a + "say ") ||
-    message.content.startsWith(prefix_b + "say ") ||
-    message.content.startsWith(prefix_c + "say ")
+    message.content.startsWith(prefix + "say") ||
+    message.content.startsWith(prefix_a + "say") ||
+    message.content.startsWith(prefix_b + "say") ||
+    message.content.startsWith(prefix_c + "say")
   ) {
     var t_log = {
       embed: {
@@ -3486,6 +3567,24 @@ client.on("message", message => {
     client.channels.cache.get("564022728143929370").send(t_log);
     let args = message.content.split(" ").slice(1);
     const sayMessage = args.join(" ");
+	var sayerr_msg = {
+      embed: {
+        color: 0xff0000,
+        author: {
+          name: "Ошибка",
+	  icon_url: client.user.avatarURL()
+        },
+        description:
+         "<@" + message.author.id + ">, пожалуйста, введите после команды `xs.say` любое слово или фразу.\n\n**Но будьте осторожны**, каждый раз, когда Вы напишете эту команду, будет высвечиваться тег автора.",
+        fields: [
+          {
+            name: "Пример",
+            value: "`xs.say Привет!`"
+          },
+        ]
+      }
+    };
+    if(sayMessage === '' || sayMessage === ' ' || sayMessage === '  ' || sayMessage === '   ') return message.channel.send(sayerr_msg);
     message
       .delete()
       .catch(
@@ -3497,9 +3596,17 @@ client.on("message", message => {
         )
       );
     // And we get the bot to say the thing:
-    message.channel.send(
-      sayMessage + "\n\n*Отправлено пользователем " + message.author.tag + ".*"
-    );
+     var say_embed = {
+        embed: {
+          color: 0xffefff,
+	  description: sayMessage,
+	  footer: {
+            text: "Написал " + message.author.tag
+          }	
+        }
+      };
+    // And we get the bot to say the thing:
+    message.channel.send(say_embed);
   }
 });
 
@@ -3729,7 +3836,7 @@ client.on("message", message => {
         onlinecount = "  " + ar[i].presences.cache.size;
       var name = "";
       if(ar[i].id == "566913404468723744" || ar[i].id == "713291763644760094"
-         || ar[i].id == "436098246696501250" || ar[i].id == "704698294403596470") 
+         || ar[i].id == "436098246696501250" || ar[i].id == "704698294403596470" || ar[i].id == "731361519085944882") 
       {name = "[Скрытый сервер]"} else {name = ar[i].name}
       str +=
         i +
@@ -3753,7 +3860,7 @@ client.on("message", message => {
             "Список входящих серверов (всего " + client.guilds.cache.size + ")",
           icon_url: message.author.avatarURL()
         },
-        description: "```" + str + "```\nНе хотите, что Ваш сервер отображался в публичном списке серверов бота XStep? Отправьте запрос нам командой `xs.srvlist hide` (для этого требуется время)",
+        description: "```" + str + "```Не хотите, что Ваш сервер отображался в публичном списке серверов бота XStep? Отправьте запрос нам командой `xs.srvlist hide` (для этого требуется время)",
       }
     };
     message.channel.send(srvlist_embed);
