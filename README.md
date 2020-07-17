@@ -10,8 +10,8 @@ random-puppy | util | opusscript (modifed version)</code>
 
 <p><p><h2>Contacts</h2>
 <p>VK: https://vk.com/dmitcompvk
-<p>Discord: dmitcomp#7004
-<p>Twitter: https://twitter.com/dmitcomputers
+<p>Discord: dydcoder#7004
+<p>Twitter: https://twitter.com/tinelix
 <p>---<p>
 RUS: <b>Tinelix XStep - бот, разработанный Tinelix.</b> Базируется на исходном коде DMITBot версии 3.1.1.
 <p>Прошу прощения, там присутствует только русская локализация. Хотя никто не мешает изменить локализацию, усовершенствовать код.
@@ -21,6 +21,6 @@ strftime | ytdl-core | fs | progress<p>
 random-puppy | util | opusscript (modifed version)</code>
 
 <p><p><h2>Контакты</h2>
-<p>VK: https://vk.com/tinelixvk
+<p>VK: https://vk.com/dmitcompvk
 <p>Discord: dydcoder#7004
 <p>Twitter: https://twitter.com/tinelix
