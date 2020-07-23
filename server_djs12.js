@@ -3196,13 +3196,13 @@ client.on("message", message => {
       else if (argsUser.presence.activities[0].type == 'CUSTOM_STATUS' && argsUser.presence.activities.length < 2)
         game = `**${argsUser.presence.activities[0].state}**`
       else if (argsUser.presence.activities[0].type == 'CUSTOM_STATUS' && argsUser.presence.activities[1].type == 'PLAYING')
-        game = `${argsUser.presence.activities.emoji.name} Играет **${argsUser.presence.activities[1].name}**`
+        game = (argsUser.presence.activities.emoji.name || "") + ` Играет **${argsUser.presence.activities[1].name}**`
       else if (argsUser.presence.activities[0].type == 'CUSTOM_STATUS' && argsUser.presence.activities[1].type == 'STREAMING')
-        game = `${argsUser.presence.activities[0].emoji.name} Ведет стрим **${argsUser.presence.activities[1].name}**`
+        game = (argsUser.presence.activities.emoji.name || "") + ` Ведет стрим **${argsUser.presence.activities[1].name}**`
       else if (argsUser.presence.activities[0].type == 'CUSTOM_STATUS' && argsUser.presence.activities[1].type == 'LISTENING')
-        game = `${argsUser.presence.activities[0].emoji.name} Слушает в Spotify **${argsUser.presence.activities[1].state} - ${argsUser.presence.activities[1].details}**`
+        game = (argsUser.presence.activities.emoji.name || "") + ` Слушает в Spotify **${argsUser.presence.activities[1].state} - ${argsUser.presence.activities[1].details}**`
       else if (argsUser.presence.activities[0].type == 'CUSTOM_STATUS' && argsUser.presence.activities[1].type == 'WATCHING')
-        game = `${argsUser.presence.activities[0].emoji.name} Смотрит **${argsUser.presence.activities[1].name}**`;
+        game = (argsUser.presence.activities.emoji.name || "") + ` Смотрит **${argsUser.presence.activities[1].name}**`;
       if (argsUser.nickname) {
         var nickname = argsUser.nickname;
       } else {
