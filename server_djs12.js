@@ -60,7 +60,7 @@ client.on("ready", async () => {
           client.users.cache.size
         } | Online: ${str}`
       );
-    }, 2000);
+    }, 20000);
   } catch (e) {
       console.log(
         `\n░░░░░░░ ░  ░░░░   ▒▒▒▒ ▒     ▒ ▒▒  ██\n   ░    ░ ░    ▒ ▒     ▒     ▒  █  █\n   ░    ░ ▒    ▒ ▒▒▒   ▒     █   ██\n   ░    ▒ ▒    ▒ ▒     █     █  █  █\n   ▒    ▒ ▒    ▒  ▒▒██  ████ █ ██  ██\n\nXStep Bot ${botconfig.version} \(${botconfig.date}\)\n\(C\)opyright 2019-2020 Tinelix Development. All rights reserved.\n\nThis script started successfully.`
@@ -2579,7 +2579,7 @@ client.on("message", message => {
         }
       };
 	    
-
+    console.log('\n\nEval content:\n' + clean(evaled) + '\n\n')
       message.channel.send(evalresult_embed);
     } catch (err) {
       var evalerr_embed = {
@@ -3037,9 +3037,14 @@ client.on("message", message => {
       }	    
       if(message.guild.verificationLevel === "VERY_HIGH") {
       verifLvl = "Строгая проверка (4-я степень)"
-      }	    
+      }	
       message.guild.region =
         message.guild.region[0].toUpperCase() + message.guild.region.slice(1);
+	var ar = message.guild.emojis.cache.array();
+	var str = "";
+      for (let i = 0; i < ar.length; i++) {
+        str += "<:" + ar[i].name + ":" + ar[i].id + "> ";
+      };
       var si_info = {
         embed: {
           color: 0x7b50ff,
@@ -3064,18 +3069,16 @@ client.on("message", message => {
                 ")"
             },
             {
-              name: "🏡 Кол-во элементов сервера",
+              name: "🏡 Содержимое сервера",
               value:
                 message.guild.channels.cache.size +
-                " каналов | " +
+                " каналов\n" +
                 message.guild.roles.cache.size +
-                " ролей | " +
+                " ролей\n" +
                 message.guild.memberCount +
-                " участников | " +
+                " участников\n" +
                 message.guild.presences.cache.size +
-                " онлайн | " +
-                message.guild.emojis.cache.size +
-                " эмоджи"
+                " онлайн"
             },
             {
               name: "🔕 AFK-канал",
@@ -3088,6 +3091,10 @@ client.on("message", message => {
             {
               name: "🛠 Степень модерации",
               value: (verifLvl || "Неизвестно")
+            },
+            {
+              name: "🙂 Эмоджи (" + message.guild.emojis.cache.size + ")",
+              value: (str || "Отсутствуют")
             }
           ],
           footer: {
@@ -3176,16 +3183,28 @@ client.on("message", message => {
         offline: "Оффлайн"
       };
       let game;
-      if (!argsUser.presence.activities.type)
+      if (!argsUser.presence.activities[0].type)
         game = `${statuses[argsUser.presence.status]}`;
-      else if (argsUser.presence.activities.type == 0)
-        game = `Играет/Работает в **${argsUser.presence.activities.name}**`;
-      else if (argsUser.presence.activities.type == 1)
-        game = `Ведет стрим **${argsUser.presence.activities.name}**\n${argsUser.presence.activities.url}`;
-      else if (argsUser.presence.activities.type == 2)
-        game = `Слушает в Spotify ${argsUser.presence.activities.name}`;
-      else if (argsUser.presence.activities.type == 3)
-        game = `Смотрит **${argsUser.presence.activities.name}**`;
+      else if (argsUser.presence.activities[0].type == 'PLAYING')
+        game = `Играет в **${argsUser.presence.activities[0].name}**`
+      else if (argsUser.presence.activities[0].type == 'STREAMING')
+        game = `Ведет стрим **${argsUser.presence.activities[0].name}**\n${argsUser.presence.activities[0].url}`
+      else if (argsUser.presence.activities[0].type == 'LISTENING')
+        game = `Слушает в Spotify **${argsUser.presence.activities[0].state} - ${argsUser.presence.activities[1].details}**`
+      else if (argsUser.presence.activities[0].type == 'WATCHING')
+        game = `Смотрит **${argsUser.presence.activities[0].name}**`
+      else if (argsUser.presence.activities[0].type == 'CUSTOM_STATUS' && argsUser.presence.activities[1].type != 'PLAYING' 
+	       && argsUser.presence.activities[1].type != 'STREAMING' && argsUser.presence.activities[1].type != 'WATCHING'
+	       && argsUser.presence.activities[1].type != 'LISTENING')
+        game = `**${argsUser.presence.activities[0].state}**`
+      else if (argsUser.presence.activities[0].type == 'CUSTOM_STATUS' && argsUser.presence.activities[1].type == 'PLAYING')
+        game = `${argsUser.presence.activities.emoji.name} Играет **${argsUser.presence.activities[1].name}**`
+      else if (argsUser.presence.activities[0].type == 'CUSTOM_STATUS' && argsUser.presence.activities[1].type == 'STREAMING')
+        game = `${argsUser.presence.activities[0].emoji.name} Ведет стрим **${argsUser.presence.activities[1].name}**`
+      else if (argsUser.presence.activities[0].type == 'CUSTOM_STATUS' && argsUser.presence.activities[1].type == 'LISTENING')
+        game = `${argsUser.presence.activities[0].emoji.name} Слушает в Spotify **${argsUser.presence.activities[1].state} - ${argsUser.presence.activities[1].details}**`
+      else if (argsUser.presence.activities[0].type == 'CUSTOM_STATUS' && argsUser.presence.activities[1].type == 'WATCHING')
+        game = `${argsUser.presence.activities[0].emoji.name} Смотрит **${argsUser.presence.activities[1].name}**`;
       if (argsUser.nickname) {
         var nickname = argsUser.nickname;
       } else {
@@ -3236,7 +3255,7 @@ client.on("message", message => {
                   "**ID:** " +
                   argsUser.id +
                   "\n**Статус:** " +
-                  (game || "Пользовательский статус") +
+                  game +
                   "\n**Дата регистрации:** " +
                   strftime(
                     "%d.%m.%Y в %H:%M МСК",
@@ -3266,7 +3285,7 @@ client.on("message", message => {
               {
                 name:
                   "🗒 Роли (" +
-                  message.guild.member(argsUser).roles.cache.size +
+                  (message.guild.member(argsUser).roles.cache.size - 1) +
                   ")",
                 value:
                   message.guild
@@ -3307,7 +3326,7 @@ client.on("message", message => {
                   "**ID:** " +
                   argsUser.id +
                   "\n**Статус:** " +
-                  (game || "Пользовательский статус") +
+                  game +
                   "\n**Дата регистрации:** " +
                   strftime(
                     "%d.%m.%Y в %H:%M МСК",
@@ -3337,7 +3356,7 @@ client.on("message", message => {
               {
                 name:
                   "🗒 Роли (" +
-                  message.guild.member(argsUser).roles.cache.size +
+                  (message.guild.member(argsUser).roles.cache.size - 1) +
                   ")",
                 value:
                   message.guild
