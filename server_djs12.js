@@ -3193,9 +3193,7 @@ client.on("message", message => {
         game = `Слушает в Spotify **${argsUser.presence.activities[0].state} - ${argsUser.presence.activities[1].details}**`
       else if (argsUser.presence.activities[0].type == 'WATCHING')
         game = `Смотрит **${argsUser.presence.activities[0].name}**`
-      else if (argsUser.presence.activities[0].type == 'CUSTOM_STATUS' && argsUser.presence.activities[1].type != 'PLAYING' 
-	       && argsUser.presence.activities[1].type != 'STREAMING' && argsUser.presence.activities[1].type != 'WATCHING'
-	       && argsUser.presence.activities[1].type != 'LISTENING')
+      else if (argsUser.presence.activities[0].type == 'CUSTOM_STATUS' && argsUser.presence.activities.length < 2)
         game = `**${argsUser.presence.activities[0].state}**`
       else if (argsUser.presence.activities[0].type == 'CUSTOM_STATUS' && argsUser.presence.activities[1].type == 'PLAYING')
         game = `${argsUser.presence.activities.emoji.name} Играет **${argsUser.presence.activities[1].name}**`
