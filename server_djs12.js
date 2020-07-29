@@ -6,6 +6,7 @@ const strftime = require("strftime");
 const yt = require("ytdl-core");
 const fs = require("fs");
 const botconfig = require("./JSON/botconfig.json");
+const request = require('node-superfetch');
 const data = require("./JSON/data.json");
 const ProgressBar = require("progress");
 const { promptMessage } = require("./functions.js");
@@ -15,6 +16,7 @@ const requester = require("request");
 const chooseArr = ["🗻", "📰", "✂"];
 const http = require("http");
 var ping = require ("ping");
+const math = require('mathjs');
 const intformat = require("./intformat.js");
 const YouTube = require("simple-youtube-api");
 const ytapi = new YouTube(botconfig.ytapi_key);
@@ -50,6 +52,7 @@ client.on("ready", async () => {
       for (let i = 0; i < ar.length; i++) {
         str += ar[i].presences.cache.size;
       }
+		client.user.setStatus('dnd')
       console.log(
         `\n░░░░░░░ ░  ░░░░   ▒▒▒▒ ▒     ▒ ▒▒  ██\n   ░    ░ ░    ▒ ▒     ▒     ▒  █  █\n   ░    ░ ▒    ▒ ▒▒▒   ▒     █   ██\n   ░    ▒ ▒    ▒ ▒     █     █  █  █\n   ▒    ▒ ▒    ▒  ▒▒██  ████ █ ██  ██\n\nXStep Bot ${botconfig.version} \(${botconfig.date}\)\n\(C\)opyright 2019-2020 Tinelix Development. All rights reserved.\n\nThis script started successfully.`
       );
@@ -1788,12 +1791,12 @@ client.on("message", async message => {
               {
                 name: "🎵 Аудиоплеер",
                 value:
-                  "`audio play <ссылка>` - воспроизведение трека\r\n`audio stop` - остановка трека и выход из голосового канала"
+                  "`audio play <поиск>` - воспроизведение трека\r\n`audio stop` - остановка трека и выход из голосового канала"
               },
               {
                 name: "Другое",
                 value:
-                  "`reverse <текст>` - реверс\r\n`binary <текст>` - конвертация в двоичный код"
+                  "`reverse <текст>` - реверс\r\n`binary <текст>` - конвертация в двоичный код\r\n`calc <выражение>` - калькулятор\r\n`wiki <поиск>` - поиск в Википедии"
               }
             ],
             footer: {
@@ -1868,7 +1871,7 @@ client.on("message", async message => {
               {
                 name: "Другое",
                 value:
-                  "`reverse <текст>` - реверс\r\n`binary <текст>` - конвертация в двоичный код"
+                  "`reverse <текст>` - реверс\r\n`binary <текст>` - конвертация в двоичный код\r\n`calc <выражение>` - калькулятор\r\n`wiki <поиск>` - поиск в Википедии"
               }
             ],
             footer: {
@@ -2017,7 +2020,7 @@ client.on("message", async function(message) {
     message.content.startsWith(prefix_c + "reverse")
   ) {
     if (message.channel.type === "dm") return;
-            var msg_array = message.content.split(" ").slice(11);
+        var msg_array = message.content.split(" ").slice(11);
 
         var msg_string = message.content.split("").slice(11);
         var reverse_string = "";
@@ -2723,22 +2726,7 @@ client.on("message", message => {
       message.channel.send(blockmsg_embed);
     } else {
       client.channels.cache.get("564022728143929370").send(t_log);
-      let answers = [
-        "Да.",
-        "Нет.",
-        "Естественно.",
-        "Безусловно.",
-        "Согласен.",
-        "Возможно.",
-        "Конечно.",
-        "Не могу ответить на этот вопрос",
-        "Похоже, Вы задаете слишком много вопросов. Пожалуйста, повторите попытку позже.",
-        "Cомневаюсь.",
-        "Это маловероятно.",
-        "Не знаю, как вы, но я скажу, что нет.",
-        "Да или нет? То, что вы задаете, это сложный вопрос."
-      ]; //массив ответов
-      let rand = Math.floor(Math.random() * answers.length);
+
       var eightball_embed = {
         embed: {
           color: 0xaa88ff,
@@ -3040,7 +3028,7 @@ client.on("message", message => {
       }	
       message.guild.region =
         message.guild.region[0].toUpperCase() + message.guild.region.slice(1);
-	var ar = message.guild.emojis.cache.array();
+	var ar = message.guild.emojis.cache.array().slice(0, 10);
 	var str = "";
       for (let i = 0; i < ar.length; i++) {
         str += "<:" + ar[i].name + ":" + ar[i].id + "> ";
@@ -3058,7 +3046,8 @@ client.on("message", message => {
           fields: [
             {
               name: "ID",
-              value: message.guild.id
+              value: message.guild.id,
+	      inline: true
             },
             {
               name: "👑 Владелец",
@@ -3066,7 +3055,13 @@ client.on("message", message => {
                 message.guild.owner.user.tag +
                 " (" +
                 message.guild.owner.id +
-                ")"
+                ")",
+		inline: true
+            },
+            {
+               name: "\u200b",
+               value: "\u200b",
+               inline: true
             },
             {
               name: "🏡 Содержимое сервера",
@@ -3078,23 +3073,48 @@ client.on("message", message => {
                 message.guild.memberCount +
                 " участников\n" +
                 message.guild.presences.cache.size +
-                " онлайн"
+                " онлайн",
+		inline: true
             },
             {
               name: "🔕 AFK-канал",
-              value: afkCh
+              value: afkCh,
+	      inline: true
             },
             {
-              name: "🏙 Регион/Страна",
-              value: message.guild.region
+               name: "\u200b",
+               value: "\u200b",
+               inline: true
+            },
+            {
+              name: "🏙 Регион",
+              value: message.guild.region,
+	      inline: true
             },
             {
               name: "🛠 Степень модерации",
-              value: (verifLvl || "Неизвестно")
+              value: (verifLvl || "Неизвестно"),
+	      inline: true
+            },
+            {
+               name: "\u200b",
+               value: "\u200b",
+               inline: true
             },
             {
               name: "🙂 Эмоджи (" + message.guild.emojis.cache.size + ")",
-              value: (str || "Отсутствуют")
+              value: ((str + "...") || "Отсутствуют"),
+	      inline: true
+            },
+	    {
+               name: "\u200b",
+               value: "\u200b",
+               inline: true
+            },
+            {
+               name: "\u200b",
+               value: "\u200b",
+               inline: true
             }
           ],
           footer: {
@@ -3182,9 +3202,22 @@ client.on("message", message => {
         dnd: "Не беспокоить",
         offline: "Оффлайн"
       };
+	    let custemoji = "";
+	    let custstat = "";
+	try {
+		custemoji = "" + argsUser.presence.activities[0].emoji.name + " ";
+	} catch(err) {
+		custemoji = "";
+	}
+	try { 
+		custstat = "(**" + argsUser.presence.activities[0].state + "**)";
+	} catch(err) {
+		custstat = "";
+	}
       let game;
-      if (!argsUser.presence.activities[0].type)
-        game = `${statuses[argsUser.presence.status]}`;
+try {
+      if (!argsUser.presence.activities[0].type) {
+        game = `${statuses[argsUser.presence.status]}`}
       else if (argsUser.presence.activities[0].type == 'PLAYING')
         game = `Играет в **${argsUser.presence.activities[0].name}**`
       else if (argsUser.presence.activities[0].type == 'STREAMING')
@@ -3194,15 +3227,16 @@ client.on("message", message => {
       else if (argsUser.presence.activities[0].type == 'WATCHING')
         game = `Смотрит **${argsUser.presence.activities[0].name}**`
       else if (argsUser.presence.activities[0].type == 'CUSTOM_STATUS' && argsUser.presence.activities.length < 2)
-        game = `**${argsUser.presence.activities[0].state}**`
+        game = `Пользовательский ${custstat}`
       else if (argsUser.presence.activities[0].type == 'CUSTOM_STATUS' && argsUser.presence.activities[1].type == 'PLAYING')
-        game = (argsUser.presence.activities.emoji.name || "") + ` Играет **${argsUser.presence.activities[1].name}**`
+        game = custemoji + `Играет **${argsUser.presence.activities[1].name}**`
       else if (argsUser.presence.activities[0].type == 'CUSTOM_STATUS' && argsUser.presence.activities[1].type == 'STREAMING')
-        game = (argsUser.presence.activities.emoji.name || "") + ` Ведет стрим **${argsUser.presence.activities[1].name}**`
+        game = custemoji + `Ведет стрим **${argsUser.presence.activities[1].name}**`
       else if (argsUser.presence.activities[0].type == 'CUSTOM_STATUS' && argsUser.presence.activities[1].type == 'LISTENING')
-        game = (argsUser.presence.activities.emoji.name || "") + ` Слушает в Spotify **${argsUser.presence.activities[1].state} - ${argsUser.presence.activities[1].details}**`
+        game = custemoji + `Слушает в Spotify **${argsUser.presence.activities[1].state} - ${argsUser.presence.activities[1].details}**`
       else if (argsUser.presence.activities[0].type == 'CUSTOM_STATUS' && argsUser.presence.activities[1].type == 'WATCHING')
-        game = (argsUser.presence.activities.emoji.name || "") + ` Смотрит **${argsUser.presence.activities[1].name}**`;
+        game = custemoji + `Смотрит **${argsUser.presence.activities[1].name}**`;
+      } catch(ex) { game = `${statuses[argsUser.presence.status]}` }
       if (argsUser.nickname) {
         var nickname = argsUser.nickname;
       } else {
@@ -4142,6 +4176,319 @@ client.on("message", message => {
       }
     };
     message.channel.send(rps_embed);
+  }
+});
+
+client.on("message", async message => {
+  if (message.author === client.user) return;
+  if (
+    message.content.startsWith(prefix + "weather") ||
+    message.content.startsWith(prefix_a + "weather") ||
+    message.content.startsWith(prefix_b + "weather") ||
+    message.content.startsWith(prefix_c + "weather")
+  ) {
+    var t_log = {
+      embed: {
+        color: 0xff8800,
+        author: {
+          name: "Commands Log"
+        },
+        description:
+          message.author.tag +
+          " typing `" +
+          message.content +
+          "` on " +
+          message.guild.name +
+          "/" +
+          message.channel.name,
+        fields: [
+          {
+            name: "Server ID",
+            value: message.guild.id
+          },
+          {
+            name: "Channel ID",
+            value: message.channel.id
+          },
+          {
+            name: "User ID",
+            value: message.author.id
+          }
+        ]
+      }
+    };
+	let args = message.content.split(" ").slice(1); 
+    const query = args.join(' ');
+    const city = await request.get(`http://dataservice.accuweather.com/locations/v1/cities/search`).query({
+                apikey: botconfig.accuwkey,
+				q: query,
+				language: 'ru-ru',
+            });
+	    console.log(city);
+	    const body = await request.get(`http://dataservice.accuweather.com/forecasts/v1/daily/1day/${city.Key}`).query({
+                apikey: botconfig.accuwkey,
+				language: 'ru-ru',
+				details: 'true',
+				metric: 'true'
+            });
+		console.log('\n\n' + body);
+	var aacuw_err_embed = {
+      embed: {
+        color: 0xff0000, // цвет полоски слева в формате 0xRRGGBB, в данном случае указан оранжевый цвет
+        author: {
+          name: `Погода`, // заголовок встраиваемого (Embed) сообщения
+          icon_url: client.user.avatarURL()
+        },
+        description: 'По Вашему запросу ничего не найдено.\n\nПопробуйте другой запрос.' // описание встраиваемого сообщения
+      }
+    };
+	  var gism_embed = {
+      embed: {
+        color: 0xfffffe, // цвет полоски слева в формате 0xRRGGBB, в данном случае указан оранжевый цвет
+        author: {
+          name: "Погода", // заголовок встраиваемого (Embed) сообщения
+          icon_url: client.user.avatarURL()
+        },
+		fields: [
+		  {
+            name: "Местоположение",
+            value: city.LocalizedName + ', ' + city.Region.LocalizedName + ', ' + city.Country.LocalizedName
+          },
+		  {
+            name: "Погода",
+            value: '**Описание:**' + body.DailyForecasts.Day.IconPhrase + '\n**Температура:** ' + body.temperature.maximum.value + ' °C\n**Ощущается как:** (мин / макс) ' + body.RealFeelTemperature.Minimum.Value + 
+			' / ' + body.RealFeelTemperature.Maximum.Value + ' °C\n**Влажность:** ' + body.humidity.avg + '%\n**Атмосф. давление:** ' + body.pressure.mm_hg_atm + 
+			' мм. рт. ст.\n**Скорость ветра:** ' + body.DailyForecasts.Wind.Speed.Value + ' м/с'
+          },
+        ]
+    }
+    };
+	message.channel.send(gism_embed);
+	var gism_err_embed = {
+      embed: {
+        color: 0xff0000, // цвет полоски слева в формате 0xRRGGBB, в данном случае указан оранжевый цвет
+        author: {
+          name: "Погода", // заголовок встраиваемого (Embed) сообщения
+          icon_url: client.user.avatarURL()
+        },
+        description: 'Возникла неизвестная ошибка.' // описание встраиваемого сообщения
+      }
+    };
+    if (err.status === 404) return console.log(body.meta.message);
+    return message.channel.send(`При выполнении команды возникла ошибка: \`${err.message}\`. Повторите попытку позже.`);
+
+    client.channels.cache.get("564022728143929370").send(t_log);
+  }
+});
+
+client.on("message", async message => {
+  if (message.author === client.user) return;
+  if (
+    message.content.startsWith(prefix + "wiki") ||
+    message.content.startsWith(prefix_a + "wiki") ||
+    message.content.startsWith(prefix_b + "wiki") ||
+    message.content.startsWith(prefix_c + "wiki")
+  ) {
+    var t_log = {
+      embed: {
+        color: 0xff8800,
+        author: {
+          name: "Commands Log"
+        },
+        description:
+          message.author.tag +
+          " typing `" +
+          message.content +
+          "` on " +
+          message.guild.name +
+          "/" +
+          message.channel.name,
+        fields: [
+          {
+            name: "Server ID",
+            value: message.guild.id
+          },
+          {
+            name: "Channel ID",
+            value: message.channel.id
+          },
+          {
+            name: "User ID",
+            value: message.author.id
+          }
+        ]
+      }
+    };
+	let args = message.content.split(" ").slice(1); 
+	try {
+    const query = args.join(' ');
+    const { body } = await request.get('https://ru.wikipedia.org/w/api.php').query({
+        action: 'query',
+        prop: 'extracts',
+        format: 'json',
+        titles: query,
+        exintro: '',
+        explaintext: '',
+        redirects: '',
+        formatversion: 2
+      });
+	var wiki_err_embed = {
+      embed: {
+        color: 0xff0000, // цвет полоски слева в формате 0xRRGGBB, в данном случае указан оранжевый цвет
+        author: {
+          name: "Википедия", // заголовок встраиваемого (Embed) сообщения
+          icon_url: client.user.avatarURL()
+        },
+        description: 'По Вашему запросу ничего не найдено.\n\nПопробуйте другой запрос.' // описание встраиваемого сообщения
+      }
+    };
+    if (body.query.pages[0].missing) return message.channel.send(wiki_err_embed);
+	  var wiki_embed = {
+      embed: {
+        color: 0xfffffe, // цвет полоски слева в формате 0xRRGGBB, в данном случае указан оранжевый цвет
+        author: {
+          name: "Википедия | " + body.query.pages[0].title, // заголовок встраиваемого (Embed) сообщения
+          icon_url: client.user.avatarURL()
+        },
+        description: body.query.pages[0].extract.substr(0, 1980).replace(/[\n]/g, '\n\n') + ` [Подробнее](http://ru.wikipedia.org/wiki/${body.query.pages[0].title.replace(/ /g, "_")})` // описание встраиваемого сообщения
+      }
+    };
+	console.log(body.query);
+	message.channel.send(wiki_embed);
+	} catch (err) {
+	var wiki_err_embed = {
+      embed: {
+        color: 0xff0000, // цвет полоски слева в формате 0xRRGGBB, в данном случае указан оранжевый цвет
+        author: {
+          name: "Википедия", // заголовок встраиваемого (Embed) сообщения
+          icon_url: client.user.avatarURL()
+        },
+        description: 'Не удается найти результаты.' // описание встраиваемого сообщения
+      }
+    };
+    if (err.status === 404) return message.channel.send(wiki_err_embed); 
+	return message.channel.send(wiki_err_embed);
+	    console.log(err);
+}
+    client.channels.cache.get("564022728143929370").send(t_log);
+  }
+});
+
+client.on("message", async message => {
+  if (message.author === client.user) return;
+  if (
+    message.content.startsWith(prefix + "calc") ||
+    message.content.startsWith(prefix_a + "calc") ||
+    message.content.startsWith(prefix_b + "calc") ||
+    message.content.startsWith(prefix_c + "calc")
+  ) {
+    var t_log = {
+      embed: {
+        color: 0xff8800,
+        author: {
+          name: "Commands Log"
+        },
+        description:
+          message.author.tag +
+          " typing `" +
+          message.content +
+          "` on " +
+          message.guild.name +
+          "/" +
+          message.channel.name,
+        fields: [
+          {
+            name: "Server ID",
+            value: message.guild.id
+          },
+          {
+            name: "Channel ID",
+            value: message.channel.id
+          },
+          {
+            name: "User ID",
+            value: message.author.id
+          }
+        ]
+      }
+    };
+	let args = message.content.split(" ").slice(1); 
+    try {	
+	  var calc_err1_embed = {
+      embed: {
+        color: 0xff0000,
+        author: {
+          name: "Калькулятор",
+          icon_url: client.user.avatarURL()
+        },
+        description: "Вы должны после команды `xs.calc` указать математическое выражение.",
+		fields: [
+		{
+			name: "Пример",
+			value: "`xs.calc 12 * 18`, `xs.calc -468 + 212`, `xs.calc 16 / 2`"
+		}
+		]
+	  }};
+     let whatto = args.join(" ");
+     if (!whatto) return message.channel.send(calc_err1_embed);
+     let result = math.evaluate(whatto).toString();
+	var calc_embed = {
+      embed: {
+        color: 0x95c201,
+        author: {
+          name: "Калькулятор",
+          icon_url: client.user.avatarURL()
+        },
+		fields: [
+		{
+			name: "Выражение",
+			value: "```js\n" + whatto + "\n```"
+		},
+		{
+			name: "Результат",
+			value: "```js\n" + result + "\n```"
+		},
+		]
+      }
+    };
+	var calc_err2_embed = {
+      embed: {
+        color: 0xff0000,
+        author: {
+          name: "Калькулятор",
+          icon_url: client.user.avatarURL()
+        },
+		fields: [
+		{
+			name: "Выражение",
+			value: "```js\n" + whatto + "\n```"
+		},
+		{
+			name: "Результат",
+			value: "Ошибка вычисления"
+		},
+		]
+      }
+    };
+         message.channel.send(calc_embed).catch(() => message.channel.send(calc_err2_embed));
+    } catch (e) {
+	var calc_err3_embed = {
+      embed: {
+        color: 0xff0000,
+        author: {
+          name: "Калькулятор",
+          icon_url: client.user.avatarURL()
+        },
+		fields: [
+		{
+			name: "Результат",
+			value: "Ошибка вычисления"
+		},
+		]
+	}};
+        return message.channel.send(calc_err3_embed)
+    }
+    client.channels.cache.get("564022728143929370").send(t_log);
   }
 });
 
