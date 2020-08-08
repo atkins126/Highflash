@@ -40,16 +40,16 @@ module.exports = {
     let platform = "";
     const plaform = os.platform();
     if (os.platform() === "win32") {
-      platform = "<:windows:670835960254169118> Windows (" + os.release() + ")";
+      platform = "<:windows:670835960254169118> " + os.release() + "";
     } else {
       if (os.platform() === "android") {
         platform =
-          "<:android:670837143467458560> Android с Termux (" +
+          "<:android:670837143467458560> (Linux " +
           os.release() +
           ")";
       } else {
         if (os.platform() === "linux") {
-          platform = "<:linux:670836734447190016> Linux (" + os.release() + ")";
+          platform = "<:linux:670836734447190016> " + os.release();
         }
       }
     }
@@ -78,8 +78,7 @@ module.exports = {
         fields: [
           {
             name: "💻 Сведения о хосте, на котором запущен бот", // имя поля
-            value: "**Используемая память:** " + Math.round(process.memoryUsage().heapUsed / 1024 / 1024) + " МБ (" + Math.round(process.memoryUsage().heapUsed / 1024) + " кБ)\n**Программная платформа:** " + platform + "\n**Процессор:** " + os.cpus()[0].model,
-            inline: true
+            value: "**Оперативная память:** " + ((process.memoryUsage().heapUsed) / 1024 / 1024).toFixed(2) + " МБ / " + ((os.totalmem - os.freemem) / 1024 / 1024).toFixed(2) + " МБ / " + (os.totalmem / 1024 / 1024).toFixed(2) + " МБ\n**Ядро ОСи:** " + platform + "\n**Процессор:** " + os.cpus()[0].model + ", " + os.cpus()[0].speed + " МГц",
           },
           {
             name: "🏓 Сетевая статистика",
@@ -87,14 +86,9 @@ module.exports = {
               "%d",
               new Date(client.uptime)
             )) - 1) + strftime(
-              " дн. %H ч. %M мин. %S сек.",
-              new Date(client.uptime)
+              ":%H:%M:%S",
+              new Date(client.uptime - 25200000) // 25200000 for UTC+7 (MSK+4), 10800000 for UTC+3 (MSK). 
             ),
-            inline: true
-          },
-          {
-            name: "\u200b",
-            value: "\u200b",
             inline: true
           },
           {
@@ -102,20 +96,10 @@ module.exports = {
             value: client.guilds.cache.size + " сервер(ов)\n" + client.users.cache.size + " пользователей\n" + str + " активных польз.",
             inline: true
           },
-          {
-            name: "\u200b",
-            value: "\u200b",
-            inline: true
-          },
-          {
-            name: "\u200b",
-            value: "\u200b",
-            inline: true
-          },
         ],
 	  footer: {
             text:
-              "XStep использует Node.js версии " + process.version + " и Discord.js версии " + Discord.version,
+              "Highflash использует Node.js версии " + process.version + " и Discord.js версии " + Discord.version,
           }
       }
     };

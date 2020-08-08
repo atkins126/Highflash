@@ -71,4 +71,3 @@ let id = str.replace(/[<@!>]/g, '');
 client.users.fetch(id) 
     .then(user => {user.send(reportmessage_embed)})
 }};
-}};

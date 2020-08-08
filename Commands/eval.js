@@ -17,12 +17,12 @@ module.exports = {
       message.author.id !== "484921597015359488"
     )
       return message.channel.send(evalforowneronly_errmsg);
+
     try {
-      var code = args.join(" ");
+	  var code = args.join(" ");
       var evaled = eval(code);
 
       if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
-
       var evalresult_embed = {
         embed: {
           color: 0xaa88ff,
@@ -37,7 +37,7 @@ module.exports = {
             },
             {
               name: "Результат",
-              value: "```js\n" + clean(evaled) + "```"
+              value: "```js\n" + evaled + "```"
             }
           ],
           footer: {
@@ -47,9 +47,13 @@ module.exports = {
         }
       };
 	    
-    console.log('\n\nEval content:\n' + clean(evaled) + '\n\n')
+    console.log('\n\nEval content:\n' + evaled + '\n\n')
       message.channel.send(evalresult_embed);
     } catch (err) {
+	  var code = args.join(" ");
+      var evaled = eval(code);
+
+      if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
       var evalerr_embed = {
         embed: {
           color: 0xaa88ff,
@@ -64,7 +68,7 @@ module.exports = {
             },
             {
               name: "Описание ошибки",
-              value: "```js\n" + clean(err) + "```"
+              value: "```js\n" + err + "```"
             }
           ],
           footer: {

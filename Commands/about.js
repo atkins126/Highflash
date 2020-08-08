@@ -55,11 +55,13 @@ module.exports = {
               value: "https://github.com/tinelix/highflash"
             },
             {
-              name: "Авторские права",
-              value:
-                "Copyright © Tinelix, 2019-2020. Все права защищены."
+              name: "Время работы",
+              value: "С 06:00 до 20:00 по московскому времени в связи с ограничениями круглосуточного режима в хостингах (Glitch, Heroku)"
+            },
+          ],
+            footer: {
+              text: "Copyright © Tinelix, 2019-2020. Все права защищены."
             }
-          ]
         }
       };
       message.channel.send(about_embed);

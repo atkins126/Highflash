@@ -21,6 +21,7 @@ const intformat = require("./intformat.js");
 const YouTube = require("simple-youtube-api");
 const ytapi = new YouTube(botconfig.ytapi_key);
 const ghf = require("./JSON/ghf.json");
+const weather = require("weather-js");
 
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./Commands').filter(file => file.endsWith('.js'));
@@ -205,7 +206,7 @@ client.on("ready", () => {
 });
 
 client.on("message", message => {
-	if (!message.content.startsWith(botconfig.prefix) && !message.content.startsWith(botconfig.prefix_a) && !message.content.startsWith(botconfig.prefix_b) || message.author.bot) return;
+	if (!message.content.startsWith(botconfig.prefix) && !message.content.startsWith(botconfig.prefix_a) && !message.content.startsWith(botconfig.prefix_b) || message.author.bot || message.channel.type === "dm") return;
 	
 	let args = message.content.slice(botconfig.prefix.length).trim().split(/ +/);
 	if(message.content.startsWith(botconfig.prefix_b)) {
@@ -218,6 +219,7 @@ client.on("message", message => {
 	console.log("Message Content:\n" + command + " (" + args + ")\n\nPrefixes: " + botconfig.prefix_a + " " + botconfig.prefix_b + " " + botconfig.prefix_c);
 
 	if (command === 'help') {
+		console.log(client.commands.get('help'));
 		client.commands.get('help').execute(message, client, botconfig)
 	};	// Command 1
 	if (command === 'about') {
@@ -303,5 +305,8 @@ client.on("message", message => {
 	}; // Command 27
 	if (command === 'report') {
 		client.commands.get('report').execute(message, client)
-	}; // Command 27
+	}; // Command 28
+	if (command === 'weather') {
+		client.commands.get('weather').execute(message, client, weather, args)
+	}; // Command 29
 });
