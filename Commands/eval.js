@@ -50,10 +50,6 @@ module.exports = {
     console.log('\n\nEval content:\n' + evaled + '\n\n')
       message.channel.send(evalresult_embed);
     } catch (err) {
-	  var code = args.join(" ");
-      var evaled = eval(code);
-
-      if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
       var evalerr_embed = {
         embed: {
           color: 0xaa88ff,

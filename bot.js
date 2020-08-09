@@ -8,6 +8,7 @@ const fs = require("fs");
 const botconfig = require("./JSON/botconfig.json");
 const request = require('node-superfetch');
 const data = require("./JSON/data.json");
+const prefixes = JSON.parse(fs.readFileSync('./JSON/prefixes.json'));
 const ProgressBar = require("progress");
 const { promptMessage } = require("./functions.js");
 const randomPuppy = require("random-puppy");
@@ -206,13 +207,24 @@ client.on("ready", () => {
 });
 
 client.on("message", message => {
-	if (!message.content.startsWith(botconfig.prefix) && !message.content.startsWith(botconfig.prefix_a) && !message.content.startsWith(botconfig.prefix_b) || message.author.bot || message.channel.type === "dm") return;
+ serverPrefix = JSON.parse(fs.readFileSync("./JSON/prefixes.json", "utf8"));
+  if(!serverPrefix[message.guild.id]) {
+    serverPrefix[message.guild.id] = {
+      prefixes: 'forcustomprefixonly.'
+    }
+  }
+  let usePrefix = serverPrefix[message.guild.id].prefixes
+	if (!message.content.startsWith(botconfig.prefix) && !message.content.startsWith(usePrefix) && !message.content.startsWith(botconfig.prefix_a) && !message.content.startsWith(botconfig.prefix_b) || message.author.bot || message.channel.type === "dm") return;
+	
+	if(message.content.startsWith(usePrefix) && usePrefix === "forcustomprefixonly.") return;
 	
 	let args = message.content.slice(botconfig.prefix.length).trim().split(/ +/);
 	if(message.content.startsWith(botconfig.prefix_b)) {
 		args = message.content.slice(botconfig.prefix_b.length).trim().split(/ +/);
-	} else {
+	} else if(message.content.startsWith(botconfig.prefix) || message.content.startsWith(botconfig.prefix_a)){
 		args = message.content.slice(botconfig.prefix.length).trim().split(/ +/);
+	} else {
+		args = message.content.slice(usePrefix.length).trim().split(/ +/);
 	}
 	const command = args.shift().toLowerCase();
 	
@@ -220,93 +232,132 @@ client.on("message", message => {
 
 	if (command === 'help') {
 		console.log(client.commands.get('help'));
-		client.commands.get('help').execute(message, client, botconfig)
-	};	// Command 1
-	if (command === 'about') {
+		client.commands.get('help').execute(message, client, botconfig, usePrefix)
+	}	// Command 1
+	else if (command === 'about') {
 		client.commands.get('about').execute(message, client, args, botconfig)
-	};  // Command 2
-	if (command === 'health') {
+	}  // Command 2
+	else if (command === 'health') {
 		client.commands.get('health').execute(message, client, args)
-	};	// Command 3
-	if (command === 'remoji') {
+	}	// Command 3
+	else if (command === 'remoji') {
 		client.commands.get('remoji').execute(message, client, args)
-	}; 	// Command 4
-	if (command === 'srvlist') {
+	} 	// Command 4
+	else if (command === 'srvlist') {
 		client.commands.get('srvlist').execute(message, client, args, intformat)
-	}; 	// Command 5
-	if (command === 'donate') {
+	} 	// Command 5
+	else if (command === 'donate') {
 		client.commands.get('donate').execute(message, client, args)
-	};	// Command 6
-	if (command === 'rps') {
+	}	// Command 6
+	else if (command === 'rps') {
 		client.commands.get('rps').execute(message, client, args)
-	};	// Command 7
-	if (command === 'wiki') {
+	}	// Command 7
+	else if (command === 'wiki') {
 		client.commands.get('wiki').execute(message, client, args, request)
-	};	// Command 8
-	if (command === 'calc') {
+	}	// Command 8
+	else if (command === 'calc') {
 		client.commands.get('calc').execute(message, client, args, math, botconfig)
-	};	// Command 9
-	if (command === 'ban') {
+	}	// Command 9
+	else if (command === 'ban') {
 		client.commands.get('ban').execute(message, client)
-	};	// Command 10
-	if (command === 'audio' && message.content.slice(botconfig.prefix.length + 6).startsWith('play')) {
+	}	// Command 10
+	else if (command === 'audio' && message.content.slice(botconfig.prefix.length + 6).startsWith('play')) {
 		client.commands.get('aud.play').execute(message, client, YouTube, ytapi, yt, strftime, servers)
-	};	// Command 11, argument 1
-	if (command === 'audio' && message.content.slice(botconfig.prefix.length + 6).startsWith('leave')) {
+	}	// Command 11, argument 1
+	else if (command === 'audio' && message.content.slice(botconfig.prefix.length + 6).startsWith('leave')) {
 		client.commands.get('aud.leave').execute(message, client, servers);
-	};  // Command 11, argument 2
-	if (command === 'warn') {
+	}  // Command 11, argument 2
+	else if (command === 'audio' && message.content.slice(botconfig.prefix_b.length + 6).startsWith('play')) {
+		client.commands.get('aud.play').execute(message, client, YouTube, ytapi, yt, strftime, servers)
+	}	// Command 11, argument 1
+	else if (command === 'audio' && message.content.slice(botconfig.prefix_b.length + 6).startsWith('leave')) {
+		client.commands.get('aud.leave').execute(message, client, servers);
+	}  // Command 11, argument 2
+	else if (command === 'audio' && message.content.slice(usePrefix.length + 6).startsWith('play')) {
+		client.commands.get('aud.play').execute(message, client, YouTube, ytapi, yt, strftime, servers)
+	}	// Command 11.1, argument 1
+	else if (command === 'audio' && message.content.slice(usePrefix.length + 6).startsWith('leave')) {
+		client.commands.get('aud.leave').execute(message, client, servers);
+	}  // Command 11.1, argument 2
+	else if (command === 'warn') {
 		client.commands.get('warn').execute(message, client, fs)
-	}; // Command 12
-	if (command === 'binary') {
+	} // Command 12
+	else if (command === 'binary') {
 		client.commands.get('binary').execute(message, client)
-	}; // Command 13
-	if (command === 'avatar') {
+	} // Command 13
+	else if (command === 'avatar') {
 		client.commands.get('avatar').execute(message, client)
-	}; // Command 14
-	if (command === 'kick') {
+	} // Command 14
+	else if (command === 'kick') {
 		client.commands.get('kick').execute(message, client)
-	}; // Command 15
-	if (command === 'links') {
+	} // Command 15
+	else if (command === 'links') {
 		client.commands.get('links').execute(message, client)
-	}; // Command 16
-	if (command === 'photo') {
+	} // Command 16
+	else if (command === 'photo') {
 		client.commands.get('photo').execute(message, client, randomPuppy)
-	}; // Command 17
-	if (command === 'meme') {
+	} // Command 17
+	else if (command === 'meme') {
 		client.commands.get('meme').execute(message, client, randomPuppy)
-	}; // Command 18
-	if (command === 'eval') {
+	} // Command 18
+	else if (command === 'eval') {
 		client.commands.get('eval').execute(message, client)
-	}; // Command 19
-	if (command === 'ads' && message.content.slice(botconfig.prefix.length + 4).startsWith('+')) {
+	} // Command 19
+	else if (command === 'ads' && message.content.slice(botconfig.prefix.length + 4).startsWith('+')) {
 		client.commands.get('ads.add').execute(message, client)
-	}; // Command 20
-	if (command === '8ball') {
+	} // Command 20
+	else if (command === 'ads' && message.content.slice(botconfig.prefix_b.length + 4).startsWith('+')) {
+		client.commands.get('ads.add').execute(message, client)
+	} // Command 20
+	else if (command === 'ads' && message.content.slice(usePrefix.length + 4).startsWith('+')) {
+		client.commands.get('ads.add').execute(message, client)
+	} // Command 20.1
+	else if (command === '8ball') {
 		client.commands.get('8ball').execute(message, client)
-	}; // Command 21
-	if (command === 'channel') {
+	} // Command 21
+	else if (command === 'channel') {
 		client.commands.get('channel').execute(message, client, strftime)
-	}; // Command 22
-	if (command === 'server') {
+	} // Command 22
+	else if (command === 'server') {
 		client.commands.get('server').execute(message, client, strftime)
-	}; // Command 23
-	if (command === 'user') {
+	} // Command 23
+	else if (command === 'user') {
 		client.commands.get('user').execute(message, client, strftime)
-	}; // Command 24
-	if (command === 'say') {
+	} // Command 24
+	else if (command === 'say') {
 		client.commands.get('say').execute(message, client)
-	}; // Command 25
-	if (command === 'reverse') {
+	} // Command 25
+	else if (command === 'reverse') {
 		client.commands.get('reverse').execute(message, client)
-	}; // Command 26
-	if (command === 'prune') {
+	} // Command 26
+	else if (command === 'prune') {
 		client.commands.get('prune').execute(message, client)
-	}; // Command 27
-	if (command === 'report') {
+	} // Command 27
+	else if (command === 'report') {
 		client.commands.get('report').execute(message, client)
-	}; // Command 28
-	if (command === 'weather') {
+	} // Command 28
+	else if (command === 'weather') {
 		client.commands.get('weather').execute(message, client, weather, args)
-	}; // Command 29
+	} // Command 29
+	else if (command === 'rules') {
+		client.commands.get('rules').execute(message, client)
+	} // Command 30, for owner only
+	else if (command === 'readme') {
+		client.commands.get('readme').execute(message, client)
+	}  // Command 31, for owner only
+	else if (command === 'settings' && message.content.slice(botconfig.prefix.length + 9).startsWith('-prefix')) {
+		client.commands.get('prefix').execute(client, message, prefixes)
+	} // Command 32, for admininstrators only
+	else if (command === 'settings' && message.content.slice(botconfig.prefix_b.length + 9).startsWith('-prefix')) {
+		client.commands.get('prefix').execute(client, message, prefixes)
+	} // Command 32.1, for admininstrators only
+	else if (command === 'settings' && message.content.slice(usePrefix.length + 9).startsWith('-prefix')) {
+		client.commands.get('prefix').execute(client, message, prefixes)
+	} // Command 32.2, for admininstrators only
+	else if (command === 'goals') {
+		client.commands.get('goals').execute(message, client, ProgressBar)
+	}  // Command 33
+	else { 
+		return message.channel.send("Извините, для Вас нет такой команды или Вы указали неправильное использование команды. Чтобы узнать весь список доступных команд и аргументов к нему, пишите `h.help`.")
+	}
 });
