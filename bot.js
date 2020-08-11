@@ -208,12 +208,17 @@ client.on("ready", () => {
 
 client.on("message", message => {
  serverPrefix = JSON.parse(fs.readFileSync("./JSON/prefixes.json", "utf8"));
+let usePrefix = "";
+try {
   if(!serverPrefix[message.guild.id]) {
     serverPrefix[message.guild.id] = {
       prefixes: 'forcustomprefixonly.'
     }
   }
-  let usePrefix = serverPrefix[message.guild.id].prefixes
+usePrefix = serverPrefix[message.guild.id].prefixes
+} catch(err) {
+usePrefix = 'forcustomprefixonly.';
+}
 	if (!message.content.startsWith(botconfig.prefix) && !message.content.startsWith(usePrefix) && !message.content.startsWith(botconfig.prefix_a) && !message.content.startsWith(botconfig.prefix_b) || message.author.bot || message.channel.type === "dm") return;
 	
 	if(message.content.startsWith(usePrefix) && usePrefix === "forcustomprefixonly.") return;

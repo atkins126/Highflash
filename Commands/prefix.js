@@ -33,12 +33,16 @@ module.exports = {
 		}
 	};
 	if (!message.member.hasPermission("MANAGE_GUILD")) return message.channel.send(prefixerrEmbed);
+	try {
 	if (args[0].length > 6) return message.channel.send(prefixtoolongEmbed);
-	console.log(args[0].length);
+		console.log(args[0].length);
+	} catch(ex) {
     if (args == "") {
       if (prefixes[message.guild.id]) {
         prefixes[message.guild.id] = {
-          prefixes: 'forcustomprefixonly.'
+          prefixes: 'forcustomprefixonly.',
+		  name: message.guild.name,
+		  user: message.author.tag
         };
       }
     let defprefixEmbed = {
@@ -57,10 +61,12 @@ module.exports = {
 	  });
       message.channel.send(defprefixEmbed);
       return;
-    }
+    }};
 
     prefixes[message.guild.id] = {
-      prefixes: args[0]
+      prefixes: args[0],
+	  name: message.guild.name,
+	  user: message.author.tag
     };
 
     fs.writeFile("./JSON/prefixes.json", JSON.stringify(prefixes), err => {

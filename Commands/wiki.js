@@ -65,7 +65,7 @@ module.exports = {
         description: body.query.pages[0].extract.substr(0, 1980).replace(/[\n]/g, '\n\n') + ` [Подробнее](http://ru.wikipedia.org/wiki/${body.query.pages[0].title.replace(/ /g, "_")})` // описание встраиваемого сообщения
       }
     };
-	console.log(body.query);
+	console.log(body.query.pages[0]);
 	message.channel.send(wiki_embed);
 	} catch (err) {
 	var wiki_err_embed = {
