@@ -4,7 +4,7 @@ ENG: <b>Tinelix Highflash - bot, developed by Tinelix.</b>
 <p>I'm sorry, existing only Russian version. Although no one bothers, change the localization, improve the code.
 
 <p><p><h2>Used libraries (necessarily)</h2>
-<p><code>discord.js | foreach-timeout | os <br>
+<br><code>discord.js | foreach-timeout | os <br>
 strftime | ytdl-core | fs | progress<br>
 random-puppy | util | opusscript<br>
 mathjs | weather-js | snekfetch | node-superfetch</code>
@@ -17,11 +17,12 @@ mathjs | weather-js | snekfetch | node-superfetch</code>
 <p>---<p>
 RUS: <b>Tinelix Highflash - бот, разработанный Tinelix.</b>
 <p>Прошу прощения, там присутствует только русская локализация. Хотя никто не мешает изменить локализацию, усовершенствовать код.
-<p><code>discord.js | foreach-timeout | os <br>
+<p><p><h2>Используемы библиотеки (обязательно)</h2>  
+<br><code>discord.js | foreach-timeout | os <br>
 strftime | ytdl-core | fs | progress<br>
 random-puppy | util | opusscript<br>
 mathjs | weather-js | snekfetch | node-superfetch</code>
-
+<br><br>
 [Наша вики-страница](https://github.com/tinelix/Highflash/wiki)
 
 <p><p><h2>Контакты</h2>
