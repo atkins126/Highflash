@@ -4,11 +4,11 @@ ENG: <b>Tinelix Highflash - bot, developed by Tinelix.</b>
 <p>I'm sorry, existing only Russian version. Although no one bothers, change the localization, improve the code.
 
 <p><p><h2>Used libraries (necessarily)</h2>
-<br><code>discord.js | foreach-timeout | os <br>
+<code>discord.js | foreach-timeout | os <br>
 strftime | ytdl-core | fs | progress<br>
 random-puppy | util | opusscript<br>
 mathjs | weather-js | snekfetch | node-superfetch</code>
-[Наша вики-страница](https://github.com/tinelix/Highflash/wiki)
+<a href="https://github.com/tinelix/Highflash/wiki">Our Wiki-page</a>
 
 <p><p><h2>Contacts</h2>
 <br>VK: https://vk.com/dmitcompvk
@@ -18,13 +18,12 @@ mathjs | weather-js | snekfetch | node-superfetch</code>
 RUS: <b>Tinelix Highflash - бот, разработанный Tinelix.</b>
 <p>Прошу прощения, там присутствует только русская локализация. Хотя никто не мешает изменить локализацию, усовершенствовать код.
 <p><p><h2>Используемы библиотеки (обязательно)</h2>  
-<br><code>discord.js | foreach-timeout | os <br>
+<code>discord.js | foreach-timeout | os <br>
 strftime | ytdl-core | fs | progress<br>
 random-puppy | util | opusscript<br>
 mathjs | weather-js | snekfetch | node-superfetch</code>
 <br><br>
-[Наша вики-страница](https://github.com/tinelix/Highflash/wiki)
-
+<a href="https://github.com/tinelix/Highflash/wiki">Наша вики-страница</a>
 <p><p><h2>Контакты</h2>
 <br>VK: https://vk.com/dmitcompvk
 <br>Discord: dydcoder#7004
