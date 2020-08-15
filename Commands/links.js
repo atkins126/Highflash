@@ -40,7 +40,7 @@ module.exports = {
             name: "Ссылки на наши ресурсы",
             icon_url: client.user.avatarURL()
           },
-          description: "[Discord-сервер для общения](https://discord.gg/9husXQy)\n[YouTube-канал](https://www.youtube.com/channel/UCSPjn_Y0pLdPy6Ncb9NAdww)\n[ВКонтакте](https://vk.com/tinelixgroup)\n[Twitter](https://twitter.com/tinelix)\n[Telegram](https://t.me/tinelix)\n\n[Исходные коды бота Highflash](https://github.com/tinelix/highflash)\n[Приглашение бота](https://discordapp.com/oauth2/authorize?client_id=634271325057318943&permissions=8&scope=bot)",
+          description: "[Зайти на Discord-сервер поддержки](https://discord.gg/w9vBmCn)\n[Подписаться на YouTube-канал](https://www.youtube.com/channel/UCSPjn_Y0pLdPy6Ncb9NAdww)\n[Зайти в группу ВКонтакте](https://vk.com/tinelixgroup)\n[Twitter](https://twitter.com/tinelix)\n\n[Изучить исходные коды в репозитории Highflash](https://github.com/tinelix/highflash)\n[Пригласить бота на сервер](https://discordapp.com/oauth2/authorize?client_id=634271325057318943&permissions=8&scope=bot)",
         }
       };
       message.channel.send(links_embed);

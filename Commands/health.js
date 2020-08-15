@@ -82,12 +82,9 @@ module.exports = {
           },
           {
             name: "🏓 Сетевая статистика",
-            value: "**Местный пинг:** " + client.ws.ping.toFixed(2) + " мсек\n**Время работы:** " + (parseInt(strftime(
-              "%d",
-              new Date(client.uptime)
-            )) - 1) + strftime(
+            value: "**Местный пинг:** " + client.ws.ping.toFixed(2) + " мсек\n**Время работы:** " + Math.floor(client.uptime / 86400000) + strftime(
               ":%H:%M:%S",
-              new Date(client.uptime - 25200000) // 25200000 for UTC+7 (MSK+4), 10800000 for UTC+3 (MSK). 
+              new Date(client.uptime) // 25200000 for UTC+7 (MSK+4), 10800000 for UTC+3 (MSK). 
             ),
             inline: true
           },
