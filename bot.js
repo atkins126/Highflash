@@ -9,6 +9,7 @@ const botconfig = require("./JSON/botconfig.json");
 const request = require('node-superfetch');
 const data = require("./JSON/data.json");
 const prefixes = JSON.parse(fs.readFileSync('./JSON/prefixes.json'));
+const blacklist = JSON.parse(fs.readFileSync('./JSON/blacklist.json'));
 const ProgressBar = require("progress");
 const { promptMessage } = require("./functions.js");
 const randomPuppy = require("random-puppy");
@@ -23,6 +24,7 @@ const YouTube = require("simple-youtube-api");
 const ytapi = new YouTube(botconfig.ytapi_key);
 const ghf = require("./JSON/ghf.json");
 const weather = require("weather-js");
+const keepAlive = require("./keepAlive.js");
 
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./Commands').filter(file => file.endsWith('.js'));
@@ -42,8 +44,9 @@ let prefix_c = botconfig.prefix_c;
 var servers = {};
 var prefix = botconfig.prefix;
 var blockid = "396331064710135809";
-client.login(botconfig.token);
+client.login(process.env.MENYANET);
 
+keepAlive();
 
 client.on("ready", async () => {
   try {
@@ -74,6 +77,7 @@ client.on("ready", async () => {
           client.users.cache.size
         } | Online: ${str}`
       );
+      
     }, 20000);
   } catch (e) {
       console.log(
@@ -208,6 +212,7 @@ client.on("ready", () => {
 
 client.on("message", message => {
  serverPrefix = JSON.parse(fs.readFileSync("./JSON/prefixes.json", "utf8"));
+  blacklister = JSON.parse(fs.readFileSync("./JSON/blacklist.json", "utf8"));
 let usePrefix = "";
 try {
   if(!serverPrefix[message.guild.id]) {
@@ -219,7 +224,9 @@ usePrefix = serverPrefix[message.guild.id].prefixes
 } catch(err) {
 usePrefix = 'forcustomprefixonly.';
 }
-	if (!message.content.startsWith(botconfig.prefix) && !message.content.startsWith(usePrefix) && !message.content.startsWith(botconfig.prefix_a) && !message.content.startsWith(botconfig.prefix_b) || message.author.bot || message.channel.type === "dm") return;
+	if (!message.content.startsWith(botconfig.prefix) && !message.content.startsWith(usePrefix) && !message.content.startsWith(botconfig.prefix_a) && !message.content.startsWith(botconfig.prefix_b)&& !message.content.startsWith(botconfig.prefix_c)) return;
+  
+  if(message.author.bot || message.channel.type === "dm") return;
 	
 	if(message.content.startsWith(usePrefix) && usePrefix === "forcustomprefixonly.") return;
 	
@@ -231,16 +238,35 @@ usePrefix = 'forcustomprefixonly.';
 	} else {
 		args = message.content.slice(usePrefix.length).trim().split(/ +/);
 	}
+
 	const command = args.shift().toLowerCase();
-	
 	console.log("Message Content:\n" + command + " (" + args + ")\n\nPrefixes: " + botconfig.prefix_a + " " + botconfig.prefix_b + " " + botconfig.prefix_c);
+
+  if(!blacklister[message.author.id]) {
+    blacklister[message.author.id] = {
+      id: '0',
+      block_timeout: '0'
+    }
+      fs.writeFile("./JSON/blacklist.json", JSON.stringify(blacklist), err => {
+      if (err) console.log(err);
+    });
+  }
+
+  let msgcreatedAt = new Date(message.createdAt)
+  let block_timeouter = new Date(blacklister[message.author.id].block_timeout)
+
+  if((message.author.id === blacklister[message.author.id].id) && (msgcreatedAt < block_timeouter)) {
+    return message.channel.send("Вам заблокировали доступ к команде до " + strftime(
+              "%d.%m.%Y",
+              new Date(block_timeouter)))
+    }
 
 	if (command === 'help') {
 		console.log(client.commands.get('help'));
 		client.commands.get('help').execute(message, client, botconfig, usePrefix)
 	}	// Command 1
 	else if (command === 'about') {
-		client.commands.get('about').execute(message, client, args, botconfig)
+		client.commands.get('about').execute(message, client, botconfig)
 	}  // Command 2
 	else if (command === 'health') {
 		client.commands.get('health').execute(message, client, args)
@@ -339,6 +365,7 @@ usePrefix = 'forcustomprefixonly.';
 		client.commands.get('prune').execute(message, client)
 	} // Command 27
 	else if (command === 'report') {
+    if (message.author.id == '461516527242575892') return message.channel.send('Вам заблокировали доступ к этой команде.');
 		client.commands.get('report').execute(message, client)
 	} // Command 28
 	else if (command === 'weather') {
@@ -362,7 +389,19 @@ usePrefix = 'forcustomprefixonly.';
 	else if (command === 'goals') {
 		client.commands.get('goals').execute(message, client, ProgressBar)
 	}  // Command 33
+	else if (command === 'serv_bl') {
+		client.commands.get('server.blacklist').execute(message, client, fs)
+	}
+  else if (command === 'blacklist' && message.content.slice(botconfig.prefix.length + 10).startsWith('-add')) {
+	client.commands.get('blacklist.add').execute(client, message, blacklist)
+	}  // Command 34
+  else if (command === 'blacklist' && message.content.slice(botconfig.prefix_b.length + 10).startsWith('-add')) {
+	client.commands.get('blacklist.add').execute(client, message, blacklist)
+	}  // Command 34.1
+  else if (command === 'blacklist' && message.content.slice(usePrefix.length + 10).startsWith('-add')) {
+	client.commands.get('blacklist.add').execute(client, message, blacklist)
+	}  // Command 34.1
 	else { 
-		return message.channel.send("Извините, для Вас нет такой команды или Вы указали неправильное использование команды. Чтобы узнать весь список доступных команд и аргументов к нему, пишите `h.help`.")
+		message.channel.send("Извините, у нас нет такой команды или Вы указали неправильное использование команды. Чтобы узнать весь список доступных команд и аргументов к нему, пишите `h.help`.")
 	}
 });
