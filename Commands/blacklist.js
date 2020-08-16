@@ -6,7 +6,7 @@ module.exports = {
   guildOnly: true,
   usage: `[wanted prefix]`,
   description: "Заносит в черный список пользователя для запрета или ограничения использования бота",
-  execute(client, message, blacklist) {
+  execute(client, message, blacklist, botconfig) {
 	  
 	let args = message.content.split(" -add ").slice(1);
 	  
