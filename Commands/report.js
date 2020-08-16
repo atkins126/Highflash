@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'report',
 	description: 'Пожаловаться боту',
-	execute(message, client) { 
+	execute(message, client, botconfig) { 
 	var reportmessage_embed = {
         embed: {
             color: 0xff0055,
@@ -10,7 +10,7 @@ module.exports = {
                 name: "Служба безопасности Highflash",
                 icon_url: client.user.avatarURL()
             },
-  description: message.author.tag + " отправил жалобу: \"" + message.content.split(" ").slice(1) + "\"",
+  description: message.author.tag + " отправил жалобу: \"" + message.content.split(" ").slice(1).join() + "\"",
   	   fields: [
     {
            name: "Имя и ID сервера",
@@ -60,7 +60,7 @@ module.exports = {
 		}
 	};
     message.channel.send(supportbug_embed);
-			client.channels.cache.get("564022728143929370").send(t_log);
+			client.channels.cache.get(botconfig.log_channel).send(t_log);
 
 let str = "<@484921597015359488>"; //Just assuming some random tag. 
 
