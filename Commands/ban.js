@@ -108,7 +108,7 @@ module.exports = {
                   }
                 };
 
-                client.channels.cache.get("564022728143929370").send(ban_log);
+                client.channels.cache.get(botconfig.log_channel).send(ban_log);
               })
               .catch(err => {
                 message.channel.send(banerr4_embed);
