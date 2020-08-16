@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'rules',
 	description: 'Правила сервера Tinelix Team',
-	async execute(message, client) { 
+	async execute(message, client, botconfig) { 
 	if (message.author.id !== "484921597015359488") return;
     var rules_embed = {
       embed: {
