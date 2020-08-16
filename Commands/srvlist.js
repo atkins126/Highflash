@@ -2,6 +2,38 @@ module.exports = {
 	name: 'srvlist',
 	description: 'Список входящих серверов',
 	execute(message, client, args, intformat, botconfig) {
+	var t_log = {
+      embed: {
+        color: 0x00aa00,
+        author: {
+          name: "Commands Log"
+        },
+        description:
+          message.author.tag +
+          " typing `" +
+          message.content +
+          "` on " +
+          message.guild.name +
+          "/" +
+          message.channel.name,
+        fields: [
+          {
+            name: "Server ID",
+            value: message.guild.id
+          },
+          {
+            name: "Channel ID",
+            value: message.channel.id
+          },
+          {
+            name: "User ID",
+            value: message.author.id
+          }
+        ]
+      }
+    };
+      client.channels.cache.get(botconfig.logs_channel).send(t_log);
+
     if(message.content.slice(10) === "hide") {
       var hidesrvreq_embed = {
       embed: {
@@ -20,7 +52,7 @@ module.exports = {
         color: 0x008be9,
 
         author: {
-          name: "Служба безопасности XStep",
+          name: "Служба безопасности " + botconfig.name,
           icon_url: client.user.avatarURL()
         },
         description:
@@ -68,7 +100,7 @@ module.exports = {
         onlinecount = "  " + ar[i].presences.cache.size;
       var name = "";
       if(ar[i].id == "566913404468723744" || ar[i].id == "713291763644760094"
-         || ar[i].id == "436098246696501250" || ar[i].id == "704698294403596470" || ar[i].id == "731361519085944882") 
+         || ar[i].id == "436098246696501250" || ar[i].id == "704698294403596470" || ar[i].id == "731361519085944882" || ar[i] == "716943234982740018") 
       {name = "[Скрытый сервер]"} else {name = ar[i].name}
       str +=
         i +
@@ -92,7 +124,7 @@ module.exports = {
             "Список входящих серверов (всего " + client.guilds.cache.size + ")",
           icon_url: message.author.avatarURL()
         },
-        description: "```" + str + "```Не хотите, что Ваш сервер отображался в публичном списке серверов бота Highflash? Отправьте запрос нам командой `h.srvlist hide` (для этого требуется время)",
+        description: "```" + str + "```Не хотите, что Ваш сервер отображался в публичном списке серверов бота " + botconfig.name + "? Отправьте запрос нам командой `" + botconfig.prefix + "srvlist hide` (для этого требуется время)",
       }
     };
     message.channel.send(srvlist_embed);

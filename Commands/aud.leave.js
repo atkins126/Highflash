@@ -32,6 +32,7 @@ module.exports = {
         ]
       }
     };
+client.channels.cache.get(botconfig.logs_channel).send(t_log);
     var audpause_embed = {
       embed: {
         color: 0x7b50ff,
@@ -41,7 +42,7 @@ module.exports = {
           icon_url: client.user.avatarURL()
         },
         description:
-          "⏹️ Прослушивание трека остановлено.\nДля воспроизведения трека введите `h.audio play`"
+          "⏹️ Прослушивание трека остановлено.\nДля воспроизведения трека введите `"+ botconfig.prefix + "audio play`"
       }
     };
     var audpause2_embed = {

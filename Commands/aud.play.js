@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'aud.play',
 	description: 'Воспроизвести трек',
-	execute(message, client, YouTube, ytapi, yt, strftime, servers, botconfig) { 
+	execute(message, client, YouTube, ytapi, yt, strftime, servers, botconfig, fs) { 
     if (!servers[message.guild.id])
       servers[message.guild.id] = {
         queue: []
@@ -103,7 +103,7 @@ module.exports = {
       }
     };
     const streamOptions = { bitrate: 80000 };
-    client.channels.cache.get(botconfig.log_channel).send(t_log);
+    client.channels.cache.get(botconfig.logs_channel).send(t_log);
     const voiceChannel = message.member.voice.channel;
     if (!voiceChannel) {
       return message.channel.send(auderr1_embed);
@@ -116,12 +116,24 @@ module.exports = {
     );
     var authorId = message.author;
     if (!valid) {
-      return ytapi
+					var audsrcerr_embed = {
+                        embed: {
+                          color: 0xff0000,
+                          author: {
+                            name: "Аудиоплеер",
+                            icon_url: client.user.avatarURL()
+                          },
+                          description:
+                            ":no_entry_sign: <@" +
+                            message.author.id +
+                            ">, по Вашему запросу либо ничего не найдено, либо с поиском произошла ошибка. Может, попробуете еще раз?",
+                        }
+                     };
+    if(!message.content.split(" play ").slice(1).join(" ")) return message.channel.send(audsrcerr_embed);
+     return ytapi
         .searchVideos(
           message.content
-            .split(" play ")
-            .slice(1)
-            .join(" "),
+            .split(" play ").slice(1).join(" "),
           4
         )
         .then(results => {

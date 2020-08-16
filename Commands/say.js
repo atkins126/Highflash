@@ -32,7 +32,7 @@ module.exports = {
         ]
       }
     };
-    client.channels.cache.get(botconfig.log_channel).send(t_log);
+    client.channels.cache.get(botconfig.logs_channel).send(t_log);
     let args = message.content.split(" ").slice(1);
     const sayMessage = args.join(" ");
 	var sayerr_msg = {
@@ -43,11 +43,11 @@ module.exports = {
 	  icon_url: client.user.avatarURL()
         },
         description:
-         "<@" + message.author.id + ">, пожалуйста, введите после команды `h.say` любое слово или фразу.\n\n**Но будьте осторожны**, каждый раз, когда Вы напишете эту команду, будет высвечиваться тег автора.",
+         "<@" + message.author.id + ">, пожалуйста, введите после команды `" + botconfig.prefix +"say` любое слово или фразу.\n\n**Но будьте осторожны**, каждый раз, когда Вы напишете эту команду, будет высвечиваться тег автора.",
         fields: [
           {
             name: "Пример",
-            value: "`h.say Привет!`"
+            value: "`" + botconfig.prefix + "say Привет!`"
           },
         ]
       }

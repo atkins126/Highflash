@@ -33,6 +33,7 @@ module.exports = {
         ]
       }
     };
+client.channels.cache.get(botconfig.logs_channel).send(t_log);
     var resultg = "";
     var rpserr_embed = {
       embed: {
@@ -45,7 +46,7 @@ module.exports = {
         fields: [
           {
             name: "Пример",
-            value: "`h.rps ножницы`"
+            value: botconfig.prefix + "`rps ножницы`"
           }
         ]
       }

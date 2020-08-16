@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'binary',
 	description: 'Преобразование текста в двоичный код',
-	execute(message, client, botconfig) { 
+	execute(message, client) { 
 
     if (message.channel.type === "dm") return;
         var colour_array = ["1211996", "3447003", "13089792", "16711858", "1088163", "16098851", "6150962"]
@@ -11,7 +11,20 @@ module.exports = {
                         "а", "б", "в", "г", "д", "е", "ё", "ж", "з", "и", "й", "к", "л", "м", "н", "о", "п", "р", "с", "т", "у", "ф", "х", "ц", "ч", "ш", "щ", "ъ", "ы", "ь", "э", "ю", "я", "А", "Б", "В", "Г", "Д", "Е", "Ё", "Ж", "З", "И", "Й", "К", "Л", "М", "Н", "О", "П", "Р", "С",
                         "Т", "У", "Ф", "Х", "Ц", "Ч", "Ш", "Щ", "Ъ", "Ы", "Ь", "Э", "Ю", "Я", "?", ",", "!", ".", " ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 
-        var fmt_array = message.content.slice(9);
+          var notargs_embed = {
+        embed: {
+          color: 0x00c289,
+
+          author: {
+            name: "Конвертация в двоичный код",
+            icon_url: client.user.avatarURL()
+          },
+          description: "Сначала напишите любой текст.",
+        }
+      };
+
+        var fmt_array = message.content.split(" ").slice(1).join();
+        if(!fmt_array) return       message.channel.send(notargs_embed)
 
         var binaryMessage = translateMessage(fmt_array, "binary", alphabet)
         console.log(binaryMessage)

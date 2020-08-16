@@ -82,6 +82,6 @@ module.exports = {
     console.log(err);
     return message.channel.send(`При выполнении команды возникла ошибка: \`${err.message}\`. Повторите попытку позже.`);
 }
-    client.channels.cache.get(botconfig.log_channel).send(t_log);
+    client.channels.cache.get(botconfig.logs_channel).send(t_log);
 	}
 };

@@ -2,6 +2,9 @@ module.exports = {
 	name: 'help',
 	description: 'Справка бота',
 	async execute(message, client, botconfig, usePrefix) { 
+    let args = message.content.split(" ").slice(1);
+    console.log("``" + args + "``")
+    if (!args) return;
     var t_log = {
       embed: {
         color: 0x007700,
@@ -48,12 +51,12 @@ module.exports = {
               icon_url: client.user.avatarURL()
             },
             description:
-              "Префикс: `h.` `h!` `xs.` `xs!`" + userPrefix + ". Для выполнения пишите после префикса любую команду. Например, `xs.about`",
+              "Префикс: `" + botconfig.prefix + "` `" + botconfig.prefix_a + "` `" + botconfig.prefix_b + "` `" + botconfig.prefix_c + "`" + userPrefix + ". Для выполнения пишите после префикса любую команду. Например, `" + botconfig.prefix + "about`",
             fields: [
               {
                 name: "❓ Справка",
                 value:
-                  "`about` - о боте Highflash\r\n`report <описание жалобы>` - пожаловаться\r\n`donate` - помочь проекту\r\n`links` - ссылки на наши ресурсы",
+                  "`about` - о боте " + botconfig.name + "\r\n`report <отчет об ошибке>` - пожаловаться или отправить отчет об ошибке\r\n`donate` - помочь проекту\r\n`links` - ссылки на наши ресурсы",
               },
               {
                 name: ":tools: Опции",
@@ -85,7 +88,7 @@ module.exports = {
               icon_url: client.user.avatarURL()
             },
             description:
-               "Префикс: `h.` `h!` `xs.` `xs!`" + userPrefix + ". Для выполнения пишите после префикса любую команду. Например, `xs.about`",
+              "Префикс: `" + botconfig.prefix + "` `" + botconfig.prefix_a + "` `" + botconfig.prefix_b + "` `" + botconfig.prefix_c + "`" + userPrefix + ". Для выполнения пишите после префикса любую команду. Например, `" + botconfig.prefix + "about`",
             fields: [
               {
                 name: "👬 Развлечения",
@@ -122,7 +125,7 @@ module.exports = {
               icon_url: client.user.avatarURL()
             },
             description:
-               "Префикс: `h.` `h!` `xs.` `xs!`" + userPrefix + " Для выполнения пишите после префикса любую команду. Например, `xs.about`",
+              "Префикс: `" + botconfig.prefix + "` `" + botconfig.prefix_a + "` `" + botconfig.prefix_b + "` `" + botconfig.prefix_c + "`" + userPrefix + ". Для выполнения пишите после префикса любую команду. Например, `" + botconfig.prefix + "about`",
             fields: [
               {
                 name: "⚙️ Настройки (только для администраторов)",
@@ -134,13 +137,13 @@ module.exports = {
               text:
                 "Версия " +
                 botconfig.version +
-                " (" +
+                "👈 (" +
                 botconfig.date +
                 ") | Страница 3 из 3"
             }
           }
         };
-    client.channels.cache.get(botconfig.log_channel).send(t_log);
+    client.channels.cache.get(botconfig.logs_channel).send(t_log);
     let hlp_m = await message.channel.send(help_p1_embed);
     await hlp_m.react("1️⃣");
     await hlp_m.react("2️⃣");

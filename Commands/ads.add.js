@@ -39,7 +39,7 @@ module.exports = {
         .send(args.join(" "))
         .catch(console.error);
     } else {
-      client.channels.cache.get(botconfig.log_channel).send(t_log);
+      client.channels.cache.get(botconfig.logs_channel).send(t_log);
       var ads_err_embed = {
         embed: {
           color: 0xff0000,
@@ -48,7 +48,7 @@ module.exports = {
             icon_url: client.user.avatarURL()
           },
           description:
-            "🚫 Команда будет доступна только, если Вы сделаете пожертвование.\n\nПодробнее: `h.donate` + ввод."
+            "🚫 Команда будет доступна только, если Вы сделаете пожертвование.\n\nПодробнее: `" + botconfig.prefix + "donate` + ввод."
         }
       };
       message.channel.send(ads_err_embed);

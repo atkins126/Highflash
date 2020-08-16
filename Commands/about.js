@@ -1,7 +1,10 @@
 module.exports = {
 	name: 'about',
 	description: 'Информация о боте',
-	execute(message, client, args, botconfig) { 
+	execute(message, client, botconfig) { 
+   let args = message.content.split(" ").slice(1);
+    console.log("``" + args + "``")
+    if (!args) return;
     var t_log = {
       embed: {
         color: 0x008800,
@@ -32,13 +35,13 @@ module.exports = {
         ]
       }
     };
-      client.channels.cache.get(botconfig.log_channel).send(t_log);
+      client.channels.cache.get(botconfig.logs_channel).send(t_log);
       let botowner = client.users.cache.find(user => user.id === "484921597015359488");
       var about_embed = {
         embed: {
           color: 0x0088ff,
           author: {
-            name: "О боте Highflash",
+            name: "О боте " + botconfig.name,
             icon_url: client.user.avatarURL()
           },
           fields: [
@@ -53,10 +56,6 @@ module.exports = {
             {
               name: "Исходные коды",
               value: "https://github.com/tinelix/highflash"
-            },
-            {
-              name: "Время работы",
-              value: "С 06:00 до 20:00 по московскому времени в связи с ограничениями круглосуточного режима в хостингах (Glitch, Heroku)"
             },
           ],
             footer: {

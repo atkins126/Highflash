@@ -32,7 +32,7 @@ module.exports = {
         ]
       }
     };
-      client.channels.cache.get(botconfig.log_channel).send(t_log);
+      client.channels.cache.get(botconfig.logs_channel).send(t_log);
       var donate_embed = {
         embed: {
           color: 0x44aa44,
@@ -41,7 +41,7 @@ module.exports = {
             icon_url: client.user.avatarURL()
           },
           description:
-            "💵 За донат вы получите:\n1. Команду `h.ads +` для рекламы Вашего сервера!\n\nhttps://donationalerts.com/r/dmitryevpc\n\nМинимум - 15 рублей, 6 украинских гривень или 0.15 долларов США"
+            "💵 https://donationalerts.com/r/dmitryevpc"
         }
       };
       message.channel.send(donate_embed);

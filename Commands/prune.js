@@ -33,7 +33,7 @@ module.exports = {
         ]
       }
     };
-      client.channels.cache.get(botconfig.log_channel).send(t_log);
+      client.channels.cache.get(botconfig.logs_channel).send(t_log);
       let args = message.content.split(" ").slice(1);
       var deletemsg_embed = {
         embed: {
@@ -56,7 +56,7 @@ module.exports = {
             icon_url: client.user.avatarURL()
           },
           description:
-            "⚠ Пожалуйста, укажите после этой команды любое число от 2 до 100 для удаления."
+            "⚠ Пожалуйста, укажите после этой команды любое число от 2 до 98 для удаления."
         }
       };
 

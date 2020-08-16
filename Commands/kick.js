@@ -35,7 +35,7 @@ module.exports = {
             icon_url: client.user.avatarURL()
           },
           description:
-            "🚫 Для того, чтобы кикнуть участника, напишите `h.kick <упоминание>`"
+            "🚫 Для того, чтобы кикнуть участника, напишите `" + botconfig.prefix + "kick <упоминание>`"
         }
       };
       var kickerr4_embed = {
@@ -96,7 +96,7 @@ module.exports = {
                 ]
               }
             };
-            client.channels.cache.get(botconfig.log_channel).send(kick_log);
+            client.channels.cache.get(botconfig.logs_channel).send(kick_log);
             member
               .kick("Optional reason that will display in the audit logs")
               .then(() => {

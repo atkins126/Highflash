@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'readme',
 	description: 'Руководство участника сервера Tinelix Team',
-	async execute(message, client, botconfig) { 
+	async execute(message, client) { 
 	if (message.author.id !== "484921597015359488") return;
     var chsname_embed = {
       embed: {

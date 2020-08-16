@@ -32,7 +32,7 @@ module.exports = {
         ]
       }
     };
-    client.channels.cache.get(botconfig.log_channel).send(t_log);
+    client.channels.cache.get(botconfig.logs_channel).send(t_log);
 	weather.find({search: args, degreeType: 'C', lang: 'ru-RU'}, function(err, result) {
 	var weather_err2_embed = {
       	embed: {

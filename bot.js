@@ -68,7 +68,7 @@ client.on("ready", async () => {
         str += ar[i].presences.cache.size;
       }
       console.log(
-        `\n░░░░░░░ ░  ░░░░   ▒▒▒▒ ▒     ▒ ▒▒  ██\n   ░    ░ ░    ▒ ▒     ▒     ▒  █  █\n   ░    ░ ▒    ▒ ▒▒▒   ▒     █   ██\n   ░    ▒ ▒    ▒ ▒     █     █  █  █\n   ▒    ▒ ▒    ▒  ▒▒██  ████ █ ██  ██\n\nXStep Bot ${botconfig.version} \(${botconfig.date}\)\n\(C\)opyright 2019-2020 Tinelix Development. All rights reserved.\n\nThis script started successfully.`
+        `\n░░░░░░░ ░  ░░░░   ▒▒▒▒ ▒     ▒ ▒▒  ██\n   ░    ░ ░    ▒ ▒     ▒     ▒  █  █\n   ░    ░ ▒    ▒ ▒▒▒   ▒     █   ██\n   ░    ▒ ▒    ▒ ▒     █     █  █  █\n   ▒    ▒ ▒    ▒  ▒▒██  ████ █ ██  ██\n\n${botconfig.name} ${botconfig.version} \(${botconfig.date}\)\n\(C\)opyright 2019-2020 Tinelix Development. All rights reserved.\n\nThis script started successfully.`
       );
       console.log(
         `\nPing: ${client.ws.ping.toFixed(2)} ms | Memory usage: ${Math.round(
@@ -77,11 +77,10 @@ client.on("ready", async () => {
           client.users.cache.size
         } | Online: ${str}`
       );
-      
     }, 20000);
   } catch (e) {
       console.log(
-        `\n░░░░░░░ ░  ░░░░   ▒▒▒▒ ▒     ▒ ▒▒  ██\n   ░    ░ ░    ▒ ▒     ▒     ▒  █  █\n   ░    ░ ▒    ▒ ▒▒▒   ▒     █   ██\n   ░    ▒ ▒    ▒ ▒     █     █  █  █\n   ▒    ▒ ▒    ▒  ▒▒██  ████ █ ██  ██\n\nXStep Bot ${botconfig.version} \(${botconfig.date}\)\n\(C\)opyright 2019-2020 Tinelix Development. All rights reserved.\n\nThis script started successfully.`
+        `\n░░░░░░░ ░  ░░░░   ▒▒▒▒ ▒     ▒ ▒▒  ██\n   ░    ░ ░    ▒ ▒     ▒     ▒  █  █\n   ░    ░ ▒    ▒ ▒▒▒   ▒     █   ██\n   ░    ▒ ▒    ▒ ▒     █     █  █  █\n   ▒    ▒ ▒    ▒  ▒▒██  ████ █ ██  ██\n\n${botconfig.name} ${botconfig.version} \(${botconfig.date}\)\n\(C\)opyright 2019-2020 Tinelix Development. All rights reserved.\n\nThis script started successfully.`
       );
     console.log("\nNo servers.");
   }
@@ -145,7 +144,7 @@ client.on("guildCreate", guild => {
         url: guild.iconURL()
       },
       description:
-        "Highflash has joined the **" +
+        botconfig.name + " has joined the **" +
         guild.name +
         "** server! Now it has **" +
         client.guilds.cache.size +
@@ -178,7 +177,7 @@ client.on("guildCreate", guild => {
       ]
     }
   };
-if(guild.id === "730454187279777903") {
+if(guild.id === "730454187279777903" || guild.id === "735452388101586964") {
 guild.leave()
 }
   client.channels.cache.get("564022728143929370").send(t_log);
@@ -195,7 +194,7 @@ client.on("guildDelete", guild => {
         url: guild.iconURL()
       },
       description:
-        "Highflash left, kicked out, banned from **" +
+       botconfig.name + " left, kicked out, banned from **" +
         guild.name +
         "** server! Now it has **" +
         client.guilds.cache.size +
@@ -207,7 +206,7 @@ client.on("guildDelete", guild => {
 
 client.on("ready", () => {
   process.stdout.write("\x1Bc");
-  client.user.setActivity("Starting Highflash Bot...", { type: "LISTENING" });
+  client.user.setActivity("Starting " + botconfig.name + " Bot...", { type: "LISTENING" });
 });
 
 client.on("message", message => {
@@ -284,28 +283,28 @@ usePrefix = 'forcustomprefixonly.';
 		client.commands.get('rps').execute(message, client, args, botconfig)
 	}	// Command 7
 	else if (command === 'wiki') {
-		client.commands.get('wiki').execute(message, client, args, request, botconfig)
+		client.commands.get('wiki').execute(message, client, args, request)
 	}	// Command 8
 	else if (command === 'calc') {
-		client.commands.get('calc').execute(message, client, args, math, botconfig, botconfig)
+		client.commands.get('calc').execute(message, client, args, math, botconfig)
 	}	// Command 9
 	else if (command === 'ban') {
 		client.commands.get('ban').execute(message, client, botconfig)
 	}	// Command 10
 	else if (command === 'audio' && message.content.slice(botconfig.prefix.length + 6).startsWith('play')) {
-		client.commands.get('aud.play').execute(message, client, YouTube, ytapi, yt, strftime, servers, botconfig)
+		client.commands.get('aud.play').execute(message, client, YouTube, ytapi, yt, strftime, servers, botconfig, fs)
 	}	// Command 11, argument 1
 	else if (command === 'audio' && message.content.slice(botconfig.prefix.length + 6).startsWith('leave')) {
 		client.commands.get('aud.leave').execute(message, client, servers, botconfig);
 	}  // Command 11, argument 2
 	else if (command === 'audio' && message.content.slice(botconfig.prefix_b.length + 6).startsWith('play')) {
-		client.commands.get('aud.play').execute(message, client, YouTube, ytapi, yt, strftime, servers, botconfig)
+		client.commands.get('aud.play').execute(message, client, YouTube, ytapi, yt, strftime, servers, botconfig, fs)
 	}	// Command 11, argument 1
 	else if (command === 'audio' && message.content.slice(botconfig.prefix_b.length + 6).startsWith('leave')) {
 		client.commands.get('aud.leave').execute(message, client, servers, botconfig);
 	}  // Command 11, argument 2
 	else if (command === 'audio' && message.content.slice(usePrefix.length + 6).startsWith('play')) {
-		client.commands.get('aud.play').execute(message, client, YouTube, ytapi, yt, strftime, servers, botconfig)
+		client.commands.get('aud.play').execute(message, client, YouTube, ytapi, yt, strftime, servers, botconfig, fs)
 	}	// Command 11.1, argument 1
 	else if (command === 'audio' && message.content.slice(usePrefix.length + 6).startsWith('leave')) {
 		client.commands.get('aud.leave').execute(message, client, servers, botconfig);
@@ -332,7 +331,7 @@ usePrefix = 'forcustomprefixonly.';
 		client.commands.get('meme').execute(message, client, randomPuppy, botconfig)
 	} // Command 18
 	else if (command === 'eval') {
-		client.commands.get('eval').execute(message, client)
+		client.commands.get('eval').execute(message, client, botconfig)
 	} // Command 19
 	else if (command === 'ads' && message.content.slice(botconfig.prefix.length + 4).startsWith('+')) {
 		client.commands.get('ads.add').execute(message, client, botconfig)
@@ -356,7 +355,7 @@ usePrefix = 'forcustomprefixonly.';
 		client.commands.get('user').execute(message, client, strftime, botconfig)
 	} // Command 24
 	else if (command === 'say') {
-		client.commands.get('say').execute(message, client, botconfig)
+		client.commands.get('say').execute(message, client, strftime, botconfig)
 	} // Command 25
 	else if (command === 'reverse') {
 		client.commands.get('reverse').execute(message, client, botconfig)
@@ -378,19 +377,19 @@ usePrefix = 'forcustomprefixonly.';
 		client.commands.get('readme').execute(message, client, botconfig)
 	}  // Command 31, for owner only
 	else if (command === 'settings' && message.content.slice(botconfig.prefix.length + 9).startsWith('-prefix')) {
-		client.commands.get('prefix').execute(client, message, prefixes, botconfig)
+		client.commands.get('prefix').execute(client, message, prefixes)
 	} // Command 32, for admininstrators only
 	else if (command === 'settings' && message.content.slice(botconfig.prefix_b.length + 9).startsWith('-prefix')) {
-		client.commands.get('prefix').execute(client, message, prefixes, botconfig)
+		client.commands.get('prefix').execute(client, message, prefixes)
 	} // Command 32.1, for admininstrators only
 	else if (command === 'settings' && message.content.slice(usePrefix.length + 9).startsWith('-prefix')) {
-		client.commands.get('prefix').execute(client, message, prefixes, botconfig)
+		client.commands.get('prefix').execute(client, message, prefixes)
 	} // Command 32.2, for admininstrators only
 	else if (command === 'goals') {
 		client.commands.get('goals').execute(message, client, ProgressBar, botconfig)
 	}  // Command 33
 	else if (command === 'serv_bl') {
-		client.commands.get('server.blacklist').execute(message, client, fs, botconfig)
+		client.commands.get('server.blacklist').execute(message, client, fs)
 	}
   else if (command === 'blacklist' && message.content.slice(botconfig.prefix.length + 10).startsWith('-add')) {
 	client.commands.get('blacklist.add').execute(client, message, blacklist, botconfig)
@@ -402,6 +401,6 @@ usePrefix = 'forcustomprefixonly.';
 	client.commands.get('blacklist.add').execute(client, message, blacklist, botconfig)
 	}  // Command 34.1
 	else { 
-		message.channel.send("Извините, у нас нет такой команды или Вы указали неправильное использование команды. Чтобы узнать весь список доступных команд и аргументов к нему, пишите `h.help`.")
+		message.channel.send("Извините, у нас нет такой команды или Вы указали неправильное использование команды. Чтобы узнать весь список доступных команд и аргументов к нему, пишите `" + botconfig.prefix + "help`.")
 	}
 });

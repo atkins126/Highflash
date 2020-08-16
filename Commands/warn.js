@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'warn',
 	description: 'Выдать человеку предупреждение',
-	execute(message, client, fs, botconfig) { 
+	execute(message, client, fs) { 
     try {
       let profile = require("./JSON/profile.json");
       var warnerr1_embed = {

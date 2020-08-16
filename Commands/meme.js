@@ -33,7 +33,7 @@ module.exports = {
       }
     };
 
-    client.channels.cache.get(botconfig.log_channel).send(t_log);
+    client.channels.cache.get(botconfig.logs_channel).send(t_log);
     // In this array,
     // you can put the subreddits you want to grab memes from
     const subReddits = ["dankmeme", "meme", "me_irl"];

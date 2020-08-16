@@ -96,11 +96,11 @@ module.exports = {
         ],
 	  footer: {
             text:
-              "Highflash использует Node.js версии " + process.version + " и Discord.js версии " + Discord.version,
+              botconfig.name + " использует Node.js версии " + process.version.slice(1) + " и Discord.js версии " + Discord.version,
           }
       }
     };
-    client.channels.cache.get(botconfig.log_channel).send(t_log);
+    client.channels.cache.get(botconfig.logs_channel).send(t_log);
 	return message.channel.send(test_embed);
 }
 };

@@ -32,6 +32,7 @@ module.exports = {
         ]
       }
     };
+client.channels.cache.get(botconfig.logs_channel).send(t_log);
     try {	
 	  var calc_err1_embed = {
       embed: {
@@ -40,11 +41,11 @@ module.exports = {
             name: "Калькулятор",
             icon_url: client.user.avatarURL()
           },
-          description: "Вы должны после команды `h.calc` указать математическое выражение.",
+          description: "Вы должны после команды `" + botconfig.prefix + "calc` указать математическое выражение.",
           fields: [
             {
               name: "Пример",
-              value: "`h.calc 12 * 18`, `h.calc -468 + 212`, `h.calc 16 / 2`"
+              value: "`" + botconfig.prefix + "calc 12 * 18`, `" + botconfig.prefix + "h.calc -468 + 212`, `" + botconfig.prefix + "h.calc 16 / 2`"
             }
           ]
         }
@@ -110,6 +111,6 @@ module.exports = {
 	  console.log(e);
       return message.channel.send(calc_err3_embed)
     }
-    client.channels.cache.get(botconfig.log_channel).send(t_log);
+    client.channels.cache.get("564022728143929370").send(t_log);
 }
 };
