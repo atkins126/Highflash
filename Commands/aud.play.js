@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'aud.play',
 	description: 'Воспроизвести трек',
-	execute(message, client, YouTube, ytapi, yt, strftime, servers) { 
+	execute(message, client, YouTube, ytapi, yt, strftime, servers, botconfig) { 
     if (!servers[message.guild.id])
       servers[message.guild.id] = {
         queue: []
