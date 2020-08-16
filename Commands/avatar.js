@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'avatar',
 	description: 'Показывает ваш аватар.',
-	execute(message, client) { 
+	execute(message, client, botconfig) { 
     var t_log = {
       embed: {
         color: 0xff8800,
