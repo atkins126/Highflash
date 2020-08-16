@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'links',
 	description: 'Ссылки на наши ресурсы',
-	execute(message, client) { 
+	execute(message, client, botconfig) { 
     var t_log = {
       embed: {
         color: 0x2255ff,
@@ -32,7 +32,7 @@ module.exports = {
         ]
       }
     };
-      client.channels.cache.get("564022728143929370").send(t_log);
+      client.channels.cache.get(botconfig.log_channel).send(t_log);
       var links_embed = {
         embed: {
           color: 0xaa88ff,
