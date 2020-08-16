@@ -140,7 +140,7 @@ module.exports = {
             }
           }
         };
-    client.channels.cache.get("564022728143929370").send(t_log);
+    client.channels.cache.get(botconfig.log_channel).send(t_log);
     let hlp_m = await message.channel.send(help_p1_embed);
     await hlp_m.react("1️⃣");
     await hlp_m.react("2️⃣");
