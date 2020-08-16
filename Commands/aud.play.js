@@ -103,7 +103,7 @@ module.exports = {
       }
     };
     const streamOptions = { bitrate: 80000 };
-    client.channels.cache.get("564022728143929370").send(t_log);
+    client.channels.cache.get(botconfig.log_channel).send(t_log);
     const voiceChannel = message.member.voice.channel;
     if (!voiceChannel) {
       return message.channel.send(auderr1_embed);
