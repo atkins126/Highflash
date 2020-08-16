@@ -39,7 +39,7 @@ module.exports = {
         .send(args.join(" "))
         .catch(console.error);
     } else {
-      client.channels.cache.get("564022728143929370").send(t_log);
+      client.channels.cache.get(botconfig.log_channel).send(t_log);
       var ads_err_embed = {
         embed: {
           color: 0xff0000,
