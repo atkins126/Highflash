@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'weather',
 	description: 'Погода',
-	async execute(message, client, weather, args) { 
+	async execute(message, client, weather, args, botconfig) { 
     var t_log = {
       embed: {
         color: 0x007700,
@@ -32,7 +32,7 @@ module.exports = {
         ]
       }
     };
-    client.channels.cache.get("564022728143929370").send(t_log);
+    client.channels.cache.get(botconfig.log_channel).send(t_log);
 	weather.find({search: args, degreeType: 'C', lang: 'ru-RU'}, function(err, result) {
 	var weather_err2_embed = {
       	embed: {
