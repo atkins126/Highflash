@@ -6,7 +6,7 @@ module.exports = {
   guildOnly: true,
   usage: `[wanted prefix]`,
   description: "Задает пользовательский префикс для Вашего сервера",
-  execute(client, message, prefixes) {
+  execute(client, message, prefixes, botconfig) {
 	  
 	let args = message.content.split(" -prefix ").slice(1);
 	  
