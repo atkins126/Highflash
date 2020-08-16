@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'srvlist',
 	description: 'Список входящих серверов',
-	execute(message, client, args, intformat) {
+	execute(message, client, args, intformat, botconfig) {
     if(message.content.slice(10) === "hide") {
       var hidesrvreq_embed = {
       embed: {
