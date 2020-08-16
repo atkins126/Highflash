@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'server',
 	description: 'Показывает информацию о текущем сервере',
-	execute(message, client, strftime) { 
+	execute(message, client, strftime, botconfig) { 
     var t_log = {
       embed: {
         color: 0x3333ff,
@@ -40,7 +40,7 @@ module.exports = {
       } else {
         afkCh = "Отсутствует";
       }
-      client.channels.cache.get("564022728143929370").send(t_log);
+      client.channels.cache.get(botconfig.log_channel).send(t_log);
       let verifLvl = "";
       if(message.guild.verificationLevel === "NONE") {
       verifLvl = "Без ограничений"
