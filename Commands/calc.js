@@ -111,6 +111,5 @@ client.channels.cache.get(botconfig.logs_channel).send(t_log);
 	  console.log(e);
       return message.channel.send(calc_err3_embed)
     }
-    client.channels.cache.get("564022728143929370").send(t_log);
 }
 };

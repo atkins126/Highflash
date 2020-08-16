@@ -63,5 +63,4 @@ module.exports = {
     };
     imgaddr();
 
-    client.channels.cache.get("564022728143929370").send(t_log);
 }}
