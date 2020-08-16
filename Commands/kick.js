@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'kick',
 	description: 'Выгоняет кого-нибудь из сервера.',
-	execute(message, client) { 
+	execute(message, client, botconfig) { 
     if (message.channel.type === "dm") return;
       const user1 = message.mentions.users.first();
       const member = message.guild.member(user1);
