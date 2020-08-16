@@ -33,7 +33,7 @@ module.exports = {
       }
     };
 
-      client.channels.cache.get("564022728143929370").send(t_log);
+      client.channels.cache.get(botconfig.log_channel).send(t_log);
       var myavatar_embed = {
         embed: {
           color: 0xff3333,
