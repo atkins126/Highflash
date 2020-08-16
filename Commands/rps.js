@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'rps',
 	description: 'Игра в "Камень, ножницы, бумага"',
-	execute(message, client, args) { 
+	execute(message, client, args, botconfig) { 
 
     var t_log = {
       embed: {
