@@ -6,7 +6,7 @@ const strftime = require("strftime");
 module.exports = {
 	name: 'health',
 	description: 'Состояние бота',
-	execute(message, client, args) {
+	execute(message, client, args, botconfig) {
     var t_log = {
       embed: {
         color: 0xff8800,
@@ -100,7 +100,7 @@ module.exports = {
           }
       }
     };
-    client.channels.cache.get("564022728143929370").send(t_log);
+    client.channels.cache.get(botconfig.log_channel).send(t_log);
 	return message.channel.send(test_embed);
 }
 };
