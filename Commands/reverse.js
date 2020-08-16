@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'reverse',
 	description: 'Перевод текста в обратном порядке',
-	async execute(message, client) { 
+	async execute(message, client, botconfig) { 
     if (message.channel.type === "dm") return;
         var msg_array = message.content.split(" ").slice(11);
 
