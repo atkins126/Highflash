@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'ads.add',
 	description: 'Добавить рекламу бота',
-	execute(message, client) { 
+	execute(message, client, botconfig) { 
     var t_log = {
       embed: {
         color: 0xffff00,
