@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'prune',
 	description: 'Очищает сообщения',
-	async execute(message, client) { 
+	async execute(message, client, botconfig) { 
     if (message.channel.type === "dm") return;
     var t_log = {
       embed: {
@@ -33,7 +33,7 @@ module.exports = {
         ]
       }
     };
-      client.channels.cache.get("564022728143929370").send(t_log);
+      client.channels.cache.get(botconfig.log_channel).send(t_log);
       let args = message.content.split(" ").slice(1);
       var deletemsg_embed = {
         embed: {
