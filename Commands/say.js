@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'say',
 	description: 'Написать сообщение от имени бота (с автором)',
-	execute(message, client, strftime) { 
+	execute(message, client, strftime, botconfig) { 
     var t_log = {
       embed: {
         color: 0x008800,
@@ -32,7 +32,7 @@ module.exports = {
         ]
       }
     };
-    client.channels.cache.get("564022728143929370").send(t_log);
+    client.channels.cache.get(botconfig.log_channel).send(t_log);
     let args = message.content.split(" ").slice(1);
     const sayMessage = args.join(" ");
 	var sayerr_msg = {
