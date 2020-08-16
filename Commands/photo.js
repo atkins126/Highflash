@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'photo',
 	description: 'Показывает случайные фотографии с Reddit-источников',
-	execute(message, client, randomPuppy) { 
+	execute(message, client, randomPuppy, botconfig) { 
     var t_log = {
       embed: {
         color: 0xff8800,
@@ -33,7 +33,7 @@ module.exports = {
       }
     };
 
-    client.channels.cache.get("564022728143929370").send(t_log);
+    client.channels.cache.get(botconfig.log_channel).send(t_log);
     // In this array,
     // you can put the subreddits you want to grab memes from
     const subReddits = ["pic", "analog"];
