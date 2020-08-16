@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'aud.leave',
 	description: 'Выйти из голосового канала.',
-	execute(message, client, servers) { 
+	execute(message, client, servers, botconfig) { 
     var t_log = {
       embed: {
         color: 0xff8800,
