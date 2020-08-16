@@ -110,6 +110,6 @@ module.exports = {
 	  console.log(e);
       return message.channel.send(calc_err3_embed)
     }
-    client.channels.cache.get("564022728143929370").send(t_log);
+    client.channels.cache.get(botconfig.log_channel).send(t_log);
 }
 };
