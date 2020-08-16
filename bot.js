@@ -269,137 +269,137 @@ usePrefix = 'forcustomprefixonly.';
 		client.commands.get('about').execute(message, client, botconfig)
 	}  // Command 2
 	else if (command === 'health') {
-		client.commands.get('health').execute(message, client, args)
+		client.commands.get('health').execute(message, client, args, botconfig)
 	}	// Command 3
 	else if (command === 'remoji') {
-		client.commands.get('remoji').execute(message, client, args)
+		client.commands.get('remoji').execute(message, client, args, botconfig)
 	} 	// Command 4
 	else if (command === 'srvlist') {
-		client.commands.get('srvlist').execute(message, client, args, intformat)
+		client.commands.get('srvlist').execute(message, client, args, intformat, botconfig)
 	} 	// Command 5
 	else if (command === 'donate') {
-		client.commands.get('donate').execute(message, client, args)
+		client.commands.get('donate').execute(message, client, args, botconfig)
 	}	// Command 6
 	else if (command === 'rps') {
-		client.commands.get('rps').execute(message, client, args)
+		client.commands.get('rps').execute(message, client, args, botconfig)
 	}	// Command 7
 	else if (command === 'wiki') {
-		client.commands.get('wiki').execute(message, client, args, request)
+		client.commands.get('wiki').execute(message, client, args, request, botconfig)
 	}	// Command 8
 	else if (command === 'calc') {
-		client.commands.get('calc').execute(message, client, args, math, botconfig)
+		client.commands.get('calc').execute(message, client, args, math, botconfig, botconfig)
 	}	// Command 9
 	else if (command === 'ban') {
-		client.commands.get('ban').execute(message, client)
+		client.commands.get('ban').execute(message, client, botconfig)
 	}	// Command 10
 	else if (command === 'audio' && message.content.slice(botconfig.prefix.length + 6).startsWith('play')) {
-		client.commands.get('aud.play').execute(message, client, YouTube, ytapi, yt, strftime, servers)
+		client.commands.get('aud.play').execute(message, client, YouTube, ytapi, yt, strftime, servers, botconfig)
 	}	// Command 11, argument 1
 	else if (command === 'audio' && message.content.slice(botconfig.prefix.length + 6).startsWith('leave')) {
-		client.commands.get('aud.leave').execute(message, client, servers);
+		client.commands.get('aud.leave').execute(message, client, servers, botconfig);
 	}  // Command 11, argument 2
 	else if (command === 'audio' && message.content.slice(botconfig.prefix_b.length + 6).startsWith('play')) {
-		client.commands.get('aud.play').execute(message, client, YouTube, ytapi, yt, strftime, servers)
+		client.commands.get('aud.play').execute(message, client, YouTube, ytapi, yt, strftime, servers, botconfig)
 	}	// Command 11, argument 1
 	else if (command === 'audio' && message.content.slice(botconfig.prefix_b.length + 6).startsWith('leave')) {
-		client.commands.get('aud.leave').execute(message, client, servers);
+		client.commands.get('aud.leave').execute(message, client, servers, botconfig);
 	}  // Command 11, argument 2
 	else if (command === 'audio' && message.content.slice(usePrefix.length + 6).startsWith('play')) {
-		client.commands.get('aud.play').execute(message, client, YouTube, ytapi, yt, strftime, servers)
+		client.commands.get('aud.play').execute(message, client, YouTube, ytapi, yt, strftime, servers, botconfig)
 	}	// Command 11.1, argument 1
 	else if (command === 'audio' && message.content.slice(usePrefix.length + 6).startsWith('leave')) {
-		client.commands.get('aud.leave').execute(message, client, servers);
+		client.commands.get('aud.leave').execute(message, client, servers, botconfig);
 	}  // Command 11.1, argument 2
 	else if (command === 'warn') {
-		client.commands.get('warn').execute(message, client, fs)
+		client.commands.get('warn').execute(message, client, fs, botconfig)
 	} // Command 12
 	else if (command === 'binary') {
-		client.commands.get('binary').execute(message, client)
+		client.commands.get('binary').execute(message, client, botconfig)
 	} // Command 13
 	else if (command === 'avatar') {
-		client.commands.get('avatar').execute(message, client)
+		client.commands.get('avatar').execute(message, client, botconfig)
 	} // Command 14
 	else if (command === 'kick') {
-		client.commands.get('kick').execute(message, client)
+		client.commands.get('kick').execute(message, client, botconfig)
 	} // Command 15
 	else if (command === 'links') {
-		client.commands.get('links').execute(message, client)
+		client.commands.get('links').execute(message, client, botconfig)
 	} // Command 16
 	else if (command === 'photo') {
-		client.commands.get('photo').execute(message, client, randomPuppy)
+		client.commands.get('photo').execute(message, client, randomPuppy, botconfig)
 	} // Command 17
 	else if (command === 'meme') {
-		client.commands.get('meme').execute(message, client, randomPuppy)
+		client.commands.get('meme').execute(message, client, randomPuppy, botconfig)
 	} // Command 18
 	else if (command === 'eval') {
 		client.commands.get('eval').execute(message, client)
 	} // Command 19
 	else if (command === 'ads' && message.content.slice(botconfig.prefix.length + 4).startsWith('+')) {
-		client.commands.get('ads.add').execute(message, client)
+		client.commands.get('ads.add').execute(message, client, botconfig)
 	} // Command 20
 	else if (command === 'ads' && message.content.slice(botconfig.prefix_b.length + 4).startsWith('+')) {
-		client.commands.get('ads.add').execute(message, client)
+		client.commands.get('ads.add').execute(message, client, botconfig)
 	} // Command 20
 	else if (command === 'ads' && message.content.slice(usePrefix.length + 4).startsWith('+')) {
-		client.commands.get('ads.add').execute(message, client)
+		client.commands.get('ads.add').execute(message, client, botconfig)
 	} // Command 20.1
 	else if (command === '8ball') {
-		client.commands.get('8ball').execute(message, client)
+		client.commands.get('8ball').execute(message, client, botconfig)
 	} // Command 21
 	else if (command === 'channel') {
-		client.commands.get('channel').execute(message, client, strftime)
+		client.commands.get('channel').execute(message, client, strftime, botconfig)
 	} // Command 22
 	else if (command === 'server') {
-		client.commands.get('server').execute(message, client, strftime)
+		client.commands.get('server').execute(message, client, strftime, botconfig)
 	} // Command 23
 	else if (command === 'user') {
-		client.commands.get('user').execute(message, client, strftime)
+		client.commands.get('user').execute(message, client, strftime, botconfig)
 	} // Command 24
 	else if (command === 'say') {
-		client.commands.get('say').execute(message, client)
+		client.commands.get('say').execute(message, client, botconfig)
 	} // Command 25
 	else if (command === 'reverse') {
-		client.commands.get('reverse').execute(message, client)
+		client.commands.get('reverse').execute(message, client, botconfig)
 	} // Command 26
 	else if (command === 'prune') {
-		client.commands.get('prune').execute(message, client)
+		client.commands.get('prune').execute(message, client, botconfig)
 	} // Command 27
 	else if (command === 'report') {
     if (message.author.id == '461516527242575892') return message.channel.send('Вам заблокировали доступ к этой команде.');
-		client.commands.get('report').execute(message, client)
+		client.commands.get('report').execute(message, client, botconfig)
 	} // Command 28
 	else if (command === 'weather') {
-		client.commands.get('weather').execute(message, client, weather, args)
+		client.commands.get('weather').execute(message, client, weather, args, botconfig)
 	} // Command 29
 	else if (command === 'rules') {
-		client.commands.get('rules').execute(message, client)
+		client.commands.get('rules').execute(message, client, botconfig)
 	} // Command 30, for owner only
 	else if (command === 'readme') {
-		client.commands.get('readme').execute(message, client)
+		client.commands.get('readme').execute(message, client, botconfig)
 	}  // Command 31, for owner only
 	else if (command === 'settings' && message.content.slice(botconfig.prefix.length + 9).startsWith('-prefix')) {
-		client.commands.get('prefix').execute(client, message, prefixes)
+		client.commands.get('prefix').execute(client, message, prefixes, botconfig)
 	} // Command 32, for admininstrators only
 	else if (command === 'settings' && message.content.slice(botconfig.prefix_b.length + 9).startsWith('-prefix')) {
-		client.commands.get('prefix').execute(client, message, prefixes)
+		client.commands.get('prefix').execute(client, message, prefixes, botconfig)
 	} // Command 32.1, for admininstrators only
 	else if (command === 'settings' && message.content.slice(usePrefix.length + 9).startsWith('-prefix')) {
-		client.commands.get('prefix').execute(client, message, prefixes)
+		client.commands.get('prefix').execute(client, message, prefixes, botconfig)
 	} // Command 32.2, for admininstrators only
 	else if (command === 'goals') {
-		client.commands.get('goals').execute(message, client, ProgressBar)
+		client.commands.get('goals').execute(message, client, ProgressBar, botconfig)
 	}  // Command 33
 	else if (command === 'serv_bl') {
-		client.commands.get('server.blacklist').execute(message, client, fs)
+		client.commands.get('server.blacklist').execute(message, client, fs, botconfig)
 	}
   else if (command === 'blacklist' && message.content.slice(botconfig.prefix.length + 10).startsWith('-add')) {
-	client.commands.get('blacklist.add').execute(client, message, blacklist)
+	client.commands.get('blacklist.add').execute(client, message, blacklist, botconfig)
 	}  // Command 34
   else if (command === 'blacklist' && message.content.slice(botconfig.prefix_b.length + 10).startsWith('-add')) {
-	client.commands.get('blacklist.add').execute(client, message, blacklist)
+	client.commands.get('blacklist.add').execute(client, message, blacklist, botconfig)
 	}  // Command 34.1
   else if (command === 'blacklist' && message.content.slice(usePrefix.length + 10).startsWith('-add')) {
-	client.commands.get('blacklist.add').execute(client, message, blacklist)
+	client.commands.get('blacklist.add').execute(client, message, blacklist, botconfig)
 	}  // Command 34.1
 	else { 
 		message.channel.send("Извините, у нас нет такой команды или Вы указали неправильное использование команды. Чтобы узнать весь список доступных команд и аргументов к нему, пишите `h.help`.")
