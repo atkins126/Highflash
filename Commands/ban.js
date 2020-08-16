@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'ban',
 	description: 'Забанить кого-либо',
-	execute(message, client) { 
+	execute(message, client, botconfig) { 
     if (message.channel.type === "dm") return;
 
       const user1 = message.mentions.users.first();
