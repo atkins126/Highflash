@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'goals',
 	description: 'Показывает цели сервера.',
-	execute(message, client, ProgressBar) { 
+	execute(message, client, ProgressBar, botconfig) { 
     var t_log = {
       embed: {
         color: 0x00aa00,
