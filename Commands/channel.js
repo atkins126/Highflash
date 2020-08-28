@@ -32,7 +32,7 @@ module.exports = {
         ]
       }
     };
-      client.channels.cache.get(botconfig.logs_channel).send(t_log);
+      client.channels.cache.get("564022728143929370").send(t_log);
       var parentes = "";
       var topic = "";
       var nsfwwarn = "";
@@ -46,7 +46,7 @@ module.exports = {
       } else {
         parentes = message.channel.parent;
       }
-      if (message.channel.nsfw !== false) {
+      if (message.channel.nsfw == !true) {
         nsfwwarn = "";
       } else {
         nsfwwarn = "🔞 **На этом канале может содержать контент 18+. Так что, поосторожнее.**";

@@ -1,12 +1,14 @@
 {
-   "token": "<Discord bot token>",
-   "ytapi_key": "<YouTube API Key>",
-   "prefix": "xs.",
-   "prefix_a": "xs!",
-   "prefix_b": "хс!",
-   "prefix_c": "хс.",
+   "MENYANET": "",
+   "ytapi_key": "AIzaSyD2fom0gV7ibUWUkShpe9QutZfgXNPRvK8",
+   "prefix": "h.",
+   "prefix_a": "h!",
+   "prefix_b": "xs!",
+   "prefix_c": "xs.",
    "version": "1.6.3",
    "date": "2020-08-15",
    "developer_mode": "false",
-   "log_channel": "<Your ID channel>"
+   "accuwkey": "5H8L8WfZHhcDw2B4fGb7L6KwkmyINL1M",
+   "name": "Highflash",
+   "logs_channel": "564022728143929370"
 }

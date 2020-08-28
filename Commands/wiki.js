@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'wiki',
 	description: 'Поиск в Википедии',
-	async execute(message, client, args, request, botconfig) { 
+	async execute(message, client, args, request) { 
     var t_log = {
       embed: {
         color: 0xff8800,
@@ -82,6 +82,6 @@ module.exports = {
     console.log(err);
     return message.channel.send(`При выполнении команды возникла ошибка: \`${err.message}\`. Повторите попытку позже.`);
 }
-    client.channels.cache.get(botconfig.logs_channel).send(t_log);
+    client.channels.cache.get("564022728143929370").send(t_log);
 	}
 };

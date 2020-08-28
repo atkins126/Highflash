@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'remoji',
 	description: 'Случайно-генерируемые эмоции',
-	execute(message, client, args, botconfig) {
+	execute(message, client, args) {
 	  var t_log = {
       embed: {
         color: 0x558800,
@@ -32,7 +32,7 @@ module.exports = {
         ]
       }
     };
-      client.channels.cache.get(botconfig.logs_channel).send(t_log);
+      client.channels.cache.get("564022728143929370").send(t_log);
       let emoji = [
         ":joy:",
         ":thinking:",

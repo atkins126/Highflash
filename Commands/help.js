@@ -56,7 +56,7 @@ module.exports = {
               {
                 name: "❓ Справка",
                 value:
-                  "`about` - о боте " + botconfig.name + "\r\n`report <отчет об ошибке>` - пожаловаться или отправить отчет об ошибке\r\n`donate` - помочь проекту\r\n`links` - ссылки на наши ресурсы",
+                  "`about` - о боте Highflash\r\n`report <отчет об ошибке>` - пожаловаться или отправить отчет об ошибке\r\n`donate` - помочь проекту\r\n`links` - ссылки на наши ресурсы",
               },
               {
                 name: ":tools: Опции",
@@ -143,7 +143,7 @@ module.exports = {
             }
           }
         };
-    client.channels.cache.get(botconfig.logs_channel).send(t_log);
+    client.channels.cache.get("564022728143929370").send(t_log);
     let hlp_m = await message.channel.send(help_p1_embed);
     await hlp_m.react("1️⃣");
     await hlp_m.react("2️⃣");

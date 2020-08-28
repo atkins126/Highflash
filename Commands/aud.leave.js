@@ -32,7 +32,6 @@ module.exports = {
         ]
       }
     };
-client.channels.cache.get(botconfig.logs_channel).send(t_log);
     var audpause_embed = {
       embed: {
         color: 0x7b50ff,

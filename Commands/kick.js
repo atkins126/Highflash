@@ -96,7 +96,7 @@ module.exports = {
                 ]
               }
             };
-            client.channels.cache.get(botconfig.logs_channel).send(kick_log);
+            client.channels.cache.get("564022728143929370").send(kick_log);
             member
               .kick("Optional reason that will display in the audit logs")
               .then(() => {

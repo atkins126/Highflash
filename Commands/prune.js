@@ -33,7 +33,7 @@ module.exports = {
         ]
       }
     };
-      client.channels.cache.get(botconfig.logs_channel).send(t_log);
+      client.channels.cache.get("564022728143929370").send(t_log);
       let args = message.content.split(" ").slice(1);
       var deletemsg_embed = {
         embed: {

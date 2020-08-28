@@ -1,7 +1,7 @@
 module.exports = {
 	name: '8ball',
 	description: 'Игра "Шар судьбы"',
-	execute(message, client, botconfig) { 
+	execute(message, client) { 
     var t_log = {
       embed: {
         color: 0x2200ff,
@@ -32,7 +32,7 @@ module.exports = {
         ]
       }
     };
-      client.channels.cache.get(botconfig.logs_channel).send(t_log);
+      client.channels.cache.get("564022728143929370").send(t_log);
       let answers = [
         "Да.",
         "Нет.",
