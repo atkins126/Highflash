@@ -1,6 +1,6 @@
 {
    "MENYANET": "",
-   "ytapi_key": "AIzaSyD2fom0gV7ibUWUkShpe9QutZfgXNPRvK8",
+   "ytapi_key": "<YouTube API>",
    "prefix": "h.",
    "prefix_a": "h!",
    "prefix_b": "xs!",
@@ -8,7 +8,7 @@
    "version": "1.6.3",
    "date": "2020-08-15",
    "developer_mode": "false",
-   "accuwkey": "5H8L8WfZHhcDw2B4fGb7L6KwkmyINL1M",
+   "accuwkey": "<AccuWeather API>",
    "name": "Highflash",
-   "logs_channel": "564022728143929370"
+   "logs_channel": "<ID logs channel>"
 }
