@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'links',
 	description: 'Ссылки на наши ресурсы',
-	execute(message, client) { 
+	execute(message, client, botconfig) { 
     var t_log = {
       embed: {
         color: 0x2255ff,
@@ -32,7 +32,7 @@ module.exports = {
         ]
       }
     };
-      client.channels.cache.get("564022728143929370").send(t_log);
+      client.channels.cache.get(botconfig.logs_channel).send(t_log);
       var links_embed = {
         embed: {
           color: 0xaa88ff,
@@ -40,7 +40,7 @@ module.exports = {
             name: "Ссылки на наши ресурсы",
             icon_url: client.user.avatarURL()
           },
-          description: "[Зайти на Discord-сервер поддержки](https://discord.gg/w9vBmCn)\n[Подписаться на YouTube-канал](https://www.youtube.com/channel/UCSPjn_Y0pLdPy6Ncb9NAdww)\n[Зайти в группу ВКонтакте](https://vk.com/tinelixgroup)\n[Twitter](https://twitter.com/tinelix)\n\n[Изучить исходные коды в репозитории Highflash](https://github.com/tinelix/highflash)\n[Пригласить бота на сервер](https://discordapp.com/oauth2/authorize?client_id=634271325057318943&permissions=8&scope=bot)",
+          description: "[Зайти на Discord-сервер поддержки](https://discord.gg/w9vBmCn)\n[Подписаться на YouTube-канал](https://www.youtube.com/channel/UCSPjn_Y0pLdPy6Ncb9NAdww)\n\n[Наш GitHub-репозиторий Highflash](https://github.com/tinelix/highflash)\n[Наш сайт](https://highflash.tinelix.repl.co)",
         }
       };
       message.channel.send(links_embed);

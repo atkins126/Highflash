@@ -3,8 +3,19 @@ module.exports = {
 	description: 'Забанить кого-либо',
 	execute(message, client, botconfig) { 
     if (message.channel.type === "dm") return;
-
+      var banerr1_embed = {
+        embed: {
+          color: 0xff0000,
+          author: {
+            name: "Ошибка",
+            icon_url: client.user.avatarURL()
+          },
+          description:
+            "🚫 Для того, чтобы забанить участника, напишите `" + botconfig.prefix + "ban <упоминание> <причина>`"
+        }
+      };
       const user1 = message.mentions.users.first();
+        if(!user1) return message.channel.send(banerr1_embed);
       const member = message.guild.member(user1);
       let args = message.content
         .split(" " + member + " ")
@@ -31,17 +42,6 @@ module.exports = {
           },
           description:
             "🚫 Невозможно выполнить действие, поскольку в Вашем сервере нет этого участника, либо этот участник покинул Ваш сервер."
-        }
-      };
-      var banerr1_embed = {
-        embed: {
-          color: 0xff0000,
-          author: {
-            name: "Ошибка",
-            icon_url: client.user.avatarURL()
-          },
-          description:
-            "🚫 Для того, чтобы забанить участника, напишите `" + botconfig.prefix + "ban <упоминание> <причина>`"
         }
       };
       var banerr4_embed = {
@@ -108,7 +108,7 @@ module.exports = {
                   }
                 };
 
-                client.channels.cache.get("564022728143929370").send(ban_log);
+                client.channels.cache.get(botconfig.logs_channel).send(ban_log);
               })
               .catch(err => {
                 message.channel.send(banerr4_embed);

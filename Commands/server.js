@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'server',
 	description: 'Показывает информацию о текущем сервере',
-	execute(message, client, strftime) { 
+	execute(message, client, strftime, botconfig) { 
     var t_log = {
       embed: {
         color: 0x3333ff,
@@ -40,7 +40,7 @@ module.exports = {
       } else {
         afkCh = "Отсутствует";
       }
-      client.channels.cache.get("564022728143929370").send(t_log);
+      client.channels.cache.get(botconfig.logs_channel).send(t_log);
       let verifLvl = "";
       if(message.guild.verificationLevel === "NONE") {
       verifLvl = "Без ограничений"
@@ -62,8 +62,12 @@ module.exports = {
 	var ar = message.guild.emojis.cache.array().slice(0, 10);
 	var str = "";
       for (let i = 0; i < ar.length; i++) {
-        str += "<:" + ar[i].name + ":" + ar[i].id + "> ";
+        if(ar[i].animated === false) {
+            str += "<:" + ar[i].name + ":" + ar[i].id + "> ";
+        }
       };
+    if (ar.length === 0) {str = "Отсутствуют"}
+    else {str = str + "..."}
       var si_info = {
         embed: {
           color: 0x7b50ff,
@@ -134,7 +138,7 @@ module.exports = {
             },
             {
               name: "🙂 Эмоджи (" + message.guild.emojis.cache.size + ")",
-              value: ((str + "...") || "Отсутствуют"),
+              value: ((str) || "Отсутствуют"),
 	      inline: true
             },
 	    {

@@ -33,6 +33,7 @@ module.exports = {
         ]
       }
     };
+client.channels.cache.get(botconfig.logs_channel).send(t_log);
     var resultg = "";
     var rpserr_embed = {
       embed: {

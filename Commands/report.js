@@ -13,7 +13,7 @@ module.exports = {
 			description: "Чтобы написать отчет об ошибке, необходимо написать текст после команды `" +  botconfig.prefix +"report`."
 		}
 	};
-    if(!message.content.split(" ").slice(1)) return message.channel.send(args_err_embed)
+    if(!message.content.split(" ").slice(1).join()) return message.channel.send(args_err_embed)
 
 	var reportmessage_embed = {
         embed: {
@@ -23,7 +23,7 @@ module.exports = {
                 name: "Служба безопасности " + botconfig.name,
                 icon_url: client.user.avatarURL()
             },
-  description: message.author.tag + " отправил жалобу: \"" + message.content.split(" ").slice(1) + "\"",
+  description: message.author.tag + " отправил жалобу: \"" + message.content.split(" ").slice(1).join(" ") + "\"",
   	   fields: [
     {
            name: "Имя и ID сервера",
@@ -73,7 +73,7 @@ module.exports = {
 		}
 	};
     message.channel.send(supportbug_embed);
-			client.channels.cache.get("564022728143929370").send(t_log);
+			client.channels.cache.get(botconfig.logs_channel).send(t_log);
 
 let str = "<@484921597015359488>"; //Just assuming some random tag. 
 

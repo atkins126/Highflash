@@ -3,9 +3,9 @@ module.exports = {
 	description: 'Перевод текста в обратном порядке',
 	async execute(message, client, botconfig) { 
     if (message.channel.type === "dm") return;
-        var msg_array = message.content.split(" ").slice(11);
+        var msg_array = message.content.split(" ").slice(1).join(" ");
         if(!msg_array) return message.channel.send("Напиишите любой текст после команды `" + botconfig.prefix + "reverse`")
-        var msg_string = message.content.split("").slice(11);
+        var msg_string = message.content.split(" ").slice(1).join(" ");
         var reverse_string = "";
         var word;
         var split_word;

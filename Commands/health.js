@@ -82,7 +82,7 @@ module.exports = {
           },
           {
             name: "🏓 Сетевая статистика",
-            value: "**Местный пинг:** " + client.ws.ping.toFixed(2) + " мсек\n**Время работы:** " + Math.floor(client.uptime / 86400000) + strftime(
+            value: "**Местный пинг:** " + client.ws.ping.toFixed(2) + " мсек\n**Аптайм:** " + Math.floor(client.uptime / 86400000) + strftime(
               ":%H:%M:%S",
               new Date(client.uptime) // 25200000 for UTC+7 (MSK+4), 10800000 for UTC+3 (MSK). 
             ),
@@ -96,11 +96,11 @@ module.exports = {
         ],
 	  footer: {
             text:
-              botconfig.name + " использует Node.js версии " + process.version + " и Discord.js версии " + Discord.version,
+              botconfig.name + " использует Node.js версии " + process.version.slice(1) + " и Discord.js версии " + Discord.version,
           }
       }
     };
-    client.channels.cache.get("564022728143929370").send(t_log);
+    client.channels.cache.get(botconfig.logs_channel).send(t_log);
 	return message.channel.send(test_embed);
 }
 };
