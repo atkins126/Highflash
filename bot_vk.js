@@ -1,4 +1,4 @@
-const vk = require('node-vk-bot-api');
+const VK = require('node-vk-bot-api');
 const Markup = require('node-vk-bot-api/lib/markup');
 const Session = require('node-vk-bot-api/lib/session');
 const Stage = require('node-vk-bot-api/lib/stage');
@@ -12,7 +12,7 @@ const randomPuppy = require("random-puppy");
 const botconfig = require('./JSON/botconfig.json');
 const math = require('mathjs');
 const strftime = require('strftime')
-const bot = new vk(process.env.TOKENVK);
+const bot = new VK(process.env.TOKENVK);
 
 
 module.exports = {
