@@ -18,7 +18,7 @@ slimbot.on('message', async message => {
         parse_mode: "Markdown"
     });
   if(message.text === "/help" || message.text === "/help@highflashbot") {
-    slimbot.sendMessage(message.chat.id, botconfig.name + " теперь и в Telegram! Бот пока что сырой, но все же стараемся портировать часть кода из Discord.js и VK Bot API.\n\n/help - список команд\n/health - состояние бота\n/chat\_info - о беседе\n/user\_info - о пользователе\n/meme - мемы Reddit\n/photo - мир фото Reddit\n/calc - калькулятор\n/binary - преобразование текста в двоичный код\n/reverse - текст в обратном порядке.\n/ascii - преобразование текста в формате ASCII\n/weather - погода\n\nВерсия " + botconfig.tgversion + " от " + botconfig.tgdate + ".");
+    slimbot.sendMessage(message.chat.id, botconfig.name + " теперь и в Telegram! Бот пока что сырой, но все же стараемся портировать часть кода из Discord.js и VK Bot API.\n\n/help - список команд\n/health - состояние бота\n/chat\_info - о беседе\n/user\_info - о пользователе\n/meme - мемы Reddit\n/photo - мир фото Reddit\n/calc - калькулятор\n/binary - преобразование текста в двоичный код\n/reverse - текст в обратном порядке.\n/ascii - преобразование текста в формате ASCII\n/weather - погода\n/wiki - Википедия\n\nВерсия " + botconfig.tgversion + " от " + botconfig.tgdate + ".");
   }
   if(message.text === "/health" || message.text === "/health@highflashbot") {
     const plaform = os.platform();
@@ -235,6 +235,11 @@ slimbot.getChatMembersCount(message.chat.id).then(mc => {
 
   if(message.text.startsWith("/ascii") || message.text === "/ascii@highflashbot") {
   var args = message.text.slice(7).replace(/,/gi, ' ');
+  if(message.text.startsWith("/weather ")) {
+    args = message.text.slice(7).replace(/,/gi, ' ');
+  } else {
+    args = message.text.slice(20).replace(/,/gi, ' ');
+  }
   if (!args) return slimbot.sendMessage(message.chat.id, "*🚫 Ошибка*\nПосле команды `ascii` следует ввести любое текст.", {
         parse_mode: "Markdown"
   });
@@ -256,6 +261,11 @@ slimbot.getChatMembersCount(message.chat.id).then(mc => {
 
     if(message.text.startsWith("/weather") || message.text === "/weather@highflashbot") {
   var args = message.text.slice(9).replace(/,/gi, ' ');
+  if(message.text.startsWith("/weather ")) {
+    args = message.text.slice(9).replace(/,/gi, ' ');
+  } else {
+    args = message.text.slice(22).replace(/,/gi, ' ');
+  }
 	weather.find({search: args, degreeType: 'C', lang: 'ru-RU'}, function(err, result) {
     if(err) return slimbot.sendMessage(message.chat.id, "*🚫 Ошибка*\nCначала укажите свой город или населенный пункт.", {
         parse_mode: "Markdown"
@@ -274,6 +284,11 @@ slimbot.getChatMembersCount(message.chat.id).then(mc => {
 
   if(message.text.startsWith("/wiki") || message.text === "/wiki") {
   var args = message.text.slice(6).replace(/,/gi, ' ');
+  if(message.text.startsWith("/wiki ")) {
+    args = message.text.slice(6).replace(/,/gi, ' ');
+  } else {
+    args = message.text.slice(19).replace(/,/gi, ' ');
+  }
   if (!args) return slimbot.sendMessage(message.chat.id, "*🚫 Ошибка*\nПосле команды `wiki` следует ввести запрос. Например, `/wiki Google`", {
         parse_mode: "Markdown"
   });
