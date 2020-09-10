@@ -6,16 +6,19 @@ const { promptMessage } = require("./functions.js");
 const randomPuppy = require("random-puppy");
 const math = require('mathjs');
 const strftime = require('strftime');
+const figlet = require('figlet');
+const weather = require("weather-js");
+const request = require('node-superfetch');
 
 // Register listeners
 
-slimbot.on('message', message => {
+slimbot.on('message', async message => {
   if(message.is_bot === true || !message.text.startsWith("/")) return;
   slimbot.sendMessage(-1001480798804, `*Логи команд*\n${message.from.first_name} пишет \`${message.text}\` в чате ` + (message.chat.title || "(личное сообщение)") + `\nID пользователя: ${message.from.id}\nID чата: ${message.chat.id}`, {
         parse_mode: "Markdown"
     });
   if(message.text === "/help" || message.text === "/help@highflashbot") {
-    slimbot.sendMessage(message.chat.id, botconfig.name + " теперь и в Telegram! Бот пока что сырой, но все же стараемся портировать часть кода из Discord.js и VK Bot API.\n\n/help - список команд\n/health - состояние бота\n/chat\_info - о беседе\n/user\_info - о пользователе\n/meme - мемы Reddit\n/photo - мир фото Reddit\n/calc - калькулятор\n/binary - преобразование текста в двоичный код\n/reverse - текст в обратном порядке.\n\nВерсия " + botconfig.tgversion + " от " + botconfig.tgdate + ".");
+    slimbot.sendMessage(message.chat.id, botconfig.name + " теперь и в Telegram! Бот пока что сырой, но все же стараемся портировать часть кода из Discord.js и VK Bot API.\n\n/help - список команд\n/health - состояние бота\n/chat\_info - о беседе\n/user\_info - о пользователе\n/meme - мемы Reddit\n/photo - мир фото Reddit\n/calc - калькулятор\n/binary - преобразование текста в двоичный код\n/reverse - текст в обратном порядке.\n/ascii - преобразование текста в формате ASCII\n/weather - погода\n\nВерсия " + botconfig.tgversion + " от " + botconfig.tgdate + ".");
   }
   if(message.text === "/health" || message.text === "/health@highflashbot") {
     const plaform = os.platform();
@@ -34,7 +37,7 @@ slimbot.on('message', message => {
       }
     }
 
-    slimbot.sendMessage(message.chat.id, `💻 *Сведения о хосте, на котором запущен бот*\n\nИспользуемая память: ${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)} МБ (${Math.round(process.memoryUsage().heapUsed / 1024)} кБ)\nПрограммная платформа: ${platform}\nПроцессор: ${os.cpus()[0].model}\nАптайм: ${Math.floor((process.uptime() * 1000) / 86400000) + strftime(":%H:%M:%S", new Date(process.uptime() * 1000))}\n\nБот Highflash использует Node.js версии ${process.version} и библиотеку Slimbot`, {
+    slimbot.sendMessage(message.chat.id, `💻 *Сведения о хосте, на котором запущен бот*\n\nИспользуемая память: ` + ((process.memoryUsage().heapUsed) / 1024 / 1024).toFixed(2) + " МБ / " + ((os.totalmem - os.freemem) / 1024 / 1024).toFixed(2) + " МБ / " + (os.totalmem / 1024 / 1024).toFixed(2) + ` МБ\nПрограммная платформа: ${platform}\nПроцессор: ${os.cpus()[0].model}\nАптайм: ${Math.floor((process.uptime() * 1000) / 86400000) + strftime(":%H:%M:%S", new Date(process.uptime() * 1000))}\n\nБот Highflash использует Node.js версии ${process.version} и библиотеку Slimbot`, {
         parse_mode: "Markdown"
     });
   }
@@ -175,7 +178,7 @@ slimbot.getChatMembersCount(message.chat.id).then(mc => {
         var randomColour = colour_array[randomNumber];
         var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
                         "а", "б", "в", "г", "д", "е", "ё", "ж", "з", "и", "й", "к", "л", "м", "н", "о", "п", "р", "с", "т", "у", "ф", "х", "ц", "ч", "ш", "щ", "ъ", "ы", "ь", "э", "ю", "я", "А", "Б", "В", "Г", "Д", "Е", "Ё", "Ж", "З", "И", "Й", "К", "Л", "М", "Н", "О", "П", "Р", "С",
-                        "Т", "У", "Ф", "Х", "Ц", "Ч", "Ш", "Щ", "Ъ", "Ы", "Ь", "Э", "Ю", "Я", "?", ",", "!", ".", " ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
+                        "Т", "У", "Ф", "Х", "Ц", "Ч", "Ш", "Щ", "Ъ", "Ы", "Ь", "Э", "Ю", "Я", "?", ",", "!", ".", " ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-"];
 
     var binaryMessage = translateMessage(fmt_array, "binary", alphabet)
 
@@ -230,6 +233,74 @@ slimbot.getChatMembersCount(message.chat.id).then(mc => {
     }
 	}
 
+  if(message.text.startsWith("/ascii") || message.text === "/ascii@highflashbot") {
+  var args = message.text.slice(7).replace(/,/gi, ' ');
+  if (!args) return slimbot.sendMessage(message.chat.id, "*🚫 Ошибка*\nПосле команды `ascii` следует ввести любое текст.", {
+        parse_mode: "Markdown"
+  });
+  if(args.length > 14) return slimbot.sendMessage(message.chat.id, "*🚫 Ошибка*\nВаш текст не должен превышать 14 символов.", {
+        parse_mode: "Markdown"
+        });
+    figlet(args, (err, data) => {
+      let ascii = "";
+      if(data) {
+        ascii = '```' + data + '```';
+      } else {
+        ascii = "Вывод текста в формате ASCII не поддерживается для кириллицы."
+      };
+      slimbot.sendMessage(message.chat.id, "*🖥 Преобразование текста в ASCII*\n" + ascii, {
+        parse_mode: "Markdown"
+        });
+    })
+	}
+
+    if(message.text.startsWith("/weather") || message.text === "/weather@highflashbot") {
+  var args = message.text.slice(9).replace(/,/gi, ' ');
+	weather.find({search: args, degreeType: 'C', lang: 'ru-RU'}, function(err, result) {
+    if(err) return slimbot.sendMessage(message.chat.id, "*🚫 Ошибка*\nCначала укажите свой город или населенный пункт.", {
+        parse_mode: "Markdown"
+    });
+    try {
+      slimbot.sendMessage(message.chat.id, "*🌤 Погода | " + result[0].location.name + "*\n*Сегодня*\nТемпература: " + result[0].current.temperature + "°С (ощущается как " + result[0].current.feelslike + "°С)\nСкорость ветра: " + result[0].current.winddisplay + "\nВлажность: " + result[0].current.humidity + "%\nСостояние: " + result[0].current.skytext + "\n\n*Завтра*\nТемпература: " + result[0].forecast[0].low + "°С / " + result[0].forecast[0].high + "°С\nСостояние: " + result[0].forecast[0].skytextday + "\n\nДанные получены сегодня в " + result[0].current.observationtime, {
+        parse_mode: "Markdown"
+      });
+    } catch(ex) {
+      slimbot.sendMessage(message.chat.id, "*🚫 Ошибка*\nНе удается найти результаты. Повторите попытку позже.", {
+        parse_mode: "Markdown"
+    });
+    }
+  });
+	}
+
+  if(message.text.startsWith("/wiki") || message.text === "/wiki") {
+  var args = message.text.slice(6).replace(/,/gi, ' ');
+  if (!args) return slimbot.sendMessage(message.chat.id, "*🚫 Ошибка*\nПосле команды `wiki` следует ввести запрос. Например, `/wiki Google`", {
+        parse_mode: "Markdown"
+  });
+	try {
+    const query = args
+    const { body } = await request.get('https://ru.wikipedia.org/w/api.php').query({
+        action: 'query',
+        prop: 'extracts',
+        format: 'json',
+        titles: query,
+        exintro: '',
+        explaintext: '',
+        redirects: '',
+        formatversion: 2
+      });
+    if (body.query.pages[0].missing) return       slimbot.sendMessage(message.chat.id, "*🚫 Ошибка*\nПо Вашему запросу ничего не найдено.\n\nПопробуйте другой запрос.", {
+        parse_mode: "Markdown"
+    });
+	console.log(body.query.pages[0]);
+  slimbot.sendMessage(message.chat.id, "*🌐 Википедия | " + body.query.pages[0].title + "*\n"+ body.query.pages[0].extract.substr(0, 2000).replace(/[\n]/g, '\n\n').replace(/(\r?\n){2,}/g, '$1') + `\n\n_Источник: http://ru.wikipedia.org/wiki/${body.query.pages[0].title.replace(/ /g, "%5F")}_`, {
+        parse_mode: "Markdown"
+    });
+	} catch (err) {
+    if (err.status === 404) return message.channel.send(`При выполнении команды возникла ошибка: \`${err.message}\`. Повторите попытку позже.`);
+    console.log(err);
+}
+	}
 });
 // Call API
 
